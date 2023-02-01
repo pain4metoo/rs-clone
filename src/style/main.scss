@@ -11,13 +11,10 @@ html {
   box-sizing: border-box;
   font-size: 10px;
   scroll-behavior: smooth;
-  background: black;
+  background-color: var(--bs-secondary);
 }
 
 body {
-  font-family: $fs-default;
-  font-weight: $fw-regular;
-  font-style: normal;
   font-size: 1.8rem;
   line-height: 2.7rem;
   color: white;
