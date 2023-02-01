@@ -1,0 +1,24 @@
+@import '~bootstrap/scss/bootstrap';
+@import '../../node_modules/normalize.css/normalize.css';
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 10px;
+  scroll-behavior: smooth;
+  background: black;
+}
+
+body {
+  font-family: $fs-default;
+  font-weight: $fw-regular;
+  font-style: normal;
+  font-size: 1.8rem;
+  line-height: 2.7rem;
+  color: white;
+}
