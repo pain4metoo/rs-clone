@@ -11,3 +11,5 @@ export class State {
     this._data = initialState;
   }
 }
+
+export const state: State = new State({});
