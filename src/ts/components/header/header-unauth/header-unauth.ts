@@ -12,8 +12,13 @@ export class HeaderUnauth extends Control {
     listArr.forEach((page: string) => {
       const listItem = new Control(navList.node, 'li', 'nav_item');
       const linkItem: { node: HTMLLinkElement } = new Control(listItem.node, 'a', 'nav-link');
+      linkItem.node.onclick = () => this.changeMainPages(page);
       linkItem.node.href = '#';
       linkItem.node.textContent = page;
     });
+  }
+
+  changeMainPages(page: string): void {
+    state.setNewPage(page);
   }
 }

@@ -2,7 +2,6 @@ import './header.scss';
 import Control from '../../common/control';
 import logoSVG from '../../../assets/svg/logo.svg';
 import { NavBar } from './nav-menu/nav-menu';
-import { HeaderAuth } from './header-auth/header-auth';
 import { HeaderUnauth } from './header-unauth/header-unauth';
 
 export class Header extends Control {
