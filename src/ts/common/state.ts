@@ -1,8 +1,19 @@
 import Signal from './signal';
 
-export interface StateData {}
+interface HeaderPages {
+  mainPages: Array<string>;
+  authPages: Array<string>;
+  unAuthPages: Array<string>;
+  currentPage: string;
+}
 
-export enum StateOptions {}
+export interface StateData {
+  header: HeaderPages;
+}
+
+export enum StateOptions {
+  changePage = 'change-page',
+}
 
 export class State {
   private _data: StateData;
@@ -10,6 +21,22 @@ export class State {
   constructor(initialState: StateData) {
     this._data = initialState;
   }
+
+  public setNewPage(page: string): void {
+    this._data.header.currentPage = page;
+    this.onUpdate.emit(StateOptions.changePage);
+  }
+
+  public getHeaderPages(): HeaderPages {
+    return this._data.header;
+  }
 }
 
-export const state: State = new State({});
+export const state: State = new State({
+  header: {
+    mainPages: ['Главная', 'Уроки', 'Тесты', 'Задачи'],
+    authPages: ['Избранное', 'Статистика', 'Настройки', 'Выйти'],
+    unAuthPages: ['Войти', 'Зарегистрироваться'],
+    currentPage: 'Главная',
+  },
+});

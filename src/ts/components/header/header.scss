@@ -1,0 +1,22 @@
+.header {
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  &-img {
+    cursor: pointer;
+    transition: all 0.5s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.img-thumbnail {
+  max-width: 8rem;
+  object-fit: cover;
+  height: 7rem;
+  border: none;
+  border-radius: 20%;
+}
