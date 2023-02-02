@@ -7,13 +7,13 @@ export class HeaderAuth extends Control {
     super(parentNode, 'header_unauth');
 
     const navList = new Control(this.node, 'ul', 'nav');
-    const listArr = state.getHeaderPages().authPages;
+    const listArr: Array<string> = state.getHeaderPages().authPages;
 
-    for (let i = 0; i < listArr.length; i++) {
+    listArr.forEach((page: string) => {
       const listItem = new Control(navList.node, 'li', 'nav_item');
       const linkItem: { node: HTMLLinkElement } = new Control(listItem.node, 'a', 'nav-link');
       linkItem.node.href = '#';
-      linkItem.node.textContent = listArr[i];
-    }
+      linkItem.node.textContent = page;
+    });
   }
 }

@@ -4,19 +4,27 @@ interface HeaderPages {
   mainPages: Array<string>;
   authPages: Array<string>;
   unAuthPages: Array<string>;
+  currentPage: string;
 }
 
 export interface StateData {
   header: HeaderPages;
 }
 
-export enum StateOptions {}
+export enum StateOptions {
+  changePage = 'change-page',
+}
 
 export class State {
   private _data: StateData;
   public onUpdate: Signal<StateOptions> = new Signal();
   constructor(initialState: StateData) {
     this._data = initialState;
+  }
+
+  public setNewPage(page: string): void {
+    this._data.header.currentPage = page;
+    this.onUpdate.emit(StateOptions.changePage);
   }
 
   public getHeaderPages(): HeaderPages {
@@ -26,8 +34,9 @@ export class State {
 
 export const state: State = new State({
   header: {
-    mainPages: ['Уроки', 'Тесты', 'Задачи'],
+    mainPages: ['Главная', 'Уроки', 'Тесты', 'Задачи'],
     authPages: ['Избранное', 'Статистика', 'Настройки', 'Выйти'],
     unAuthPages: ['Войти', 'Зарегистрироваться'],
+    currentPage: 'Главная',
   },
 });
