@@ -1,4 +1,5 @@
 import Control from '../../../common/control';
+import { state } from '../../../common/state';
 import './header-auth.scss';
 
 export class HeaderAuth extends Control {
@@ -6,7 +7,7 @@ export class HeaderAuth extends Control {
     super(parentNode, 'header_unauth');
 
     const navList = new Control(this.node, 'ul', 'nav');
-    const listArr = ['Избранное', 'Статистика', 'Настройки', 'Выйти'];
+    const listArr = state.getHeaderPages().authPages;
 
     for (let i = 0; i < listArr.length; i++) {
       const listItem = new Control(navList.node, 'li', 'nav_item');

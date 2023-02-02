@@ -1,6 +1,14 @@
 import Signal from './signal';
 
-export interface StateData {}
+interface HeaderPages {
+  mainPages: Array<string>;
+  authPages: Array<string>;
+  unAuthPages: Array<string>;
+}
+
+export interface StateData {
+  header: HeaderPages;
+}
 
 export enum StateOptions {}
 
@@ -10,6 +18,16 @@ export class State {
   constructor(initialState: StateData) {
     this._data = initialState;
   }
+
+  public getHeaderPages(): HeaderPages {
+    return this._data.header;
+  }
 }
 
-export const state: State = new State({});
+export const state: State = new State({
+  header: {
+    mainPages: ['Уроки', 'Тесты', 'Задачи'],
+    authPages: ['Избранное', 'Статистика', 'Настройки', 'Выйти'],
+    unAuthPages: ['Войти', 'Зарегистрироваться'],
+  },
+});

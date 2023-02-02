@@ -13,7 +13,7 @@ export class Header extends Control {
     logo.node.src = logoSVG;
     logo.node.alt = 'logo javascript';
 
-    const navBar = new NavBar(this.node);
-    const headerUnauth = new HeaderUnauth(this.node);
+    const navBar: NavBar = new NavBar(this.node);
+    const headerUnauth: HeaderUnauth = new HeaderUnauth(this.node);
   }
 }
