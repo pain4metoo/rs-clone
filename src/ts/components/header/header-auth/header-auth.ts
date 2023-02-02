@@ -18,7 +18,7 @@ export class HeaderAuth extends Control {
     });
   }
 
-  changeMainPages(page: string): void {
+  private changeMainPages(page: string): void {
     state.setNewPage(page);
   }
 }

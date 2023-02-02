@@ -1,5 +1,5 @@
 import Control from '../../common/control';
-import { PagesList, state, StateOptions } from '../../common/state';
+import { state, StateOptions } from '../../common/state';
 import { AuthPage } from './auth-page/auth-page';
 import { FavorPage } from './favor-page/favor-page';
 import { LessonPage } from './lesson-page/lesson-page';
@@ -9,6 +9,18 @@ import { StatistPage } from './statist-page/statist-page';
 import { TaskPage } from './task-page/task-page';
 import { TestPage } from './test-page/test-page';
 import { UnauthPage } from './unauth-page/unauth-page';
+
+export enum PagesList {
+  mainPage = 'Главная',
+  lessonPage = 'Уроки',
+  testPage = 'Тесты',
+  taskPage = 'Задачи',
+  favorPage = 'Избранное',
+  statistPage = 'Статистика',
+  setPage = 'Настройки',
+  authPage = 'Войти',
+  unauthPage = 'Зарегистрироваться',
+}
 
 export class Main extends Control {
   private mainInner!: { node: HTMLElement };
