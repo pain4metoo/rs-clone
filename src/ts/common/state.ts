@@ -15,6 +15,18 @@ export enum StateOptions {
   changePage = 'change-page',
 }
 
+export enum PagesList {
+  mainPage = 'Главная',
+  lessonPage = 'Уроки',
+  testPage = 'Тесты',
+  taskPage = 'Задачи',
+  favorPage = 'Избранное',
+  statistPage = 'Статистика',
+  setPage = 'Настройки',
+  authPage = 'Войти',
+  unauthPage = 'Зарегистрироваться',
+}
+
 export class State {
   private _data: StateData;
   public onUpdate: Signal<StateOptions> = new Signal();

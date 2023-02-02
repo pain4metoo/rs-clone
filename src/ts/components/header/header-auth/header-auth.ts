@@ -4,7 +4,7 @@ import './header-auth.scss';
 
 export class HeaderAuth extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'header_unauth');
+    super(parentNode, 'header_auth');
 
     const navList = new Control(this.node, 'ul', 'nav');
     const listArr: Array<string> = state.getHeaderPages().authPages;

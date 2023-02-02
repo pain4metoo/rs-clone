@@ -1,5 +1,5 @@
 import Control from '../../../common/control';
-import { state } from '../../../common/state';
+import { PagesList, state } from '../../../common/state';
 import './nav-menu.scss';
 
 export class NavBar extends Control {
@@ -19,6 +19,6 @@ export class NavBar extends Control {
   }
 
   changeMainPages(page: string): void {
-    
+    state.setNewPage(page);
   }
 }
