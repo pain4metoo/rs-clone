@@ -1,0 +1,14 @@
+.header {
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.img-thumbnail {
+  max-width: 10rem;
+  object-fit: cover;
+  height: 10rem;
+  border: none;
+}
