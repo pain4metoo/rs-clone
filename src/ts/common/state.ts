@@ -17,7 +17,7 @@ interface CategoryContent {
   items: Array<ArticleMetaData>;
 }
 
-interface CategoriesContent {
+export interface CategoriesType {
   lessons: Array<CategoryContent>;
   tests: Array<CategoryContent>;
   tasks: Array<CategoryContent>;
@@ -25,7 +25,7 @@ interface CategoriesContent {
 
 export interface StateData {
   header: HeaderPages;
-  categories: CategoriesContent;
+  categories: CategoriesType;
 }
 
 export enum StateOptions {
@@ -48,7 +48,7 @@ export class State {
     return this._data.header;
   }
 
-  public getCategories(key: keyof CategoriesContent): Array<CategoryContent> {
+  public getCategories(key: keyof CategoriesType): Array<CategoryContent> {
     return this._data.categories[key];
   }
 }
