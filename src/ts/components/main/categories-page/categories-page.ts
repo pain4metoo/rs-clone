@@ -1,14 +1,12 @@
 import Control from '../../../common/control';
-import { state } from '../../../common/state';
+import { CategoriesType, state } from '../../../common/state';
 
-import './lesson-page.scss';
-
-export class LessonPage extends Control {
-  constructor(parentNode: HTMLElement) {
+export class CategoriesPage extends Control {
+  constructor(parentNode: HTMLElement, type: keyof CategoriesType) {
     super(parentNode, 'div', 'lessons container py-5');
     const accordion = new Control(this.node, 'div', 'accordion');
     accordion.node.id = 'accordionExample';
-    state.getCategories('lessons').forEach((category, index) => {
+    state.getCategories(type).forEach((category, index) => {
       const accordionItem = new Control(accordion.node, 'div', 'accordion-item');
       const accordionHeader = new Control(accordionItem.node, 'h2', 'accordion-header');
       accordionHeader.node.id = `heading-${index}`;

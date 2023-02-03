@@ -1,6 +1,7 @@
 import Control from '../../common/control';
 import { state, StateOptions } from '../../common/state';
 import { AuthPage } from './auth-page/auth-page';
+import { CategoriesPage } from './categories-page/categories-page';
 import { FavorPage } from './favor-page/favor-page';
 import { LessonPage } from './lesson-page/lesson-page';
 import { MainPage } from './main-page/main-page';
@@ -37,13 +38,13 @@ export class Main extends Control {
   }
 
   private createNewPage(): void {
-    if (!!this.mainInner) {
+    if (this.mainInner) {
       this.mainInner.node.remove();
     }
 
     this.mainInner = new Control(this.node, 'div', 'main_inner');
 
-    let currentPage: string = state.getHeaderPages().currentPage;
+    const currentPage: string = state.getHeaderPages().currentPage;
 
     switch (currentPage) {
       case PagesList.mainPage:
@@ -51,15 +52,15 @@ export class Main extends Control {
         break;
 
       case PagesList.lessonPage:
-        new LessonPage(this.mainInner.node);
+        new CategoriesPage(this.mainInner.node, 'lessons');
         break;
 
       case PagesList.testPage:
-        new TestPage(this.mainInner.node);
+        new CategoriesPage(this.mainInner.node, 'tests');
         break;
 
       case PagesList.taskPage:
-        new TaskPage(this.mainInner.node);
+        new CategoriesPage(this.mainInner.node, 'tasks');
         break;
 
       case PagesList.authPage:
