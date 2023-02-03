@@ -38,13 +38,13 @@ export class Main extends Control {
   }
 
   private createNewPage(): void {
-    if (!!this.mainInner) {
+    if (this.mainInner) {
       this.mainInner.node.remove();
     }
 
     this.mainInner = new Control(this.node, 'div', 'main_inner');
 
-    let currentPage: string = state.getHeaderPages().currentPage;
+    const currentPage: string = state.getHeaderPages().currentPage;
 
     switch (currentPage) {
       case PagesList.mainPage:

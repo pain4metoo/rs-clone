@@ -24,7 +24,7 @@ export class LessonPage extends Control {
       accordionButton.node.setAttribute('aria-expanded', 'true');
       accordionButton.node.setAttribute('aria-controls', `collapse-${index}`);
       const accordionCollapse = new Control(accordionItem.node, 'div', 'accordion-collapse collapse');
-      accordionCollapse.node.id = `collapse-${index}`
+      accordionCollapse.node.id = `collapse-${index}`;
       accordionCollapse.node.setAttribute('aria-labelledby', `heading-${index}`);
       accordionCollapse.node.setAttribute('data-bs-parent', `#accordionExample`);
       const accordionBody = new Control(accordionCollapse.node, 'div', 'accordion-body');
@@ -34,5 +34,3 @@ export class LessonPage extends Control {
     });
   }
 }
-
-
