@@ -1,5 +1,6 @@
 import Control from '../../common/control';
-import { state, StateOptions } from '../../common/state';
+import { state } from '../../common/state';
+import { StateOptions } from '../../common/state-types';
 import { AuthPage } from './auth-page/auth-page';
 import { CategoriesPage } from './categories-page/categories-page';
 import { FavorPage } from './favor-page/favor-page';
@@ -13,14 +14,18 @@ import { UnauthPage } from './unauth-page/unauth-page';
 
 export enum PagesList {
   mainPage = 'Главная',
-  lessonPage = 'Уроки',
-  testPage = 'Тесты',
-  taskPage = 'Задачи',
+  lessonsPage = 'Уроки',
+  lessonPage = 'Урок',
+  testsPage = 'Тесты',
+  testPage = 'Тест',
+  tasksPage = 'Задачи',
+  taskPage = 'Блок задач',
   favorPage = 'Избранное',
   statistPage = 'Статистика',
   setPage = 'Настройки',
   authPage = 'Войти',
   unauthPage = 'Зарегистрироваться',
+  logout = 'Выйти',
 }
 
 export class Main extends Control {
@@ -44,23 +49,35 @@ export class Main extends Control {
 
     this.mainInner = new Control(this.node, 'div', 'main_inner');
 
-    const currentPage: string = state.getHeaderPages().currentPage;
+    const currentPageName: PagesList = state.getCurrentPage().name;
 
-    switch (currentPage) {
+    switch (currentPageName) {
       case PagesList.mainPage:
         new MainPage(this.mainInner.node);
         break;
 
-      case PagesList.lessonPage:
+      case PagesList.lessonsPage:
         new CategoriesPage(this.mainInner.node, 'lessons');
         break;
 
-      case PagesList.testPage:
+      case PagesList.lessonPage:
+        new LessonPage(this.mainInner.node);
+        break;
+
+      case PagesList.testsPage:
         new CategoriesPage(this.mainInner.node, 'tests');
         break;
 
-      case PagesList.taskPage:
+      case PagesList.testPage:
+        new TestPage(this.mainInner.node);
+        break;
+
+      case PagesList.tasksPage:
         new CategoriesPage(this.mainInner.node, 'tasks');
+        break;
+
+      case PagesList.taskPage:
+        new TaskPage(this.mainInner.node);
         break;
 
       case PagesList.authPage:
