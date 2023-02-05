@@ -26,6 +26,12 @@ class State {
     this.onUpdate.emit(StateOptions.changePage);
   }
 
+  public authUser(): void {
+    this._data.currentPage = { name: PagesList.mainAuthPage };
+    this._data.user.isAuth = true;
+    this.onUpdate.emit(StateOptions.changePage);
+  }
+
   public setCategories(categories: Array<CategoryData>): void {
     categories.forEach((category) => {
       const lessons: Array<ArticleMetaData> = [];
@@ -102,6 +108,9 @@ class State {
 }
 
 const initialState = {
+  user: {
+    isAuth: false,
+  },
   currentPage: { name: PagesList.mainPage },
   header: {
     mainPages: [PagesList.mainPage, PagesList.lessonsPage, PagesList.testsPage, PagesList.tasksPage],

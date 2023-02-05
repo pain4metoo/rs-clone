@@ -83,6 +83,7 @@ export interface TaskData {
 }
 
 export interface StateData {
+  user: { isAuth: boolean };
   currentPage: CurrentPage;
   header: HeaderPages;
   categories: CategoriesType;

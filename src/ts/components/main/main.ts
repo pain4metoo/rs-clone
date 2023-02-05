@@ -5,6 +5,7 @@ import { AuthPage } from './auth-page/auth-page';
 import { CategoriesPage } from './categories-page/categories-page';
 import { FavorPage } from './favor-page/favor-page';
 import { LessonPage } from './lesson-page/lesson-page';
+import { MainAuthPage } from './main-page/main-auth-page/main-auth-page';
 import { MainPage } from './main-page/main-page';
 import { SetPage } from './set-page/set-page';
 import { StatistPage } from './statist-page/statist-page';
@@ -14,6 +15,7 @@ import { UnauthPage } from './unauth-page/unauth-page';
 
 export enum PagesList {
   mainPage = 'Главная',
+  mainAuthPage = 'main-auth-page',
   lessonsPage = 'Уроки',
   lessonPage = 'Урок',
   testsPage = 'Тесты',
@@ -56,6 +58,9 @@ export class Main extends Control {
         new MainPage(this.mainInner.node);
         break;
 
+      case PagesList.mainAuthPage:
+        new MainAuthPage(this.mainInner.node);
+        break;
       case PagesList.lessonsPage:
         new CategoriesPage(this.mainInner.node, 'lessons');
         break;
