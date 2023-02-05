@@ -4,7 +4,5 @@ import './main-page.scss';
 export class MainPage extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'main-page');
-
-    this.node.textContent = 'Main-page';
   }
 }
