@@ -57,20 +57,6 @@ export interface TestData {
   questions: Array<TestQuestion>;
 }
 
-export interface UserData {
-  id: string;
-  email: string;
-  password: string;
-  name: string;
-  done: UserDataDone;
-}
-
-export interface UserDataDone {
-  lessons: Array<{ id?: string; result?: string }>;
-  tests: Array<{ id?: string; result?: string }>;
-  tasks: Array<{ id?: string; result?: string }>;
-}
-
 export interface TaskList {
   content: string;
   solution: string;

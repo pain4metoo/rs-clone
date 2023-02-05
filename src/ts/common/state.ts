@@ -27,7 +27,7 @@ class State {
   }
 
   public authUser(): void {
-    this._data.currentPage = { name: PagesList.mainAuthPage };
+    this._data.currentPage = { name: PagesList.mainPage };
     this._data.user.isAuth = true;
     this.onUpdate.emit(StateOptions.changePage);
   }
@@ -104,6 +104,10 @@ class State {
 
   public getTask(): TaskData {
     return this._data.task;
+  }
+
+  public getAuthUser(): boolean {
+    return this._data.user.isAuth;
   }
 }
 

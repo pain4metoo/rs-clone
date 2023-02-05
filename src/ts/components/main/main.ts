@@ -15,7 +15,6 @@ import { UnauthPage } from './unauth-page/unauth-page';
 
 export enum PagesList {
   mainPage = 'Главная',
-  mainAuthPage = 'main-auth-page',
   lessonsPage = 'Уроки',
   lessonPage = 'Урок',
   testsPage = 'Тесты',
@@ -56,10 +55,6 @@ export class Main extends Control {
     switch (currentPageName) {
       case PagesList.mainPage:
         new MainPage(this.mainInner.node);
-        break;
-
-      case PagesList.mainAuthPage:
-        new MainAuthPage(this.mainInner.node);
         break;
       case PagesList.lessonsPage:
         new CategoriesPage(this.mainInner.node, 'lessons');
