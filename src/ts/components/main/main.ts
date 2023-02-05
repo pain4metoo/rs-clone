@@ -5,6 +5,7 @@ import { AuthPage } from './auth-page/auth-page';
 import { CategoriesPage } from './categories-page/categories-page';
 import { FavorPage } from './favor-page/favor-page';
 import { LessonPage } from './lesson-page/lesson-page';
+import { MainAuthPage } from './main-page/main-auth-page/main-auth-page';
 import { MainPage } from './main-page/main-page';
 import { SetPage } from './set-page/set-page';
 import { StatistPage } from './statist-page/statist-page';
@@ -55,7 +56,6 @@ export class Main extends Control {
       case PagesList.mainPage:
         new MainPage(this.mainInner.node);
         break;
-
       case PagesList.lessonsPage:
         new CategoriesPage(this.mainInner.node, 'lessons');
         break;
@@ -100,6 +100,10 @@ export class Main extends Control {
         new SetPage(this.mainInner.node);
         break;
 
+      case PagesList.logout:
+        new MainPage(this.mainInner.node);
+        break;
+        
       default:
         new MainPage(this.mainInner.node);
     }

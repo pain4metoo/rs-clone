@@ -10,3 +10,22 @@ export interface CategoryData {
   tests: Array<CategoryItemsData>;
   tasks: Array<CategoryItemsData>;
 }
+
+export interface UserData {
+  email: string;
+  password: string;
+  name?: string;
+  done?: UserDataDone;
+}
+
+export interface UserDataDone {
+  lessons: Array<{ id?: string; result?: string }>;
+  tests: Array<{ id?: string; result?: string }>;
+  tasks: Array<{ id?: string; result?: string }>;
+}
+
+export interface NewUser {
+  email: string;
+  password: string;
+  [key: string]: any;
+}
