@@ -1,12 +1,12 @@
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
-import './header-auth.scss';
+import { PagesList } from '../../main/main';
 
 export class HeaderAuth extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'ul', 'navbar-nav');
-    const listArr: Array<string> = state.getHeaderPages().authPages;
-    listArr.forEach((page: string) => {
+    const listArr: Array<PagesList> = state.getHeaderPages().authPages;
+    listArr.forEach((page: PagesList) => {
       const listItem = new Control(this.node, 'li', 'nav_item');
       const linkItem: Control<HTMLLinkElement> = new Control(listItem.node, 'a', 'nav-link');
       linkItem.node.onclick = (): void => this.changeMainPages(page);
@@ -15,7 +15,7 @@ export class HeaderAuth extends Control {
     });
   }
 
-  private changeMainPages(page: string): void {
+  private changeMainPages(page: PagesList): void {
     state.setNewPage(page);
   }
 }

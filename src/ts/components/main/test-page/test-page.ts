@@ -1,10 +1,12 @@
 import Control from '../../../common/control';
+import { state } from '../../../common/state';
 import './test-page.scss';
 
 export class TestPage extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'test');
+    super(parentNode, 'div', 'container py-5');
 
-    this.node.textContent = 'test-page';
+    const test = state.getTest();
+    console.log(test);
   }
 }

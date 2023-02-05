@@ -4,6 +4,7 @@ import logoSVG from '../../../assets/svg/logo.svg';
 import { NavBar } from './nav-menu/nav-menu';
 import { HeaderUnauth } from './header-unauth/header-unauth';
 import { state } from '../../common/state';
+import { PagesList } from '../main/main';
 
 export class Header extends Control {
   constructor(parentNode: HTMLElement) {
@@ -36,6 +37,6 @@ export class Header extends Control {
   }
 
   private onMainPage(): void {
-    state.setNewPage('Главная');
+    state.setNewPage(PagesList.mainPage);
   }
 }

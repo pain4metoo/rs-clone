@@ -1,10 +1,12 @@
 import './task-page.scss';
 import Control from '../../../common/control';
+import { state } from '../../../common/state';
 
 export class TaskPage extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'task');
+    super(parentNode, 'div', 'container py-5');
 
-    this.node.textContent = 'task-page';
+    const task = state.getTask();
+    console.log(task);
   }
 }
