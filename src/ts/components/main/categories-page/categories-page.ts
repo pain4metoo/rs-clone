@@ -1,7 +1,7 @@
 import { DataController } from '../../../api/data-controller';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
-import { CategoriesType } from '../../../common/state-types';
+import { CategoriesType, LessonData, TaskData, TestData } from '../../../common/state-types';
 import { PagesList } from '../main';
 
 export class CategoriesPage extends Control {
@@ -12,7 +12,7 @@ export class CategoriesPage extends Control {
     this.renderCategoriesList(type, accordion.node);
   }
 
-  private renderCategoriesList(type: keyof CategoriesType, parent: HTMLElement) {
+  private renderCategoriesList(type: keyof CategoriesType, parent: HTMLElement): void {
     state.getCategories(type).forEach((category, index) => {
       const accordionItem = new Control(parent, 'div', 'accordion-item');
       const accordionHeader = new Control(accordionItem.node, 'h2', 'accordion-header');
@@ -36,26 +36,27 @@ export class CategoriesPage extends Control {
       category.items.forEach((item) => {
         const categoryItem: Control<HTMLLinkElement> = new Control(accordionBody.node, 'a', '', item.name);
         categoryItem.node.href = '#';
-        categoryItem.node.onclick = () => this.switchPage(type, item.id);
+        categoryItem.node.onclick = (): Promise<void> => this.switchPage(type, item.id);
       });
     });
   }
 
   private async switchPage(type: keyof CategoriesType, id: number): Promise<void> {
+    let data: LessonData | TestData | TaskData;
     switch (type) {
       case 'lessons':
-        const lesson = await DataController.getLesson(id);
-        state.setLesson(lesson);
+        data = await DataController.getLesson(id);
+        state.setLesson(data);
         state.setNewPage(PagesList.lessonPage);
         break;
-      case 'tests':        
-        const test = await DataController.getTest(id);
-        state.setTest(test);
+      case 'tests':
+        data = await DataController.getTest(id);
+        state.setTest(data);
         state.setNewPage(PagesList.testPage);
         break;
       case 'tasks':
-        const task = await DataController.getTask(id);
-        state.setTask(task);
+        data = await DataController.getTask(id);
+        state.setTask(data);
         state.setNewPage(PagesList.taskPage);
         break;
       default:

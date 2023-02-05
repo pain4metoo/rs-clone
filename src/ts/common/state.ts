@@ -127,7 +127,7 @@ const initialState = {
     id: 0,
     name: '',
     list: [],
-  }
+  },
 };
 
 export const state: State = new State(initialState);

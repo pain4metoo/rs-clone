@@ -1,4 +1,4 @@
-import { PagesList } from "../components/main/main";
+import { PagesList } from '../components/main/main';
 
 export interface CurrentPage {
   name: PagesList;
@@ -36,7 +36,7 @@ export interface LessonContent {
 export interface LessonData {
   id: number;
   name: string;
-  content: Array<LessonContent>
+  content: Array<LessonContent>;
 }
 
 export interface TestAnswer {
@@ -54,7 +54,7 @@ export interface TestQuestion {
 export interface TestData {
   id: number;
   name: string;
-  questions: Array<TestQuestion>
+  questions: Array<TestQuestion>;
 }
 
 export interface TaskList {
@@ -65,7 +65,7 @@ export interface TaskList {
 export interface TaskData {
   id: number;
   name: string;
-  list: Array<TaskList>
+  list: Array<TaskList>;
 }
 
 export interface StateData {
