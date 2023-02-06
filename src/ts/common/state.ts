@@ -45,7 +45,7 @@ export class State {
     this.onUpdate.emit(StateOptions.changePage);
   }
 
-  public setCategories(categories: Array<CategoryData>) {
+  public setCategories(categories: Array<CategoryData>): void {
     categories.forEach((category) => {
       const lessons: Array<ArticleMetaData> = [];
       category.lessons.forEach((el) => {

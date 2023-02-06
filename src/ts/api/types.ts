@@ -7,6 +7,6 @@ export interface CategoryData {
   id: 'number';
   name: 'string';
   lessons: Array<CategoryItemsData>;
-  tests: Array<CategoryItemsData>,
-  tasks: Array<CategoryItemsData>
+  tests: Array<CategoryItemsData>;
+  tasks: Array<CategoryItemsData>;
 }

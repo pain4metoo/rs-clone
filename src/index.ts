@@ -8,6 +8,6 @@ const init = async () => {
   const categories = await DataController.getCategories();
   state.setCategories(categories);
   new App(document.body);
-}
+};
 
 init();
