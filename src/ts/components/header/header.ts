@@ -4,8 +4,13 @@ import logoSVG from '../../../assets/svg/logo.svg';
 import { NavBar } from './nav-menu/nav-menu';
 import { HeaderUnauth } from './header-unauth/header-unauth';
 import { state } from '../../common/state';
+import { PagesList } from '../main/main';
+import { HeaderAuth } from './header-auth/header-auth';
+import { StateOptions } from '../../common/state-types';
 
 export class Header extends Control {
+  headerAuth!: Control<HTMLElement>;
+  headerUnauth!: Control<HTMLElement>;
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'header', 'header container');
 
@@ -32,10 +37,31 @@ export class Header extends Control {
     const collapse = new Control(container.node, 'div', 'collapse navbar-collapse justify-content-between');
     collapse.node.id = 'navbarNav';
     const navBar: NavBar = new NavBar(collapse.node);
-    const headerUnauth: HeaderUnauth = new HeaderUnauth(collapse.node);
+
+    this.createAuthUnauthHeader(collapse);
+
+    state.onUpdate.add((type: StateOptions) => {
+      if (type === StateOptions.changePage) {
+        this.createAuthUnauthHeader(collapse);
+      }
+    });
+  }
+
+  private createAuthUnauthHeader(parentNode: Control<HTMLElement>): void {
+    if (this.headerAuth) {
+      this.headerAuth.destroy();
+    }
+    if (this.headerUnauth) {
+      this.headerUnauth.destroy();
+    }
+    if (state.getAuthUser()) {
+      this.headerAuth = new HeaderAuth(parentNode.node);
+    } else {
+      this.headerUnauth = new HeaderUnauth(parentNode.node);
+    }
   }
 
   private onMainPage(): void {
-    state.setNewPage('Главная');
+    state.setNewPage(PagesList.mainPage);
   }
 }

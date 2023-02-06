@@ -6,5 +6,5 @@ export enum path {
   lessons = '/lessons',
   tests = '/tests',
   tasks = '/tasks',
-  comments = '/comments'
+  comments = '/comments',
 }
