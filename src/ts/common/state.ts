@@ -22,6 +22,9 @@ class State {
   }
 
   public setNewPage(page: PagesList, id?: number): void {
+    if (page === PagesList.logout) {
+      this._data.user.isAuth = false;
+    }
     this._data.currentPage = { name: page, id };
     this.onUpdate.emit(StateOptions.changePage);
   }
