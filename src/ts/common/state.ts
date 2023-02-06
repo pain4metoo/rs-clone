@@ -26,6 +26,12 @@ class State {
     this.onUpdate.emit(StateOptions.changePage);
   }
 
+  public authUser(): void {
+    this._data.currentPage = { name: PagesList.mainPage };
+    this._data.user.isAuth = true;
+    this.onUpdate.emit(StateOptions.changePage);
+  }
+
   public setCategories(categories: Array<CategoryData>): void {
     categories.forEach((category) => {
       const lessons: Array<ArticleMetaData> = [];
@@ -99,9 +105,16 @@ class State {
   public getTask(): TaskData {
     return this._data.task;
   }
+
+  public getAuthUser(): boolean {
+    return this._data.user.isAuth;
+  }
 }
 
 const initialState = {
+  user: {
+    isAuth: false,
+  },
   currentPage: { name: PagesList.mainPage },
   header: {
     mainPages: [PagesList.mainPage, PagesList.lessonsPage, PagesList.testsPage, PagesList.tasksPage],
