@@ -10,11 +10,3 @@ export interface CategoryData {
   tests: Array<CategoryItemsData>;
   tasks: Array<CategoryItemsData>;
 }
-
-export interface LessonsData {
-  id: 'number';
-  name: 'string';
-  lessons: Array<CategoryItemsData>;
-  tests: Array<CategoryItemsData>;
-  tasks: Array<CategoryItemsData>;
-}

@@ -9,12 +9,4 @@ export class DataController {
     const categories: Array<CategoryData> = await response.json();
     return categories;
   }
-  
-  public static async getLessons(): Promise<Array<CategoryData>> {
-    const response: Response = await fetch(
-      `${baseUrl}${path.lessons}`
-    );
-    const lessons: Array<CategoryData> = await response.json();
-    return lessons;
-  }
 }
