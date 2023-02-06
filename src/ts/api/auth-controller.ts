@@ -43,11 +43,14 @@ export class AuthController {
         },
       });
 
+      if (!response.ok) {
+        throw new Error(`${response.status}`);
+      }
+
       const json: UserData = await response.json();
 
       return json;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }
