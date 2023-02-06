@@ -1,5 +1,6 @@
 import { AuthController } from '../../../api/auth-controller';
 import Control from '../../../common/control';
+import { state } from '../../../common/state';
 import './unauth-page.scss';
 
 export class UnauthPage extends Control {
@@ -42,11 +43,7 @@ export class UnauthPage extends Control {
   }
 
   private async createNewUser(email: string, password: string, name: string): Promise<void> {
-    let isAuth = await AuthController.isAuthUser(email, password);
-
-    if (!isAuth) {
-      let newUser = await AuthController.createNewUser(email, password, name);
-      console.log(newUser);
-    }
+    await AuthController.createNewUser(email, password, name);
+    state.authUser();
   }
 }
