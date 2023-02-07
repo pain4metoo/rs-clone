@@ -36,8 +36,6 @@ export class AuthPage extends Control {
 
     if (isAuth) {
       state.authUser();
-    } else {
-      console.log(`Неверный логин или пароль`);
     }
   }
 }
