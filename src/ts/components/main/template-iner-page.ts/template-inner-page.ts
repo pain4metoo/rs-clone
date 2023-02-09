@@ -3,6 +3,7 @@ import { DataController } from '../../../api/data-controller';
 import { state } from '../../../common/state';
 
 import './template-inner-page.scss';
+import { PagesList } from '../main';
 
 export class TemplateInnerPage extends Control {
   constructor(parentNode: HTMLElement) {
@@ -13,10 +14,46 @@ export class TemplateInnerPage extends Control {
       '--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="8" height="8"%3E%3Cpath d="M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z" fill="%236c757d" /%3E%3C/svg%3E&#34;);'
     );
     const breadcrumbsList = new Control(breadcrumbs.node, 'ol', 'breadcrumb');
-    const breadcrumbItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item');
+    const breadcrumbsItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item');
     const currentUserPlace = state.getCurrentUserPlace();
-    const currentUserPlaceName = currentUserPlace[0];
-    const currentUserPlaceId = currentUserPlace[1];
+    const category = currentUserPlace.category;
+    const name = currentUserPlace.name;
+    const breadcrumbsItemsNames = ['Главная', `${category}`, `${name}`];
+    breadcrumbsItemsNames.forEach((e) => {
+      const breadcrumbsItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item');
+      breadcrumbsItem.node.textContent = e;
+      const breadcrumbsItemLink = new Control(breadcrumbsItem.node, 'a');
+      breadcrumbsItemLink.node.setAttribute('href', '#');
+      breadcrumbsItemLink.node.onclick = (): void => this.switchPage(page);
+
+    } )
+
+    
+    }
+    
+    }
+
+    private async switchPage(type: keyof CategoriesType, id: number): Promise<void> {
+      let data: LessonData | TestData | TaskData;
+      switch (type) {
+        case 'lessons':
+          data = await DataController.getLesson(id);
+          state.setLesson(data);
+          state.setNewPage(PagesList.lessonPage);
+          break;
+        case 'tests':
+          data = await DataController.getTest(id);
+          state.setTest(data);
+          state.setNewPage(PagesList.testPage);
+          break;
+        case 'tasks':
+          data = await DataController.getTask(id);
+          state.setTask(data);
+          state.setNewPage(PagesList.taskPage);
+          break;
+        default:
+          break;
+      }
     }
     
        
