@@ -1,9 +1,7 @@
 import Control from '../../../common/control';
-import { DataController } from '../../../api/data-controller';
 import { state } from '../../../common/state';
 
 import './template-inner-page.scss';
-import { PagesList } from '../main';
 
 export class TemplateInnerPage extends Control {
   constructor(parentNode: HTMLElement) {
@@ -14,9 +12,11 @@ export class TemplateInnerPage extends Control {
       '--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="8" height="8"%3E%3Cpath d="M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z" fill="%236c757d" /%3E%3C/svg%3E&#34;);'
     );
     const breadcrumbsList = new Control(breadcrumbs.node, 'ol', 'breadcrumb');
-    const breadcrumbsItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item');
-    const currentUserPlace = state.getCurrentUserPlace();
-    const category = currentUserPlace.category;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const breadcrumbItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const currentUserPlace = state.getUser().place;
+    /*const category = currentUserPlace.category;
     const name = currentUserPlace.name;
     const breadcrumbsItemsNames = ['Главная', `${category}`, `${name}`];
     breadcrumbsItemsNames.forEach((e) => {
@@ -26,39 +26,11 @@ export class TemplateInnerPage extends Control {
       breadcrumbsItemLink.node.setAttribute('href', '#');
       breadcrumbsItemLink.node.onclick = (): void => this.switchPage(page);
 
-    } )
+    } )*/
+  }
+}
 
-    
-    }
-    
-    }
-
-    private async switchPage(type: keyof CategoriesType, id: number): Promise<void> {
-      let data: LessonData | TestData | TaskData;
-      switch (type) {
-        case 'lessons':
-          data = await DataController.getLesson(id);
-          state.setLesson(data);
-          state.setNewPage(PagesList.lessonPage);
-          break;
-        case 'tests':
-          data = await DataController.getTest(id);
-          state.setTest(data);
-          state.setNewPage(PagesList.testPage);
-          break;
-        case 'tasks':
-          data = await DataController.getTask(id);
-          state.setTask(data);
-          state.setNewPage(PagesList.taskPage);
-          break;
-        default:
-          break;
-      }
-    }
-    
-       
-    
-   /* state.getCategories('lessons').forEach((category, index) => {
+/* state.getCategories('lessons').forEach((category, index) => {
       const accordionItem = new Control(accordion.node, 'div', 'accordion-item');
       const accordionHeader = new Control(accordionItem.node, 'h2', 'accordion-header');
       accordionHeader.node.id = `heading-${index}`;
@@ -68,8 +40,8 @@ export class TemplateInnerPage extends Control {
         'accordion-button fs-2',
         category.name
       );*/
-      
-      /*Главная
+
+/*Главная
 
       accordionButton.node.type = 'button';
       accordionButton.node.setAttribute('data-bs-toggle', 'collapse');
@@ -85,4 +57,3 @@ export class TemplateInnerPage extends Control {
         new Control(accordionBody.node, 'p', '', item.name);
       });
     });*/
-  }

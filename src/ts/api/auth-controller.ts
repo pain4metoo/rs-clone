@@ -1,8 +1,13 @@
-import { NewUser, places, UserData } from '../api/types';
+import { Places, UserData } from '../api/types';
 import { baseUrl, path } from './routes';
 
+export interface AuthResponse {
+  status: boolean;
+  user: UserData;
+}
+
 export class AuthController {
-  public static async isAuthUser(login: string, password: string): Promise<UserData | void> {
+  public static async isAuthUser(login: string, password: string): Promise<void | AuthResponse> {
     try {
       const body: Partial<UserData> = {
         email: login,
@@ -20,23 +25,22 @@ export class AuthController {
       if (!response.ok) {
         throw new Error(`${response.status}`);
       }
+      const data = await response.json();
 
-      const json: UserData = await response.json();
-
-      return json;
+      return { status: response.ok, user: data.user };
     } catch (err) {
       console.log(err);
     }
   }
 
-  public static async createNewUser(login: string, password: string, name: string): Promise<UserData> {
+  public static async createNewUser(login: string, password: string, name: string): Promise<UserData | void> {
     // eslint-disable-next-line no-useless-catch
     try {
-      const user: UserData = {
+      const user: Partial<UserData> = {
         email: login,
         password: password,
         name: name,
-        place: places.lesson, //default value for a new user
+        place: Places.lesson, //default value for a new user
       };
 
       const response: Response = await fetch(`${baseUrl}${path.register}`, {
@@ -55,7 +59,7 @@ export class AuthController {
 
       return json;
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   }
 }

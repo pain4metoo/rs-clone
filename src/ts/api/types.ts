@@ -11,7 +11,7 @@ export interface CategoryData {
   tasks: Array<CategoryItemsData>;
 }
 
-export enum places {
+export enum Places {
   lesson = 'lesson',
   test = 'test',
   task = 'task',
@@ -20,19 +20,13 @@ export enum places {
 export interface UserData {
   email: string;
   password: string;
-  name?: string;
-  done?: UserDataDone;
-  place: places;
+  name: string;
+  done: UserDataDone;
+  place: Places;
 }
 
 export interface UserDataDone {
-  lessons: Array<{ id?: string; result?: string }>;
-  tests: Array<{ id?: string; result?: string }>;
-  tasks: Array<{ id?: string; result?: string }>;
-}
-
-export interface NewUser {
-  email: string;
-  password: string;
-  [key: string]: any;
+  lessons: Array<{ id: number }>;
+  tests: Array<{ id: number; result: number }>;
+  tasks: Array<{ id: number }>;
 }
