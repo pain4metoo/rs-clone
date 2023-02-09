@@ -18,10 +18,9 @@ export enum places {
 }
 
 export interface UserData {
-  id: string;
   email: string;
   password: string;
-  name: string;
+  name?: string;
   done?: UserDataDone;
   place: [places, string];
 }

@@ -22,14 +22,16 @@ class State {
   }
 
   public setNewPage(page: PagesList, id?: number): void {
+    if (page === PagesList.logout) {
+      this._data.isAuth = false;
+    }
     this._data.currentPage = { name: page, id };
     this.onUpdate.emit(StateOptions.changePage);
   }
 
   public authUser(user: UserData): void {
     this._data.currentPage = { name: PagesList.mainPage };
-    this._data.user.place = user.place;
-    this._data.user.isAuth = true;
+    this._data.isAuth = true;
     this.onUpdate.emit(StateOptions.changePage);
   }
 
@@ -108,19 +110,18 @@ class State {
   }
 
   public getAuthUser(): boolean {
-    return this._data.user.isAuth;
+    return this._data.isAuth;
   }
 
   public getCurrentUserPlace(): Array<string> {
     return this._data.user.place;
   }
+  
 }
 
 const initialState = {
-  user: {
-    isAuth: false,
-    place: ['lessons', '1'],
-  },
+  isAuth: false,
+  user: {},
   currentPage: { name: PagesList.mainPage },
   header: {
     mainPages: [PagesList.mainPage, PagesList.lessonsPage, PagesList.testsPage, PagesList.tasksPage],
