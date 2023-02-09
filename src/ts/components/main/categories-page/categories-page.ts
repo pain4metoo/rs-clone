@@ -1,7 +1,7 @@
 import { DataController } from '../../../api/data-controller';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
-import { CategoriesType, LessonData, TaskData, TestData } from '../../../common/state-types';
+import { ArticleMetaData, CategoriesType, LessonData, TaskData, TestData } from '../../../common/state-types';
 import { PagesList } from '../main';
 
 export class CategoriesPage extends Control {
@@ -13,6 +13,7 @@ export class CategoriesPage extends Control {
   }
 
   private renderCategoriesList(type: keyof CategoriesType, parent: HTMLElement): void {
+    const isAuth = state.getAuthUser();
     state.getCategories(type).forEach((category, index) => {
       const accordionItem = new Control(parent, 'div', 'accordion-item');
       const accordionHeader = new Control(accordionItem.node, 'h2', 'accordion-header');
@@ -28,6 +29,23 @@ export class CategoriesPage extends Control {
       accordionButton.node.setAttribute('data-bs-target', `#collapse-${index}`);
       accordionButton.node.setAttribute('aria-expanded', 'true');
       accordionButton.node.setAttribute('aria-controls', `collapse-${index}`);
+
+      if (isAuth) {
+        const progressValue = this.getProgressValue(category.items, type);
+        const progress = new Control(accordionHeader.node, 'div', 'progress');
+        const progressBar = new Control(
+          progress.node,
+          'div',
+          'progress-bar progress-bar-striped progress-bar-animated',
+          `${progressValue}%`
+        );
+        progressBar.node.setAttribute('role', 'progressbar');
+        progressBar.node.setAttribute('style', `width: ${progressValue}%`);
+        progressBar.node.setAttribute('aria-valuenow', `${progressValue}`);
+        progressBar.node.setAttribute('aria-valuemin', '0');
+        progressBar.node.setAttribute('aria-valuemax', '100');
+      }
+
       const accordionCollapse = new Control(accordionItem.node, 'div', 'accordion-collapse collapse');
       accordionCollapse.node.id = `collapse-${index}`;
       accordionCollapse.node.setAttribute('aria-labelledby', `heading-${index}`);
@@ -62,5 +80,19 @@ export class CategoriesPage extends Control {
       default:
         break;
     }
+  }
+
+  private getProgressValue(items: Array<ArticleMetaData>, type: keyof CategoriesType,): number {
+    const allItemsCount = items.length;
+    const doneItems = state.getUser().done[type];
+    let doneItemsCount = 0;
+    items.forEach((item) => {
+      doneItems.forEach((doneItem) => {
+        if (item.id === doneItem.id) {
+          doneItemsCount +=1;
+        }
+      })
+    });
+    return doneItemsCount ? Math.round((doneItemsCount / allItemsCount) * 100) : 0;
   }
 }

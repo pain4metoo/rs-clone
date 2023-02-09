@@ -12,6 +12,7 @@ import {
   StateOptions,
   TaskData,
   TestData,
+  UserData,
 } from './state-types';
 
 class State {
@@ -40,7 +41,7 @@ class State {
       const lessons: Array<ArticleMetaData> = [];
       category.lessons.forEach((el) => {
         lessons.push({
-          id: el.id,
+          id: +el.id,
           name: el.name,
         });
       });
@@ -51,7 +52,7 @@ class State {
       const tests: Array<ArticleMetaData> = [];
       category.tests.forEach((el) => {
         tests.push({
-          id: el.id,
+          id: +el.id,
           name: el.name,
         });
       });
@@ -62,7 +63,7 @@ class State {
       const tasks: Array<ArticleMetaData> = [];
       category.tasks.forEach((el) => {
         tasks.push({
-          id: el.id,
+          id: +el.id,
           name: el.name,
         });
       });
@@ -112,11 +113,23 @@ class State {
   public getAuthUser(): boolean {
     return this._data.isAuth;
   }
+
+  public getUser(): UserData {
+    return this._data.user;
+  }
 }
 
 const initialState = {
-  isAuth: false,
-  user: {},
+  isAuth: true,
+  user: {
+    id: 1,
+    name: 'Опознанный Енот',
+    done: {
+      lessons: [{id: 1}],
+      tests: [{id: 1, result: 90}],
+      tasks: [],
+    }
+  },
   currentPage: { name: PagesList.mainPage },
   header: {
     mainPages: [PagesList.mainPage, PagesList.lessonsPage, PagesList.testsPage, PagesList.tasksPage],

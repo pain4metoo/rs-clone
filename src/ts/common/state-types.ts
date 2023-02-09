@@ -1,5 +1,17 @@
 import { PagesList } from '../components/main/main';
 
+export interface DoneData {
+  lessons: Array<{ id: number }>;
+  tests: Array<{ id: number, result: number }>;
+  tasks: Array<{ id: number }>;
+}
+
+export interface UserData {
+  id: number;
+  name: string;
+  done: DoneData;
+}
+
 export interface CurrentPage {
   name: PagesList;
   id?: number;
@@ -70,7 +82,7 @@ export interface TaskData {
 
 export interface StateData {
   isAuth: boolean;
-  user: {};
+  user: UserData;
   currentPage: CurrentPage;
   header: HeaderPages;
   categories: CategoriesType;
