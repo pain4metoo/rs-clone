@@ -8,7 +8,11 @@ export class HeaderUnauth extends Control {
     const listArr: Array<PagesList> = state.getHeaderPages().unAuthPages;
     listArr.forEach((page: PagesList) => {
       const listItem = new Control(this.node, 'li', 'list text-center');
-      const linkItem: Control<HTMLLinkElement> = new Control(listItem.node, 'a', 'list-group-item list-group-item-action');
+      const linkItem: Control<HTMLLinkElement> = new Control(
+        listItem.node,
+        'a',
+        'list-group-item list-group-item-action'
+      );
       linkItem.node.onclick = (): void => this.changeMainPages(page);
       linkItem.node.href = '#';
       linkItem.node.textContent = page;

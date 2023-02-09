@@ -9,8 +9,8 @@ import { HeaderAuth } from './header-auth/header-auth';
 import { StateOptions } from '../../common/state-types';
 
 export class Header extends Control {
-  headerAuth!: Control<HTMLElement>;
-  headerUnauth!: Control<HTMLElement>;
+  private headerAuth!: Control<HTMLElement>;
+  private headerUnauth!: Control<HTMLElement>;
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'header', 'header container');
 

@@ -14,14 +14,12 @@ export class TemplateInnerPage extends Control {
     );
     const breadcrumbsList = new Control(breadcrumbs.node, 'ol', 'breadcrumb');
     const breadcrumbItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item');
-    const currentUserPlace = state.getCurrentUserPlace();
+    const currentUserPlace = state.getUser().place;
     const currentUserPlaceName = currentUserPlace[0];
     const currentUserPlaceId = currentUserPlace[1];
-    }
-    
-       
-    
-   /* state.getCategories('lessons').forEach((category, index) => {
+  }
+
+  /* state.getCategories('lessons').forEach((category, index) => {
       const accordionItem = new Control(accordion.node, 'div', 'accordion-item');
       const accordionHeader = new Control(accordionItem.node, 'h2', 'accordion-header');
       accordionHeader.node.id = `heading-${index}`;
@@ -31,8 +29,8 @@ export class TemplateInnerPage extends Control {
         'accordion-button fs-2',
         category.name
       );*/
-      
-      /*Главная
+
+  /*Главная
 
       accordionButton.node.type = 'button';
       accordionButton.node.setAttribute('data-bs-toggle', 'collapse');
@@ -48,4 +46,4 @@ export class TemplateInnerPage extends Control {
         new Control(accordionBody.node, 'p', '', item.name);
       });
     });*/
-  }
+}

@@ -1,4 +1,4 @@
-import { CategoryData, places, UserData } from '../api/types';
+import { CategoryData, Places, UserData } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
 import {
@@ -29,10 +29,13 @@ class State {
     this.onUpdate.emit(StateOptions.changePage);
   }
 
-  public authUser(user: UserData): void {
+  public authUser(): void {
     this._data.currentPage = { name: PagesList.mainPage };
     this._data.isAuth = true;
-    this._data.user.place = user.place;
+  }
+
+  public setUserData(userData: UserData): void {
+    this._data.user = userData;
     this.onUpdate.emit(StateOptions.changePage);
   }
 
@@ -41,7 +44,7 @@ class State {
       const lessons: Array<ArticleMetaData> = [];
       category.lessons.forEach((el) => {
         lessons.push({
-          id: el.id,
+          id: +el.id,
           name: el.name,
         });
       });
@@ -52,7 +55,7 @@ class State {
       const tests: Array<ArticleMetaData> = [];
       category.tests.forEach((el) => {
         tests.push({
-          id: el.id,
+          id: +el.id,
           name: el.name,
         });
       });
@@ -63,7 +66,7 @@ class State {
       const tasks: Array<ArticleMetaData> = [];
       category.tasks.forEach((el) => {
         tasks.push({
-          id: el.id,
+          id: +el.id,
           name: el.name,
         });
       });
@@ -114,15 +117,24 @@ class State {
     return this._data.isAuth;
   }
 
-  public getCurrentUserPlace(): LessonData | TestData | TaskData {
-    return this._data[`${this._data.user.place}`];
+  public getUser(): UserData {
+    return this._data.user;
   }
 }
 
 const initialState = {
   isAuth: false,
   user: {
-    place: places.lesson,
+    id: 0,
+    email: '',
+    password: '',
+    name: '',
+    done: {
+      lessons: [],
+      tests: [],
+      tasks: [],
+    },
+    place: Places.lesson,
   },
   currentPage: { name: PagesList.mainPage },
   header: {
