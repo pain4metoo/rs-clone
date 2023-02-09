@@ -4,7 +4,7 @@ export interface CategoryItemsData {
 }
 
 export interface CategoryData {
-  id: 'number';
+  id: number;
   name: 'string';
   lessons: Array<CategoryItemsData>;
   tests: Array<CategoryItemsData>;
@@ -12,32 +12,20 @@ export interface CategoryData {
 }
 
 export enum Places {
-  lessons = 'lessons',
-  tests = 'tests',
-  tasks = 'tasks',
+  lesson = 'lesson',
+  test = 'test',
+  task = 'task',
 }
 
-export interface UserDataBase {
-  email: string;
-  password: string;
-}
-
-export interface UserDataCreate extends UserDataBase {
+export interface UserData {
   email: string;
   password: string;
   name: string;
-}
-
-export interface UserDataExtended extends UserDataBase {
-  id: number;
-  email: string;
-  password: string;
-  name: string;
-  done: UserDataExtendedDone;
+  done: UserDataDone;
   place: Places;
 }
 
-export interface UserDataExtendedDone {
+export interface UserDataDone {
   lessons: Array<{ id: number; }>;
   tests: Array<{ id: number; result: number }>;
   tasks: Array<{ id: number; }>;

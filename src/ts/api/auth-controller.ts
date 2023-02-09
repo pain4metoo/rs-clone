@@ -1,15 +1,15 @@
-import { NewUser, UserDataBase, UserDataCreate, UserDataExtended } from '../api/types';
+import { NewUser, Places, UserData } from '../api/types';
 import { baseUrl, path } from './routes';
 
 export interface AuthResponse {
   status: boolean;
-  user: UserDataExtended;
+  user: UserData;
 }
 
 export class AuthController {
   public static async isAuthUser(login: string, password: string): Promise<void | AuthResponse> {
     try {
-      const body: UserDataBase = {
+      const body: Partial<UserData> = {
         email: login,
         password: password,
       };
@@ -33,12 +33,14 @@ export class AuthController {
     }
   }
 
-  public static async createNewUser(login: string, password: string, name: string): Promise<UserDataExtended> {
+  public static async createNewUser(login: string, password: string, name: string): Promise<UserData> {
+    // eslint-disable-next-line no-useless-catch
     try {
-      const user: UserDataCreate = {
+      const user: Partial<UserData> = {
         email: login,
         password: password,
         name: name,
+        place: Places.lesson, //default value for a new user
       };
 
       const response: Response = await fetch(`${baseUrl}${path.register}`, {
@@ -53,7 +55,7 @@ export class AuthController {
         throw new Error(`${response.status}`);
       }
 
-      const json: UserDataExtended = await response.json();
+      const json: UserData = await response.json();
 
       return json;
     } catch (error) {

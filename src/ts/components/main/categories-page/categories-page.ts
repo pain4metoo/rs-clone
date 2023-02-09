@@ -1,7 +1,7 @@
 import { DataController } from '../../../api/data-controller';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
-import { ArticleMetaData, CategoriesType, LessonData, TaskData, TestData } from '../../../common/state-types';
+import { ArticleMetaData, CategoriesType, CategoryContent, LessonData, TaskData, TestData } from '../../../common/state-types';
 import { PagesList } from '../main';
 
 export class CategoriesPage extends Control {
@@ -84,7 +84,7 @@ export class CategoriesPage extends Control {
 
   private getProgressValue(items: Array<ArticleMetaData>, type: keyof CategoriesType,): number {
     const allItemsCount = items.length;
-    const doneItems = state.getUser().done[type];
+    const doneItems = state.getUser().done[type] as Array<ArticleMetaData>;
     let doneItemsCount = 0;
     items.forEach((item) => {
       doneItems.forEach((doneItem) => {

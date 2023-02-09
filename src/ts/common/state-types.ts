@@ -1,4 +1,5 @@
-import { UserDataExtended } from '../api/types';
+import { UserData } from '../api/types';
+import { Places } from '../api/types';
 import { PagesList } from '../components/main/main';
 
 export interface CurrentPage {
@@ -35,6 +36,7 @@ export interface LessonContent {
 }
 
 export interface LessonData {
+  category: string;
   id: number;
   name: string;
   content: Array<LessonContent>;
@@ -53,6 +55,7 @@ export interface TestQuestion {
 }
 
 export interface TestData {
+  category: string;
   id: number;
   name: string;
   questions: Array<TestQuestion>;
@@ -64,6 +67,7 @@ export interface TaskList {
 }
 
 export interface TaskData {
+  category: string;
   id: number;
   name: string;
   list: Array<TaskList>;
@@ -71,7 +75,7 @@ export interface TaskData {
 
 export interface StateData {
   isAuth: boolean;
-  user: UserDataExtended;
+  user: UserData;
   currentPage: CurrentPage;
   header: HeaderPages;
   categories: CategoriesType;
