@@ -1,4 +1,4 @@
-import { CategoryData } from '../api/types';
+import { CategoryData, Places, UserDataExtended } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
 import {
@@ -12,7 +12,6 @@ import {
   StateOptions,
   TaskData,
   TestData,
-  UserData,
 } from './state-types';
 
 class State {
@@ -33,6 +32,10 @@ class State {
   public authUser(): void {
     this._data.currentPage = { name: PagesList.mainPage };
     this._data.isAuth = true;
+  }
+
+  public setUserData(userData: UserDataExtended): void {
+    this._data.user = userData;
     this.onUpdate.emit(StateOptions.changePage);
   }
 
@@ -114,21 +117,24 @@ class State {
     return this._data.isAuth;
   }
 
-  public getUser(): UserData {
+  public getUser(): UserDataExtended {
     return this._data.user;
   }
 }
 
 const initialState = {
-  isAuth: true,
+  isAuth: false,
   user: {
-    id: 1,
-    name: 'Опознанный Енот',
+    id: 0,
+    email: '',
+    password: '',
+    name: '',
     done: {
-      lessons: [{id: 1}],
-      tests: [{id: 1, result: 90}],
+      lessons: [],
+      tests: [],
       tasks: [],
-    }
+    },
+    place: Places.lessons,
   },
   currentPage: { name: PagesList.mainPage },
   header: {

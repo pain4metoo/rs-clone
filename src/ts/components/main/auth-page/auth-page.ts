@@ -36,6 +36,7 @@ export class AuthPage extends Control {
 
     if (isAuth) {
       state.authUser();
+      state.setUserData(isAuth.user);
     }
   }
 }

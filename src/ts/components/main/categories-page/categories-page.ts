@@ -88,11 +88,11 @@ export class CategoriesPage extends Control {
     let doneItemsCount = 0;
     items.forEach((item) => {
       doneItems.forEach((doneItem) => {
-        if (item.id === doneItem.id) {
+        if (item.id === +doneItem.id) {
           doneItemsCount +=1;
         }
       })
     });
-    return doneItemsCount ? Math.round((doneItemsCount / allItemsCount) * 100) : 0;
+    return doneItemsCount ? Math.round((doneItemsCount / allItemsCount) * 100) : 0; 
   }
 }
