@@ -4,11 +4,17 @@ export interface CategoryItemsData {
 }
 
 export interface CategoryData {
-  id: 'number';
+  id: number;
   name: 'string';
   lessons: Array<CategoryItemsData>;
   tests: Array<CategoryItemsData>;
   tasks: Array<CategoryItemsData>;
+}
+
+export enum places {
+  lesson = 'lesson',
+  test = 'test',
+  task = 'task',
 }
 
 export interface UserData {
@@ -16,6 +22,7 @@ export interface UserData {
   password: string;
   name?: string;
   done?: UserDataDone;
+  place: places;
 }
 
 export interface UserDataDone {

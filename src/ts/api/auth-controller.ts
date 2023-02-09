@@ -1,10 +1,10 @@
-import { NewUser, UserData } from '../api/types';
+import { NewUser, places, UserData } from '../api/types';
 import { baseUrl, path } from './routes';
 
 export class AuthController {
-  public static async isAuthUser(login: string, password: string): Promise<boolean | void> {
+  public static async isAuthUser(login: string, password: string): Promise<UserData | void> {
     try {
-      const body: UserData = {
+      const body: Partial<UserData> = {
         email: login,
         password: password,
       };
@@ -21,18 +21,22 @@ export class AuthController {
         throw new Error(`${response.status}`);
       }
 
-      return response.ok;
+      const json: UserData = await response.json();
+
+      return json;
     } catch (err) {
       console.log(err);
     }
   }
 
   public static async createNewUser(login: string, password: string, name: string): Promise<UserData> {
+    // eslint-disable-next-line no-useless-catch
     try {
       const user: UserData = {
         email: login,
         password: password,
         name: name,
+        place: places.lesson, //default value for a new user
       };
 
       const response: Response = await fetch(`${baseUrl}${path.register}`, {
