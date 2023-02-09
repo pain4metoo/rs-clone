@@ -14,7 +14,7 @@ export class TemplateInnerPage extends Control {
     );
     const breadcrumbsList = new Control(breadcrumbs.node, 'ol', 'breadcrumb');
     const breadcrumbItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item');
-    const currentUserPlace = state.getCurrentUserPlace();
+    const currentUserPlace = state.getUser().place;
     const currentUserPlaceName = currentUserPlace[0];
     const currentUserPlaceId = currentUserPlace[1];
     }

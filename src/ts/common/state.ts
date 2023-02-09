@@ -120,9 +120,6 @@ class State {
   public getUser(): UserData {
     return this._data.user;
   }
-  public getCurrentUserPlace(): LessonData | TestData | TaskData {
-    return this._data[`${this._data.user.place}`];
-  }
 }
 
 const initialState = {
