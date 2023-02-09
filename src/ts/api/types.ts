@@ -12,9 +12,9 @@ export interface CategoryData {
 }
 
 export enum places {
-  lessons = 'lessons',
-  tests = 'tests',
-  tasks = 'tasks',
+  lesson = 'lesson',
+  test = 'test',
+  task = 'task',
 }
 
 export interface UserData {
@@ -22,7 +22,7 @@ export interface UserData {
   password: string;
   name?: string;
   done?: UserDataDone;
-  place: [places, string];
+  place: places;
 }
 
 export interface UserDataDone {

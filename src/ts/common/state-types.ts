@@ -1,3 +1,4 @@
+import { places } from '../api/types';
 import { PagesList } from '../components/main/main';
 
 export interface CurrentPage {
@@ -70,7 +71,9 @@ export interface TaskData {
 
 export interface StateData {
   isAuth: boolean;
-  user: {};
+  user: {
+    place: typeof places;
+  };
   currentPage: CurrentPage;
   header: HeaderPages;
   categories: CategoriesType;

@@ -4,7 +4,7 @@ import { baseUrl, path } from './routes';
 export class AuthController {
   public static async isAuthUser(login: string, password: string): Promise<boolean | void> {
     try {
-      const body: UserData = {
+      const body: Partial<UserData> = {
         email: login,
         password: password,
       };
@@ -28,12 +28,13 @@ export class AuthController {
   }
 
   public static async createNewUser(login: string, password: string, name: string): Promise<UserData> {
+    // eslint-disable-next-line no-useless-catch
     try {
       const user: UserData = {
         email: login,
         password: password,
         name: name,
-        place: []
+        place: places.lesson, //default value for a new user
       };
 
       const response: Response = await fetch(`${baseUrl}${path.register}`, {

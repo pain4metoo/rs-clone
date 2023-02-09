@@ -49,4 +49,3 @@ export class TemplateInnerPage extends Control {
       });
     });*/
   }
-}
