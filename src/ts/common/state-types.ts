@@ -69,7 +69,7 @@ export interface TaskData {
 }
 
 export interface StateData {
-  user: { isAuth: boolean };
+  user: { isAuth: boolean; place: Array<string> };
   currentPage: CurrentPage;
   header: HeaderPages;
   categories: CategoriesType;

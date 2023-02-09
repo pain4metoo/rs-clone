@@ -32,10 +32,10 @@ export class AuthPage extends Control {
   }
 
   private async isAuthUser(login: string, password: string): Promise<void> {
-    let isAuth = await AuthController.isAuthUser(login, password);
+    const isAuth = await AuthController.isAuthUser(login, password);
 
     if (isAuth) {
-      state.authUser();
+      state.authUser(isAuth);
     } else {
       console.log(`Неверный логин или пароль`);
     }

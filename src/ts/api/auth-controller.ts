@@ -1,8 +1,9 @@
-import { NewUser, UserData } from '../api/types';
+import { NewUser, places, UserData } from '../api/types';
 import { baseUrl, path } from './routes';
 
 export class AuthController {
   public static async isAuthUser(login: string, password: string): Promise<UserData | void> {
+    // eslint-disable-next-line no-useless-catch
     try {
       const response: Response = await fetch(`${baseUrl}${path.users}`);
       const users: Array<UserData> = await response.json();
@@ -44,6 +45,7 @@ export class AuthController {
             },
           ],
         },
+        place: [places.lessons, '1'],
       };
 
       const response: Response = await fetch(`${baseUrl}/register`, {

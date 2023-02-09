@@ -1,4 +1,4 @@
-import { CategoryData } from '../api/types';
+import { CategoryData, UserData } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
 import {
@@ -26,8 +26,9 @@ class State {
     this.onUpdate.emit(StateOptions.changePage);
   }
 
-  public authUser(): void {
+  public authUser(user: UserData): void {
     this._data.currentPage = { name: PagesList.mainPage };
+    this._data.user.place = user.place;
     this._data.user.isAuth = true;
     this.onUpdate.emit(StateOptions.changePage);
   }
@@ -109,11 +110,16 @@ class State {
   public getAuthUser(): boolean {
     return this._data.user.isAuth;
   }
+
+  public getCurrentUserPlace(): Array<string> {
+    return this._data.user.place;
+  }
 }
 
 const initialState = {
   user: {
     isAuth: false,
+    place: ['lessons', '1'],
   },
   currentPage: { name: PagesList.mainPage },
   header: {

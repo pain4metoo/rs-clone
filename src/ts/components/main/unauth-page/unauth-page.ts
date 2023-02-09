@@ -42,10 +42,10 @@ export class UnauthPage extends Control {
   }
 
   private async createNewUser(email: string, password: string, name: string): Promise<void> {
-    let isAuth = await AuthController.isAuthUser(email, password);
+    const isAuth = await AuthController.isAuthUser(email, password);
 
     if (!isAuth) {
-      let newUser = await AuthController.createNewUser(email, password, name);
+      const newUser = await AuthController.createNewUser(email, password, name);
       console.log(newUser);
     }
   }
