@@ -26,13 +26,7 @@ export interface UserData {
 }
 
 export interface UserDataDone {
-  lessons: Array<{ id: number; }>;
+  lessons: Array<{ id: number }>;
   tests: Array<{ id: number; result: number }>;
-  tasks: Array<{ id: number; }>;
-}
-
-export interface NewUser {
-  email: string;
-  password: string;
-  [key: string]: any;
+  tasks: Array<{ id: number }>;
 }

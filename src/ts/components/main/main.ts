@@ -103,7 +103,7 @@ export class Main extends Control {
       case PagesList.logout:
         new MainPage(this.mainInner.node);
         break;
-        
+
       default:
         new MainPage(this.mainInner.node);
     }

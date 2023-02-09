@@ -39,12 +39,15 @@ export class UnauthPage extends Control {
       'Зарегистрироваться'
     );
     onRegBtn.node.type = 'button';
-    onRegBtn.node.onclick = () => this.createNewUser(emailInput.node.value, passInput.node.value, nameInput.node.value);
+    onRegBtn.node.onclick = (): Promise<void> =>
+      this.createNewUser(emailInput.node.value, passInput.node.value, nameInput.node.value);
   }
 
   private async createNewUser(email: string, password: string, name: string): Promise<void> {
     const user = await AuthController.createNewUser(email, password, name);
-    state.authUser();
-    state.setUserData(user);
+    if (user) {
+      state.authUser();
+      state.setUserData(user);
+    }
   }
 }

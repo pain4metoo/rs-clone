@@ -1,4 +1,4 @@
-import { NewUser, Places, UserData } from '../api/types';
+import { Places, UserData } from '../api/types';
 import { baseUrl, path } from './routes';
 
 export interface AuthResponse {
@@ -33,7 +33,7 @@ export class AuthController {
     }
   }
 
-  public static async createNewUser(login: string, password: string, name: string): Promise<UserData> {
+  public static async createNewUser(login: string, password: string, name: string): Promise<UserData | void> {
     // eslint-disable-next-line no-useless-catch
     try {
       const user: Partial<UserData> = {
@@ -59,7 +59,7 @@ export class AuthController {
 
       return json;
     } catch (error) {
-      throw error;
+      console.log(error);
     }
   }
 }
