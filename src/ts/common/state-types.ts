@@ -35,6 +35,7 @@ export interface LessonContent {
 }
 
 export interface LessonData {
+  category: string;
   id: number;
   name: string;
   content: Array<LessonContent>;
@@ -53,6 +54,7 @@ export interface TestQuestion {
 }
 
 export interface TestData {
+  category: string;
   id: number;
   name: string;
   questions: Array<TestQuestion>;
@@ -64,6 +66,7 @@ export interface TaskList {
 }
 
 export interface TaskData {
+  category: string;
   id: number;
   name: string;
   list: Array<TaskList>;

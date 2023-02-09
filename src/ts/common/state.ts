@@ -114,8 +114,8 @@ class State {
     return this._data.isAuth;
   }
 
-  public getCurrentUserPlace(): places {
-    return this._data.user.place;
+  public getCurrentUserPlace(): LessonData | TestData | TaskData {
+    return this._data[`${this._data.user.place}`];
   }
 }
 
@@ -136,16 +136,19 @@ const initialState = {
     tasks: [],
   },
   lesson: {
+    category: '',
     id: 0,
     name: '',
     content: [],
   },
   test: {
+    category: '',
     id: 0,
     name: '',
     questions: [],
   },
   task: {
+    category: '',
     id: 0,
     name: '',
     list: [],
