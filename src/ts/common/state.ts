@@ -29,9 +29,10 @@ class State {
     this.onUpdate.emit(StateOptions.changePage);
   }
 
-  public authUser(): void {
+  public authUser(user: UserData): void {
     this._data.currentPage = { name: PagesList.mainPage };
     this._data.isAuth = true;
+    this._data.user.place = user.place;
     this.onUpdate.emit(StateOptions.changePage);
   }
 
@@ -113,7 +114,7 @@ class State {
     return this._data.isAuth;
   }
 
-  public getCurrentUserPlace(): typeof places {
+  public getCurrentUserPlace(): places {
     return this._data.user.place;
   }
 }
@@ -121,7 +122,7 @@ class State {
 const initialState = {
   isAuth: false,
   user: {
-    place: places,
+    place: places.lesson,
   },
   currentPage: { name: PagesList.mainPage },
   header: {

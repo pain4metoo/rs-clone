@@ -35,7 +35,7 @@ export class AuthPage extends Control {
     const isAuth = await AuthController.isAuthUser(login, password);
 
     if (isAuth) {
-      state.authUser();
+      state.authUser(isAuth);
     }
   }
 }

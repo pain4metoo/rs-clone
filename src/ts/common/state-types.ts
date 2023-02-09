@@ -72,7 +72,7 @@ export interface TaskData {
 export interface StateData {
   isAuth: boolean;
   user: {
-    place: typeof places;
+    place: places;
   };
   currentPage: CurrentPage;
   header: HeaderPages;

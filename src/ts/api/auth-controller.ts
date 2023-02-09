@@ -2,7 +2,7 @@ import { NewUser, places, UserData } from '../api/types';
 import { baseUrl, path } from './routes';
 
 export class AuthController {
-  public static async isAuthUser(login: string, password: string): Promise<boolean | void> {
+  public static async isAuthUser(login: string, password: string): Promise<UserData | void> {
     try {
       const body: Partial<UserData> = {
         email: login,
@@ -21,7 +21,9 @@ export class AuthController {
         throw new Error(`${response.status}`);
       }
 
-      return response.ok;
+      const json: UserData = await response.json();
+
+      return json;
     } catch (err) {
       console.log(err);
     }
