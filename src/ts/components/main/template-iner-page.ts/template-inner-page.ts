@@ -16,6 +16,15 @@ export class TemplateInnerPage extends Control {
     const breadcrumbItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const currentUserPlace = state.getUser().place;
+    switch (currentUserPlace) {
+      case 'lesson':
+      //  const id : number = state.getUser().done.lessons.id;
+        this.getCurrentPageContent(state.getUser().done.lessons.id.slice(-1)[0]);
+        break;
+      case 'task':
+        const id = state.getUser().done;
+        break;
+    }
     /*const category = currentUserPlace.category;
     const name = currentUserPlace.name;
     const breadcrumbsItemsNames = ['Главная', `${category}`, `${name}`];
@@ -28,6 +37,11 @@ export class TemplateInnerPage extends Control {
 
     } )*/
   }
+
+  private getCurrentPageContent(id: number) {
+    
+  }
+
 }
 
 /* state.getCategories('lessons').forEach((category, index) => {

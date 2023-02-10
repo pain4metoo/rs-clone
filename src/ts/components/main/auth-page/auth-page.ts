@@ -1,6 +1,10 @@
 import { AuthController } from '../../../api/auth-controller';
+import { DataController } from '../../../api/data-controller';
+import { UserData } from '../../../api/types';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
+import { LessonData, TaskData, TestData } from '../../../common/state-types';
+import { PagesList } from '../main';
 import './auth-page.scss';
 
 export class AuthPage extends Control {
@@ -37,6 +41,30 @@ export class AuthPage extends Control {
     if (isAuth) {
       state.authUser();
       state.setUserData(isAuth.user);
+      this.switchPage(isAuth.user);
+    }
+  }
+
+  private async switchPage(user: UserData): Promise<void> {
+    const page = user.place;
+    const currentPageId = user.done[`${page}s`].slice(-1)[0].id;
+    let data: LessonData | TestData | TaskData;
+    switch (page) {
+      case 'lesson':
+        data = await DataController.getLesson(currentPageId);
+        state.setLesson(data);
+        state.setNewPage(PagesList.lessonPage);
+        break;
+      case 'test':
+        data = await DataController.getTest(currentPageId);
+        state.setTest(data);
+        state.setNewPage(PagesList.testPage);
+        break;
+      case 'task':
+        data = await DataController.getTask(currentPageId);
+        state.setTask(data);
+        state.setNewPage(PagesList.taskPage);
+        break;
     }
   }
 }
