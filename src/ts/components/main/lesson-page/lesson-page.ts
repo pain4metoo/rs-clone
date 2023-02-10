@@ -42,7 +42,7 @@ export class LessonPage extends Control {
       iconMark.node.classList.remove('bi-bookmark');
       iconMark.node.classList.add('bi-bookmark-fill');
     };
-    new Control(this.node, 'p', lessonContent);
+    new Control(this.node, 'p', `${lessonContent}`);
     const buttonsTestsTasksContainer = new Control(this.node, 'div', 'container');
     const buttonTest: Control<HTMLButtonElement> = new Control(
       buttonsTestsTasksContainer.node,

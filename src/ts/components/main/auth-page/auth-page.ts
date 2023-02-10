@@ -37,6 +37,7 @@ export class AuthPage extends Control {
 
   private async isAuthUser(login: string, password: string): Promise<void> {
     const isAuth = await AuthController.isAuthUser(login, password);
+    console.log(isAuth);
 
     if (isAuth) {
       state.authUser();
