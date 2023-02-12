@@ -1,6 +1,7 @@
 import { AuthController } from '../../../api/auth-controller';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
+import { PagesList } from '../main';
 import './unauth-page.scss';
 
 export class UnauthPage extends Control {
@@ -48,6 +49,7 @@ export class UnauthPage extends Control {
     if (user) {
       state.authUser();
       state.setUserData(user);
+      state.setNewPage(PagesList.mainPage);
     }
   }
 }

@@ -36,7 +36,6 @@ class State {
 
   public setUserData(userData: UserData): void {
     this._data.user = userData;
-    this.onUpdate.emit(StateOptions.changePage);
   }
 
   public setCategories(categories: Array<CategoryData>): void {
