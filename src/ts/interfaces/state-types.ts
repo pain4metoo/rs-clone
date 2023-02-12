@@ -1,5 +1,5 @@
-import { UserData } from '../api/types';
-import { Places } from '../api/types';
+import { UserData } from './types';
+import { Places } from './types';
 import { PagesList } from '../components/main/main';
 
 export interface CurrentPage {

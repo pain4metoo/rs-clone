@@ -1,6 +1,6 @@
-import { LessonData, TaskData, TestData } from '../common/state-types';
+import { LessonData, TaskData, TestData } from '../interfaces/state-types';
 import { baseUrl, path } from './routes';
-import { CategoryData } from './types';
+import { CategoryData } from '../interfaces/types';
 
 export class DataController {
   public static async getCategories(): Promise<Array<CategoryData>> {

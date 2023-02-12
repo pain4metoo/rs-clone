@@ -1,9 +1,9 @@
 import { AuthController } from '../../../api/auth-controller';
 import { DataController } from '../../../api/data-controller';
-import { Places, UserData } from '../../../api/types';
+import { Places, UserData } from '../../../interfaces/types';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
-import { LessonData, TaskData, TestData } from '../../../common/state-types';
+import { LessonData, TaskData, TestData } from '../../../interfaces/state-types';
 import { PagesList } from '../main';
 import './auth-page.scss';
 
@@ -49,7 +49,6 @@ export class AuthPage extends Control {
     const page: Places = user.place;
 
     const currentPageId = user.done[page][0].id;
-
     let data: LessonData | TestData | TaskData;
     switch (page) {
       case Places.lessons:

@@ -1,7 +1,7 @@
-import { Places } from '../../api/types';
+import { Places } from '../../interfaces/types';
 import Control from '../../common/control';
 import { state } from '../../common/state';
-import { StateOptions } from '../../common/state-types';
+import { StateOptions } from '../../interfaces/state-types';
 import { AuthPage } from './auth-page/auth-page';
 import { CategoriesPage } from './categories-page/categories-page';
 import { FavorPage } from './favor-page/favor-page';

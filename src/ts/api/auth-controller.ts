@@ -1,4 +1,4 @@
-import { Places, UserData, UserResponse } from '../api/types';
+import { Places, UserData, UserResponse } from '../interfaces/types';
 import { baseUrl, path } from './routes';
 
 export class AuthController {
