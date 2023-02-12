@@ -130,9 +130,9 @@ const initialState = {
     password: '',
     name: '',
     done: {
-      lessons: [],
-      tests: [],
-      tasks: [],
+      lessons: [{ id: 1 }],
+      tests: [{ id: 1, result: 90 }],
+      tasks: [{ id: 1 }],
     },
     place: Places.lesson,
   },
