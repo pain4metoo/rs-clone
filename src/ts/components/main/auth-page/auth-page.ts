@@ -1,6 +1,6 @@
 import { AuthController } from '../../../api/auth-controller';
 import { DataController } from '../../../api/data-controller';
-import { UserData } from '../../../api/types';
+import { Places, UserData } from '../../../api/types';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
 import { LessonData, TaskData, TestData } from '../../../common/state-types';
@@ -36,32 +36,33 @@ export class AuthPage extends Control {
   }
 
   private async isAuthUser(login: string, password: string): Promise<void> {
-    const isAuth = await AuthController.isAuthUser(login, password);
-    console.log(isAuth);
+    const user = await AuthController.isAuthUser(login, password);
 
-    if (isAuth) {
+    if (user) {
       state.authUser();
-      state.setUserData(isAuth.user);
-      this.switchPage(isAuth.user);
+      state.setUserData(user);
+      this.switchPage(user);
     }
   }
 
   private async switchPage(user: UserData): Promise<void> {
-    const page = user.place;
-    const currentPageId = user.done[`${page}s`].slice(-1)[0].id;
+    const page: Places = user.place;
+
+    const currentPageId = user.done[page][0].id;
+
     let data: LessonData | TestData | TaskData;
     switch (page) {
-      case 'lesson':
+      case Places.lessons:
         data = await DataController.getLesson(currentPageId);
         state.setLesson(data);
         state.setNewPage(PagesList.lessonPage);
         break;
-      case 'test':
+      case Places.tests:
         data = await DataController.getTest(currentPageId);
         state.setTest(data);
         state.setNewPage(PagesList.testPage);
         break;
-      case 'task':
+      case Places.tasks:
         data = await DataController.getTask(currentPageId);
         state.setTask(data);
         state.setNewPage(PagesList.taskPage);

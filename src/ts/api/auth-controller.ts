@@ -1,13 +1,8 @@
 import { Places, UserData, UserResponse } from '../api/types';
 import { baseUrl, path } from './routes';
 
-export interface AuthResponse {
-  status: boolean;
-  user: UserData;
-}
-
 export class AuthController {
-  public static async isAuthUser(login: string, password: string): Promise<void | AuthResponse> {
+  public static async isAuthUser(login: string, password: string): Promise<void | UserData> {
     try {
       const body: Partial<UserData> = {
         email: login,
@@ -25,9 +20,8 @@ export class AuthController {
       if (!response.ok) {
         throw new Error(`${response.status}`);
       }
-      const data = await response.json();
-
-      return { status: response.ok, user: data.user };
+      const data: UserResponse = await response.json();
+      return data.user;
     } catch (err) {
       console.log(err);
     }
@@ -40,7 +34,7 @@ export class AuthController {
         email: login,
         password: password,
         name: name,
-        place: Places.lesson, //default value for a new user
+        place: Places.lessons, //default value for a new user
         done: { lessons: [{ id: 1 }], tests: [], tasks: [] }, //default value for a new user
       };
 

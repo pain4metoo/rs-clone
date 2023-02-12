@@ -12,9 +12,9 @@ export interface CategoryData {
 }
 
 export enum Places {
-  lesson = 'lesson',
-  test = 'test',
-  task = 'task',
+  lessons = 'lessons',
+  tests = 'tests',
+  tasks = 'tasks',
 }
 
 export interface UserData {

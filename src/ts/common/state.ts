@@ -97,7 +97,7 @@ class State {
     return this._data.header;
   }
 
-  public getCategories(key: keyof CategoriesType): Array<CategoryContent> {
+  public getCategories(key: Places): Array<CategoryContent> {
     return this._data.categories[key];
   }
 
@@ -134,7 +134,7 @@ const initialState = {
       tests: [{ id: 1, result: 90 }],
       tasks: [{ id: 1 }],
     },
-    place: Places.lesson,
+    place: Places.lessons,
   },
   currentPage: { name: PagesList.mainPage },
   header: {

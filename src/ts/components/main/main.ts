@@ -1,3 +1,4 @@
+import { Places } from '../../api/types';
 import Control from '../../common/control';
 import { state } from '../../common/state';
 import { StateOptions } from '../../common/state-types';
@@ -57,7 +58,7 @@ export class Main extends Control {
         new MainPage(this.mainInner.node);
         break;
       case PagesList.lessonsPage:
-        new CategoriesPage(this.mainInner.node, 'lessons');
+        new CategoriesPage(this.mainInner.node, Places.lessons);
         break;
 
       case PagesList.lessonPage:
@@ -65,7 +66,7 @@ export class Main extends Control {
         break;
 
       case PagesList.testsPage:
-        new CategoriesPage(this.mainInner.node, 'tests');
+        new CategoriesPage(this.mainInner.node, Places.tests);
         break;
 
       case PagesList.testPage:
@@ -73,7 +74,7 @@ export class Main extends Control {
         break;
 
       case PagesList.tasksPage:
-        new CategoriesPage(this.mainInner.node, 'tasks');
+        new CategoriesPage(this.mainInner.node, Places.tasks);
         break;
 
       case PagesList.taskPage:

@@ -1,4 +1,5 @@
 import { DataController } from '../../../api/data-controller';
+import { Places } from '../../../api/types';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
 import {
@@ -12,14 +13,14 @@ import {
 import { PagesList } from '../main';
 
 export class CategoriesPage extends Control {
-  constructor(parentNode: HTMLElement, type: keyof CategoriesType) {
+  constructor(parentNode: HTMLElement, type: Places) {
     super(parentNode, 'div', 'container py-5');
     const accordion = new Control(this.node, 'div', 'accordion');
     accordion.node.id = 'accordionExample';
     this.renderCategoriesList(type, accordion.node);
   }
 
-  private renderCategoriesList(type: keyof CategoriesType, parent: HTMLElement): void {
+  private renderCategoriesList(type: Places, parent: HTMLElement): void {
     const isAuth = state.getAuthUser();
     state.getCategories(type).forEach((category, index) => {
       const accordionItem = new Control(parent, 'div', 'accordion-item');
