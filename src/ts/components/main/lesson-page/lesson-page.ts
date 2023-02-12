@@ -13,7 +13,6 @@ export class LessonPage extends Control {
     const lessonId = lesson.id;
     const lessonName = lesson.name;
     const lessonContent = lesson.content;
-    console.log(lesson);
 
     const breadcrumbs = new Control(this.node, 'nav', 'breadcrumbs');
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');

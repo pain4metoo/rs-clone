@@ -7,6 +7,5 @@ export class TestPage extends Control {
     super(parentNode, 'div', 'container py-5');
 
     const test = state.getTest();
-    console.log(test);
   }
 }

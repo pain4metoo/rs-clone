@@ -7,6 +7,5 @@ export class TaskPage extends Control {
     super(parentNode, 'div', 'container py-5');
 
     const task = state.getTask();
-    console.log(task);
   }
 }
