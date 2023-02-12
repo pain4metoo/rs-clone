@@ -1,4 +1,4 @@
-import { CategoryData, Places, UserData } from '../api/types';
+import { CategoryData, Places, UserData, UserResponse } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
 import {

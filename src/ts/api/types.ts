@@ -30,3 +30,8 @@ export interface UserDataDone {
   tests: Array<{ id: number; result: number }>;
   tasks: Array<{ id: number }>;
 }
+
+export interface UserResponse {
+  accessToken: string;
+  user: UserData;
+}

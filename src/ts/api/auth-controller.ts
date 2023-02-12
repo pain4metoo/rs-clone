@@ -1,4 +1,4 @@
-import { Places, UserData } from '../api/types';
+import { Places, UserData, UserResponse } from '../api/types';
 import { baseUrl, path } from './routes';
 
 export interface AuthResponse {
@@ -56,9 +56,8 @@ export class AuthController {
         throw new Error(`${response.status}`);
       }
 
-      const json: UserData = await response.json();
-
-      return json;
+      const json: UserResponse = await response.json();
+      return json.user;
     } catch (error) {
       console.log(error);
     }
