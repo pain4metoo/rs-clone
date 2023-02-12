@@ -1,7 +1,7 @@
 import { DataController } from '../../../api/data-controller';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
-import { LessonData, TaskData, TestData } from '../../../interfaces/state-types';
+import { LessonData, TaskData, TestData } from '../../../common/state-types';
 import { PagesList } from '../main';
 
 import './lesson-page.scss';

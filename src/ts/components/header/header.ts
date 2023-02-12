@@ -6,7 +6,7 @@ import { HeaderUnauth } from './header-unauth/header-unauth';
 import { state } from '../../common/state';
 import { PagesList } from '../main/main';
 import { HeaderAuth } from './header-auth/header-auth';
-import { StateOptions } from '../../interfaces/state-types';
+import { StateOptions } from '../../common/state-types';
 
 export class Header extends Control {
   private headerAuth!: Control<HTMLElement>;

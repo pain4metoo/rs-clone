@@ -1,5 +1,4 @@
-import { UserData } from './types';
-import { Places } from './types';
+import { UserData } from '../api/types';
 import { PagesList } from '../components/main/main';
 
 export interface CurrentPage {

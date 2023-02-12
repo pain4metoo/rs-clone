@@ -1,4 +1,4 @@
-import { CategoryData, Places, UserData, UserResponse } from '../interfaces/types';
+import { CategoryData, Places, UserData, UserResponse } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
 import {
@@ -12,7 +12,7 @@ import {
   StateOptions,
   TaskData,
   TestData,
-} from '../interfaces/state-types';
+} from './state-types';
 
 class State {
   private _data: StateData;
