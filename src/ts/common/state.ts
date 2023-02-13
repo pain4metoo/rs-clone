@@ -129,9 +129,9 @@ const initialState = {
     password: '',
     name: '',
     done: {
-      lessons: [{ id: 1 }],
-      tests: [{ id: 1, result: 90 }],
-      tasks: [{ id: 1 }],
+      lessons: [],
+      tests: [],
+      tasks: [],
     },
     place: Places.lessons,
   },
