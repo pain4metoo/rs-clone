@@ -12,9 +12,9 @@ export interface CategoryData {
 }
 
 export enum Places {
-  lesson = 'lesson',
-  test = 'test',
-  task = 'task',
+  lessons = 'lessons',
+  tests = 'tests',
+  tasks = 'tasks',
 }
 
 export interface UserData {
@@ -29,4 +29,9 @@ export interface UserDataDone {
   lessons: Array<{ id: number }>;
   tests: Array<{ id: number; result: number }>;
   tasks: Array<{ id: number }>;
+}
+
+export interface UserResponse {
+  accessToken: string;
+  user: UserData;
 }

@@ -13,7 +13,6 @@ export class LessonPage extends Control {
     const lessonId = lesson.id;
     const lessonName = lesson.name;
     const lessonContent = lesson.content;
-    console.log(lesson);
 
     const breadcrumbs = new Control(this.node, 'nav', 'breadcrumbs');
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');
@@ -73,6 +72,7 @@ export class LessonPage extends Control {
 
   private isLessonDone(id: number): boolean {
     const doneLessons = state.getUser().done.lessons;
+
     const idAllLessonsDone = doneLessons.map((e) => {
       e.id;
     });

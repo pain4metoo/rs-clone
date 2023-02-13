@@ -1,4 +1,4 @@
-import { CategoryData, Places, UserData } from '../api/types';
+import { CategoryData, Places, UserData, UserResponse } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
 import {
@@ -36,7 +36,6 @@ class State {
 
   public setUserData(userData: UserData): void {
     this._data.user = userData;
-    this.onUpdate.emit(StateOptions.changePage);
   }
 
   public setCategories(categories: Array<CategoryData>): void {
@@ -97,7 +96,7 @@ class State {
     return this._data.header;
   }
 
-  public getCategories(key: keyof CategoriesType): Array<CategoryContent> {
+  public getCategories(key: Places): Array<CategoryContent> {
     return this._data.categories[key];
   }
 
@@ -134,7 +133,7 @@ const initialState = {
       tests: [{ id: 1, result: 90 }],
       tasks: [{ id: 1 }],
     },
-    place: Places.lesson,
+    place: Places.lessons,
   },
   currentPage: { name: PagesList.mainPage },
   header: {
