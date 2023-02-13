@@ -20,29 +20,36 @@ export class LessonPage extends Control {
     const breadcrumbsList = new Control(breadcrumbs.node, 'ol', 'breadcrumb');
     const breadcrumbsItemsNames = ['Главная', 'Уроки', `${lessonName}`];
     breadcrumbsItemsNames.forEach((e, i) => {
-      const breadcrumbsItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item');
-      breadcrumbsItem.node.textContent = e;
-      const breadcrumbsItemLink = new Control(breadcrumbsItem.node, 'a');
-      breadcrumbsItemLink.node.setAttribute('href', '#');
       if (i !== breadcrumbsItemsNames.length - 1) {
-        breadcrumbsItemLink.node.onclick = (): Promise<void> => this.switchPage(e, lessonId);
+        const breadcrumbsItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item pe-auto fs-5');
+        const breadcrumbsItemLink = new Control(breadcrumbsItem.node, 'a', '', e);
+        breadcrumbsItemLink.node.setAttribute('href', '#');
+        breadcrumbsItem.node.onclick = (): Promise<void> => this.switchPage(e, lessonId);
       } else {
-        breadcrumbsItemLink.node.classList.add('active');
+        const breadcrumbsItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item active fs-5', e);
+        breadcrumbsItem.node.setAttribute('aria-current', 'page');
       }
     });
-    const headingContainer = new Control(this.node, 'div', 'container');
-    new Control(headingContainer.node, 'h1', '', lessonName);
+    const headingContainer = new Control(this.node, 'div', 'container d-flex flex-row');
+    new Control(headingContainer.node, 'h1', 'fw-bold mb-4', lessonName);
 
     if (this.isLessonDone(lessonId)) {
       new Control(headingContainer.node, 'i', 'bi bi-check-square-fill');
     }
     const iconMark = new Control(headingContainer.node, 'i', 'bi bi-bookmark');
+    iconMark.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+  </svg>`;
     iconMark.node.onclick = (): void => {
       iconMark.node.classList.remove('bi-bookmark');
       iconMark.node.classList.add('bi-bookmark-fill');
+      iconMark.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
+      <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+    </svg>`;
     };
-    new Control(this.node, 'p', `${lessonContent}`);
-    const buttonsTestsTasksContainer = new Control(this.node, 'div', 'container');
+    const content = new Control(this.node, 'div', 'container mb-5');
+    content.node.innerHTML = `${lessonContent}`;
+    const buttonsTestsTasksContainer = new Control(this.node, 'div', 'd-grid gap-2 col-2 mx-auto mb-5');
     const buttonTest: Control<HTMLButtonElement> = new Control(
       buttonsTestsTasksContainer.node,
       'button',
@@ -50,22 +57,58 @@ export class LessonPage extends Control {
       'Пройти тест'
     );
     buttonTest.node.type = 'button';
-    buttonTest.node.onclick = (): Promise<void> => this.switchPage('Тест', lessonId);
+    buttonTest.node.onclick = (): Promise<void> => this.switchPage(PagesList.testPage, lessonId);
+    const buttonTask: Control<HTMLButtonElement> = new Control(
+      buttonsTestsTasksContainer.node,
+      'button',
+      'btn btn-primary',
+      'Решить задачи'
+    );
+    buttonTask.node.type = 'button';
+    buttonTask.node.onclick = (): Promise<void> => this.switchPage(PagesList.taskPage, lessonId);
+    const buttonsPrevNextContainer = new Control(this.node, 'div', 'd-flex justify-content-sm-around');
+    const buttonPrev: Control<HTMLButtonElement> = new Control(
+      buttonsPrevNextContainer.node,
+      'button',
+      'btn btn-secondary',
+      'Перейти к предыдущему уроку'
+    );
+    buttonPrev.node.type = 'button';
+    if (lessonId === 1) {
+      buttonPrev.node.classList.add('disabled');
+    } else {
+      buttonPrev.node.classList.remove('disabled');
+      buttonPrev.node.onclick = (): Promise<void> => this.switchPage(PagesList.lessonPage, lessonId - 1);
+    }
+
+    const buttonNext: Control<HTMLButtonElement> = new Control(
+      buttonsPrevNextContainer.node,
+      'button',
+      'btn btn-secondary',
+      'Перейти к следующему уроку'
+    );
+    buttonNext.node.type = 'button';
+    buttonNext.node.onclick = (): Promise<void> => this.switchPage(PagesList.lessonPage, lessonId + 1);
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
     let data: LessonData | TestData | TaskData;
     switch (page) {
-      case 'Главная':
+      case PagesList.mainPage:
         state.setNewPage(PagesList.mainPage);
         break;
-      case 'Уроки':
+      case PagesList.lessonsPage:
         state.setNewPage(PagesList.lessonsPage);
         break;
-      case 'Тест':
+      case PagesList.testPage:
         data = await DataController.getTest(id);
         state.setTest(data);
         state.setNewPage(PagesList.testPage);
+        break;
+      case PagesList.lessonPage:
+        data = await DataController.getLesson(id);
+        state.setLesson(data);
+        state.setNewPage(PagesList.lessonPage);
         break;
     }
   }

@@ -26,20 +26,4 @@ export class DataController {
     const task: TaskData = await response.json();
     return task;
   }
-
-  public static async getItemById(
-    itemName: 'lessons' | 'tests' | 'tasks',
-    itemId: number
-  ): Promise<Array<CategoryData>> {
-    let response: Response;
-    if (itemName === 'lessons') {
-      response = await fetch(`${baseUrl}${path.lessons}`);
-    } else if (itemName === 'tests') {
-      response = await fetch(`${baseUrl}${path.tests}`);
-    } else {
-      response = await fetch(`${baseUrl}${path.tasks}`);
-    }
-    const items: Array<CategoryData> = await response.json();
-    return items.filter((e) => (e.id = itemId));
-  }
 }
