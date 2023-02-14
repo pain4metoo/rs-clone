@@ -18,16 +18,24 @@ export enum Places {
 }
 
 export interface UserData {
+  id: number;
   email: string;
   password: string;
   name: string;
   done: UserDataDone;
   place: Places;
+  favourites: UserDataFavorites;
 }
 
 export interface UserDataDone {
   lessons: Array<{ id: number }>;
   tests: Array<{ id: number; result: number }>;
+  tasks: Array<{ id: number }>;
+}
+
+export interface UserDataFavorites {
+  lessons: Array<{ id: number }>;
+  tests: Array<{ id: number }>;
   tasks: Array<{ id: number }>;
 }
 

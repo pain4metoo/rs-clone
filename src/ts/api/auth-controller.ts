@@ -36,6 +36,12 @@ export class AuthController {
         name: name,
         place: Places.lessons, //default value for a new user
         done: { lessons: [{ id: 1 }], tests: [], tasks: [] }, //default value for a new user
+        favourites: {
+          //default value for a new user
+          lessons: [],
+          tests: [],
+          tasks: [],
+        },
       };
 
       const response: Response = await fetch(`${baseUrl}${path.register}`, {

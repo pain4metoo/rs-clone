@@ -1,3 +1,4 @@
+import { state } from '../common/state';
 import { LessonData, TaskData, TestData } from '../common/state-types';
 import { baseUrl, path } from './routes';
 import { CategoryData } from './types';
@@ -27,19 +28,22 @@ export class DataController {
     return task;
   }
 
-  public static async getItemById(
-    itemName: 'lessons' | 'tests' | 'tasks',
-    itemId: number
-  ): Promise<Array<CategoryData>> {
-    let response: Response;
-    if (itemName === 'lessons') {
-      response = await fetch(`${baseUrl}${path.lessons}`);
-    } else if (itemName === 'tests') {
-      response = await fetch(`${baseUrl}${path.tests}`);
-    } else {
-      response = await fetch(`${baseUrl}${path.tasks}`);
+  public static async updateUserData(): Promise<void> {
+    try {
+      const user = state.getUser();
+      const response: Response = await fetch(`${baseUrl}${path.users}/${user.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(user),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`${response.status}`);
+      }
+    } catch (error) {
+      console.log(error);
     }
-    const items: Array<CategoryData> = await response.json();
-    return items.filter((e) => (e.id = itemId));
   }
 }

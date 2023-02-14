@@ -37,7 +37,6 @@ export class AuthPage extends Control {
 
   private async isAuthUser(login: string, password: string): Promise<void> {
     const user = await AuthController.isAuthUser(login, password);
-
     if (user) {
       state.authUser();
       state.setUserData(user);
@@ -48,7 +47,7 @@ export class AuthPage extends Control {
   private async switchPage(user: UserData): Promise<void> {
     const page: Places = user.place;
     const currentPageId = user.done[page][0].id;
-    
+
     let data: LessonData | TestData | TaskData;
     switch (page) {
       case Places.lessons:
