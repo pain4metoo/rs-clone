@@ -1,9 +1,8 @@
-import { CategoryData, Places, UserData, UserResponse } from '../api/types';
+import { CategoryData, Places, UserData } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
 import {
   ArticleMetaData,
-  CategoriesType,
   CategoryContent,
   CurrentPage,
   HeaderPages,
@@ -134,6 +133,11 @@ const initialState = {
       tasks: [],
     },
     place: Places.lessons,
+    favourites: {
+      lessons: [],
+      tests: [],
+      tasks: [],
+    },
   },
   currentPage: { name: PagesList.mainPage },
   header: {

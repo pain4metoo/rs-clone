@@ -1,3 +1,4 @@
+import { state } from '../common/state';
 import { LessonData, TaskData, TestData } from '../common/state-types';
 import { baseUrl, path } from './routes';
 import { CategoryData } from './types';
@@ -25,5 +26,24 @@ export class DataController {
     const response: Response = await fetch(`${baseUrl}${path.tasks}/${id}`);
     const task: TaskData = await response.json();
     return task;
+  }
+
+  public static async updateUserData(): Promise<void> {
+    try {
+      const user = state.getUser();
+      const response: Response = await fetch(`${baseUrl}${path.users}/${user.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(user),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`${response.status}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
