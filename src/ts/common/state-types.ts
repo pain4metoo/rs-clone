@@ -39,6 +39,7 @@ export interface LessonData {
   id: number;
   name: string;
   content: Array<LessonContent>;
+  comments: Array<CommentData>;
 }
 
 export interface TestAnswer {
@@ -70,6 +71,11 @@ export interface TaskData {
   id: number;
   name: string;
   list: Array<TaskList>;
+}
+export interface CommentData {
+  id: number;
+  userName: string;
+  content: string;
 }
 
 export interface StateData {
