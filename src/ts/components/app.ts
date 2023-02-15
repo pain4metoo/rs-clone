@@ -33,8 +33,10 @@ export class App extends Control {
     let settings = state.getSettings();
     if (settings.theme) {
       this.animLight = new AnimationLight(this.node);
+      this.node.style.color = 'black';
     } else {
       this.animDark = new AnimationDark(this.node);
+      this.node.style.color = 'white';
     }
   }
 }

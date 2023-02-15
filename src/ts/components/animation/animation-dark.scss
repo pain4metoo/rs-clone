@@ -146,7 +146,7 @@
   animation: animStar 60s linear infinite;
 }
 #star::after {
-  content: ' hello';
+  content: '';
   position: absolute;
   top: 2000px;
   left: 0;
