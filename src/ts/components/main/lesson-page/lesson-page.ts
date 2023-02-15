@@ -51,7 +51,7 @@ export class LessonPage extends Control {
         iconMark.node.innerHTML = fillBookMarkImg;
       } else {
         iconMark.node.classList.add('bi-bookmark');
-        iconMark.node.innerHTML = fillBookMarkImg;
+        iconMark.node.innerHTML = emptyBookMarkImg;
       }
       iconMark.node.onclick = (): void => {
         iconMark.node.classList.toggle('bi-bookmark');
@@ -60,7 +60,7 @@ export class LessonPage extends Control {
           iconMark.node.innerHTML = fillBookMarkImg;
           this.addLessonToFavourites(lessonId);
         } else {
-          iconMark.node.innerHTML = fillBookMarkImg;
+          iconMark.node.innerHTML = emptyBookMarkImg;
           this.removeLessonFromFavourites(lessonId);
         }
       };
@@ -108,6 +108,7 @@ export class LessonPage extends Control {
     );
     buttonNext.node.type = 'button';
     buttonNext.node.onclick = (): Promise<void> => this.switchPage(PagesList.lessonPage, lessonId + 1);
+
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
