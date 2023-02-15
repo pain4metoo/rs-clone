@@ -1,4 +1,4 @@
-import { CategoryData, Places, UserData } from '../api/types';
+import { CategoryData, Places, Settings, UserData } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
 import {
@@ -117,6 +117,10 @@ class State {
 
   public getUser(): UserData {
     return this._data.user;
+  }
+
+  public getSettings(): Settings {
+    return this._data.user.settings;
   }
 }
 

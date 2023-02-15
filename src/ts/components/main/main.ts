@@ -49,13 +49,14 @@ export class Main extends Control {
       this.mainInner.node.remove();
     }
 
-    this.mainInner = new Control(this.node, 'div', 'main_inner');
+    this.mainInner = new Control(this.node, 'div', 'main_inner container');
 
     const currentPageName: PagesList = state.getCurrentPage().name;
 
     switch (currentPageName) {
       case PagesList.mainPage:
         new MainPage(this.mainInner.node);
+        new SetPage(this.mainInner.node);
         break;
       case PagesList.lessonsPage:
         new CategoriesPage(this.mainInner.node, Places.lessons);
