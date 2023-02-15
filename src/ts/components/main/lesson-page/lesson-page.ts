@@ -85,7 +85,7 @@ export class LessonPage extends Control {
     );
     buttonTask.node.type = 'button';
     buttonTask.node.onclick = (): Promise<void> => this.switchPage(PagesList.taskPage, lessonId);
-    const buttonsPrevNextContainer = new Control(this.node, 'div', 'd-flex justify-content-sm-around');
+    const buttonsPrevNextContainer = new Control(this.node, 'div', 'd-flex justify-content-sm-around mb-5');
     const buttonPrev: Control<HTMLButtonElement> = new Control(
       buttonsPrevNextContainer.node,
       'button',
@@ -109,6 +109,25 @@ export class LessonPage extends Control {
     buttonNext.node.type = 'button';
     buttonNext.node.onclick = (): Promise<void> => this.switchPage(PagesList.lessonPage, lessonId + 1);
 
+    const commentsForm = new Control(this.node, 'div', 'mb-5');
+    const labelComments = new Control(commentsForm.node, 'label', 'form-label mb-3', 'Комментарии');
+    labelComments.node.setAttribute('for', 'commentForm');
+    const textarea = new Control(commentsForm.node, 'textarea', 'form-control');
+    textarea.node.setAttribute('id', 'commentForm');
+    textarea.node.setAttribute('rows', '3');
+    textarea.node.setAttribute('placeholder', 'Type your comment here');
+    const submitButton = new Control(commentsForm.node, 'button', 'btn btn-success disabled', 'Опубликовать');
+    textarea.node.oninput = (): void => submitButton.node.classList.remove('disabled');
+    const commentsPosted = new Control(this.node, 'div', 'container');
+    const userComment = new Control(commentsPosted.node, 'div', 'container');
+    const userNameContainer = new Control(userComment.node, 'div', 'd-flex align-items-center mb-3');
+    const userIcon = new Control(userNameContainer.node, 'i', 'bi bi-person-square me-2');
+    userIcon.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
+    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
+  </svg>`;
+    const userName = new Control(userNameContainer.node, 'span', 'name', 'Name');
+    const commentContent = new Control(userComment.node, 'div', 'comment-content', 'Hioljll!');
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
