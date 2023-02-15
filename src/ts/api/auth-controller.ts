@@ -28,19 +28,23 @@ export class AuthController {
   }
 
   public static async createNewUser(login: string, password: string, name: string): Promise<UserData | void> {
-    // eslint-disable-next-line no-useless-catch
     try {
       const user: Partial<UserData> = {
         email: login,
         password: password,
         name: name,
-        place: Places.lessons, //default value for a new user
-        done: { lessons: [{ id: 1 }], tests: [], tasks: [] }, //default value for a new user
+        place: Places.lessons,
+        done: { lessons: [{ id: 1 }], tests: [], tasks: [] },
         favourites: {
-          //default value for a new user
           lessons: [],
           tests: [],
           tasks: [],
+        },
+        settings: {
+          theme: 'dark',
+          animation: true,
+          resetProgress: false,
+          sound: true,
         },
       };
 

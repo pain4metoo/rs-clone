@@ -138,6 +138,12 @@ const initialState = {
       tests: [],
       tasks: [],
     },
+    settings: {
+      theme: 'dark',
+      animation: true,
+      resetProgress: false,
+      sound: true,
+    },
   },
   currentPage: { name: PagesList.mainPage },
   header: {
