@@ -9,4 +9,5 @@ export enum path {
   tests = '/tests',
   tasks = '/tasks',
   comments = '/comments',
+  settings = '/settings',
 }

@@ -1,4 +1,5 @@
-import { CategoryData, Places, Settings, UserData } from '../api/types';
+import { SettingsController } from '../api/settings-controller';
+import { CategoryData, Places, Settings, SettingsItems, UserData } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
 import {
@@ -87,6 +88,32 @@ class State {
     this._data.task = task;
   }
 
+  public async setTheme(theme: boolean): Promise<void> {
+    this._data.user.settings[SettingsItems.theme] = theme;
+    this.onUpdate.emit(StateOptions.changeTheme);
+    await SettingsController.setSettings();
+  }
+  public async setAnimation(animation: boolean): Promise<void> {
+    this._data.user.settings[SettingsItems.animation] = animation;
+    this.onUpdate.emit(StateOptions.changeAnimation);
+    await SettingsController.setSettings();
+  }
+  public async setProgress(progress: boolean): Promise<void> {
+    this._data.user.settings[SettingsItems.resetProgress] = progress;
+    this.onUpdate.emit(StateOptions.changeProgress);
+    await SettingsController.setSettings();
+  }
+  public async setSound(sound: boolean): Promise<void> {
+    this._data.user.settings[SettingsItems.sound] = sound;
+    this.onUpdate.emit(StateOptions.changeSound);
+    await SettingsController.setSettings();
+  }
+  public async setVolume(volume: number): Promise<void> {
+    this._data.user.settings[SettingsItems.volume] = volume;
+    this.onUpdate.emit(StateOptions.changeVolume);
+    await SettingsController.setSettings();
+  }
+
   public getCurrentPage(): CurrentPage {
     return this._data.currentPage;
   }
@@ -143,10 +170,11 @@ const initialState = {
       tasks: [],
     },
     settings: {
-      theme: 'dark',
+      theme: false,
       animation: true,
       resetProgress: false,
       sound: true,
+      volume: 0.4,
     },
   },
   currentPage: { name: PagesList.mainPage },

@@ -85,4 +85,9 @@ export interface StateData {
 
 export enum StateOptions {
   changePage = 'change-page',
+  changeTheme = 'change-theme',
+  changeAnimation = 'change-animation',
+  changeProgress = 'change-progress',
+  changeSound = 'change-sound',
+  changeVolume = 'change-volume',
 }

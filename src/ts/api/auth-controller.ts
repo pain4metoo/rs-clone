@@ -41,10 +41,11 @@ export class AuthController {
           tasks: [],
         },
         settings: {
-          theme: 'dark',
+          theme: false,
           animation: true,
           resetProgress: false,
           sound: true,
+          volume: 0.4,
         },
       };
 

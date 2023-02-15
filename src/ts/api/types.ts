@@ -46,8 +46,17 @@ export interface UserResponse {
 }
 
 export interface Settings {
-  theme: string;
+  theme: boolean;
   animation: boolean;
   resetProgress: boolean;
   sound: boolean;
+  volume: number;
+}
+
+export enum SettingsItems {
+  theme = 'theme',
+  animation = 'animation',
+  resetProgress = 'resetProgress',
+  sound = 'sound',
+  volume = 'volume',
 }
