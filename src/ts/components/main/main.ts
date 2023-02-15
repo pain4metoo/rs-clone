@@ -56,7 +56,6 @@ export class Main extends Control {
     switch (currentPageName) {
       case PagesList.mainPage:
         new MainPage(this.mainInner.node);
-        new SetPage(this.mainInner.node);
         break;
       case PagesList.lessonsPage:
         new CategoriesPage(this.mainInner.node, Places.lessons);
