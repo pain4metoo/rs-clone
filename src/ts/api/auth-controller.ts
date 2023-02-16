@@ -68,24 +68,4 @@ export class AuthController {
       console.log(error);
     }
   }
-
-  public async updateUserPassword(): Promise<void> {
-    const user = state.getUser();
-
-    try {
-      const response: Response = await fetch(`${baseUrl}${path.users}/${user.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(user),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`${response.status}`);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
 }

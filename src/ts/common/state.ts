@@ -117,6 +117,10 @@ class State {
     await SettingsController.setSettings();
   }
 
+  public setPassword(password: string): void {
+    this._data.user.password = password;
+  }
+
   public getCurrentPage(): CurrentPage {
     return this._data.currentPage;
   }
