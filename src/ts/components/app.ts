@@ -23,6 +23,8 @@ export class App extends Control {
       switch (type) {
         case StateOptions.changeTheme:
           this.createAnimation();
+        case StateOptions.onLogUser:
+          this.createAnimation();
           break;
       }
     });
@@ -40,6 +42,7 @@ export class App extends Control {
       this.animLight.destroy();
     }
     let settings = state.getSettings();
+    console.log(settings);
     if (settings.theme) {
       this.animLight = new AnimationLight(document.body);
       this.node.style.color = 'black';

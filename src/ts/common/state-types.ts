@@ -90,4 +90,5 @@ export enum StateOptions {
   changeProgress = 'change-progress',
   changeSound = 'change-sound',
   changeVolume = 'change-volume',
+  onLogUser = 'onlogin-user',
 }

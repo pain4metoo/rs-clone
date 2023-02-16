@@ -45,16 +45,20 @@ export class Switcher extends Control {
           if (options.name === SwitcherOption.theme) {
             if (currentSettings.theme) {
               label.node.textContent = SwitcherValues.lightTheme;
+              input.node.checked = true;
             } else {
               label.node.textContent = SwitcherValues.darkTheme;
+              input.node.checked = false;
             }
           }
           break;
         case StateOptions.changeAnimation:
           if (options.name === SwitcherOption.animation) {
             if (currentSettings.animation) {
+              input.node.checked = true;
               label.node.textContent = SwitcherValues.animOff;
             } else {
+              input.node.checked = false;
               label.node.textContent = SwitcherValues.animOn;
             }
           }
@@ -62,8 +66,10 @@ export class Switcher extends Control {
         case StateOptions.changeProgress:
           if (options.name === SwitcherOption.progress) {
             if (currentSettings.resetProgress) {
+              input.node.checked = true;
               label.node.textContent = SwitcherValues.resetFalse;
             } else {
+              input.node.checked = false;
               label.node.textContent = SwitcherValues.resetTrue;
             }
           }
@@ -97,11 +103,11 @@ export class Switcher extends Control {
 
       case SwitcherOption.progress:
         if (settings.resetProgress) {
-          label.textContent = SwitcherValues.resetTrue;
+          label.textContent = SwitcherValues.resetFalse;
           input.checked = true;
         } else {
           input.checked = false;
-          label.textContent = SwitcherValues.resetFalse;
+          label.textContent = SwitcherValues.resetTrue;
         }
         break;
     }

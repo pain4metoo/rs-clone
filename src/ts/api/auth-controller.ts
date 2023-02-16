@@ -1,5 +1,6 @@
 import { Places, UserData, UserResponse } from './types';
 import { baseUrl, path } from './routes';
+import { state } from '../common/state';
 
 export class AuthController {
   public static async isAuthUser(login: string, password: string): Promise<void | UserData> {
@@ -42,7 +43,7 @@ export class AuthController {
         },
         settings: {
           theme: false,
-          animation: true,
+          animation: false,
           resetProgress: false,
           sound: true,
           volume: 0.4,
@@ -65,6 +66,26 @@ export class AuthController {
       return json.user;
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  public async updateUserPassword(): Promise<void> {
+    const user = state.getUser();
+
+    try {
+      const response: Response = await fetch(`${baseUrl}${path.users}/${user.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(user),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`${response.status}`);
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 }

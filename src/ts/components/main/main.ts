@@ -13,7 +13,7 @@ import { StatistPage } from './statist-page/statist-page';
 import { TaskPage } from './task-page/task-page';
 import { TestPage } from './test-page/test-page';
 import { UnauthPage } from './unauth-page/unauth-page';
-import "./main-page.scss";
+import './main-page.scss';
 
 export enum PagesList {
   mainPage = 'Главная',
@@ -57,7 +57,6 @@ export class Main extends Control {
     switch (currentPageName) {
       case PagesList.mainPage:
         new MainPage(this.mainInner.node);
-        new SetPage(this.mainInner.node)
         break;
       case PagesList.lessonsPage:
         new CategoriesPage(this.mainInner.node, Places.lessons);

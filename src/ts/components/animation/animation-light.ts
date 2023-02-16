@@ -5,8 +5,8 @@ import './animation-light.scss';
 
 export class AnimationLight extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'bg-animation');
-
+    super(parentNode, 'div', 'intro');
+    this.toggleAnimation();
     state.onUpdate.add((type: StateOptions): void => {
       switch (type) {
         case StateOptions.changeAnimation:
@@ -21,7 +21,7 @@ export class AnimationLight extends Control {
     if (settings.animation) {
       this.node.style.animation = 'none';
     } else {
-      this.node.style.animation = 'animStar 120s linear infinite';
+      this.node.style.animation = 'hue-rotate 3s linear infinite';
     }
   }
 }

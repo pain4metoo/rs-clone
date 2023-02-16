@@ -1,45 +1,30 @@
-.bg-animation {
-  animation: bg-animation 25s ease-in-out infinite;
-  text-align: center;
-  background-image: url('../../../assets/image/light-bg.jpg');
-  background-repeat: no-repeat;
+.intro {
+  background: linear-gradient(233deg, #e56420, #c22525, #3d9c31, #37bbde);
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  background-blend-mode: hard-light;
+  animation: hue-rotate 3s linear infinite;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   top: 0;
-  position: absolute;
   z-index: -1;
+  opacity: 0.2;
 }
 
-@media (max-width: 620px) {
-  .bg-animation {
-    padding: 100px 20px;
-    font-size: 26px;
+@keyframes hue-rotate {
+  from {
+    -webkit-filter: hue-rotate(0);
+    -moz-filter: hue-rotate(0);
+    -ms-filter: hue-rotate(0);
+    filter: hue-rotate(0);
   }
-}
-@keyframes bg-animation {
-  0% {
-    background-size: 120%;
-    background-position: 50% 50%;
-  }
-  20% {
-    background-size: 150%;
-    background-position: 0 50%;
-  }
-  40% {
-    background-size: 110%;
-    background-position: 20% 80%;
-  }
-  60% {
-    background-size: 160%;
-    background-position: 60% 10%;
-  }
-  80% {
-    background-size: 120%;
-    background-position: 40% 70%;
-  }
-  100% {
-    background-size: 120%;
-    background-position: 50% 50%;
+  to {
+    -webkit-filter: hue-rotate(360deg);
+    -moz-filter: hue-rotate(360deg);
+    -ms-filter: hue-rotate(360deg);
+    filter: hue-rotate(360deg);
   }
 }
