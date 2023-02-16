@@ -193,6 +193,7 @@ const initialState = {
     id: 0,
     name: '',
     content: [],
+    comments: [],
   },
   test: {
     category: '',

@@ -1,4 +1,5 @@
 import { DataController } from '../../../api/data-controller';
+import { UserData } from '../../../api/types';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
 import { LessonData, TaskData, TestData } from '../../../common/state-types';
@@ -12,7 +13,8 @@ export class LessonPage extends Control {
     const lesson = state.getLesson();
     const lessonId = lesson.id;
     const lessonName = lesson.name;
-    const lessonContent = lesson.content;
+    const lessonContent = lesson.content.join(`\n`);
+    const user = state.getUser();
 
     const breadcrumbs = new Control(this.node, 'nav', 'breadcrumbs');
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');
@@ -33,7 +35,7 @@ export class LessonPage extends Control {
     const headingContainer = new Control(this.node, 'div', 'container d-flex flex-row');
     new Control(headingContainer.node, 'h1', 'fw-bold mb-4', lessonName);
     if (state.getAuthUser()) {
-      if (this.isLessonDone(lessonId)) {
+      if (this.isLessonDone(lessonId, user)) {
         const iconDone = new Control(headingContainer.node, 'i', 'bi bi-check-square-fill');
         iconDone.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
         <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
@@ -46,22 +48,22 @@ export class LessonPage extends Control {
       const fillBookMarkImg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
     <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
   </svg>`;
-      if (this.isLessonInFavourites(lessonId)) {
+      if (this.isLessonInFavourites(lessonId, user)) {
         iconMark.node.classList.add('bi-bookmark-fill');
         iconMark.node.innerHTML = fillBookMarkImg;
       } else {
         iconMark.node.classList.add('bi-bookmark');
-        iconMark.node.innerHTML = fillBookMarkImg;
+        iconMark.node.innerHTML = emptyBookMarkImg;
       }
       iconMark.node.onclick = (): void => {
         iconMark.node.classList.toggle('bi-bookmark');
         iconMark.node.classList.toggle('bi-bookmark-fill');
         if (iconMark.node.classList.contains('bi-bookmark-fill')) {
           iconMark.node.innerHTML = fillBookMarkImg;
-          this.addLessonToFavourites(lessonId);
+          this.addLessonToFavourites(lessonId, user);
         } else {
-          iconMark.node.innerHTML = fillBookMarkImg;
-          this.removeLessonFromFavourites(lessonId);
+          iconMark.node.innerHTML = emptyBookMarkImg;
+          this.removeLessonFromFavourites(lessonId, user);
         }
       };
     }
@@ -76,7 +78,11 @@ export class LessonPage extends Control {
       'Пройти тест'
     );
     buttonTest.node.type = 'button';
-    buttonTest.node.onclick = (): Promise<void> => this.switchPage(PagesList.testPage, lessonId);
+    buttonTest.node.onclick = (): void => {
+      this.switchPage(PagesList.testPage, lessonId);
+      this.addLessonToDone(lessonId, user);
+    };
+
     const buttonTask: Control<HTMLButtonElement> = new Control(
       buttonsTestsTasksContainer.node,
       'button',
@@ -84,8 +90,12 @@ export class LessonPage extends Control {
       'Решить задачи'
     );
     buttonTask.node.type = 'button';
-    buttonTask.node.onclick = (): Promise<void> => this.switchPage(PagesList.taskPage, lessonId);
-    const buttonsPrevNextContainer = new Control(this.node, 'div', 'd-flex justify-content-sm-around');
+    buttonTask.node.onclick = (): void => {
+      this.switchPage(PagesList.taskPage, lessonId);
+      this.addLessonToDone(lessonId, user);
+    };
+
+    const buttonsPrevNextContainer = new Control(this.node, 'div', 'd-flex justify-content-sm-around mb-5');
     const buttonPrev: Control<HTMLButtonElement> = new Control(
       buttonsPrevNextContainer.node,
       'button',
@@ -107,7 +117,43 @@ export class LessonPage extends Control {
       'Перейти к следующему уроку'
     );
     buttonNext.node.type = 'button';
-    buttonNext.node.onclick = (): Promise<void> => this.switchPage(PagesList.lessonPage, lessonId + 1);
+    buttonNext.node.onclick = (): void => {
+      this.switchPage(PagesList.lessonPage, lessonId + 1);
+      this.addLessonToDone(lessonId, user);
+    };
+
+    if (state.getAuthUser()) {
+      const commentsForm = new Control(this.node, 'div', 'mb-5');
+      const labelComments = new Control(commentsForm.node, 'label', 'form-label mb-3', 'Комментарии');
+      labelComments.node.setAttribute('for', 'commentForm');
+      const textarea: Control<HTMLInputElement> = new Control(commentsForm.node, 'textarea', 'form-control');
+      textarea.node.setAttribute('id', 'commentForm');
+      textarea.node.setAttribute('rows', '3');
+      textarea.node.setAttribute('placeholder', 'Type your comment here');
+      const submitButton = new Control(commentsForm.node, 'button', 'btn btn-success disabled', 'Опубликовать');
+      textarea.node.oninput = (): void => submitButton.node.classList.remove('disabled');
+      submitButton.node.onclick = async (): Promise<void> => {
+        this.addComment(lesson, textarea.node.value, user.name);
+        textarea.node.value = '';
+        submitButton.node.classList.add('disabled');
+      };
+    }
+
+    const lessonComments = state.getLesson().comments;
+    if (lessonComments) {
+      const commentsPosted = new Control(this.node, 'div', 'container');
+      lessonComments.reverse().forEach((comment) => {
+        const userComment = new Control(commentsPosted.node, 'div', 'container mb-5');
+        const userNameContainer = new Control(userComment.node, 'div', 'd-flex align-items-end mb-3');
+        const userIcon = new Control(userNameContainer.node, 'i', 'bi bi-person-square me-2');
+        userIcon.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
+        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
+        </svg>`;
+        new Control(userNameContainer.node, 'span', 'name fw-semibold', comment.userName);
+        new Control(userComment.node, 'div', 'comment-content', comment.content);
+      });
+    }
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
@@ -132,35 +178,56 @@ export class LessonPage extends Control {
     }
   }
 
-  private isLessonDone(id: number): boolean {
-    const doneLessons = state.getUser().done.lessons;
+  private isLessonDone(id: number, user: UserData): boolean {
+    const doneLessons = user.done.lessons;
     const idAllLessonsDone = doneLessons.map((e) => e.id);
     const result = idAllLessonsDone.find((idDone) => id === +idDone);
     return result ? true : false;
   }
 
-  private isLessonInFavourites(id: number): boolean {
-    const user = state.getUser();
+  private isLessonInFavourites(id: number, user: UserData): boolean {
     const userFavoritesLessons = user.favourites.lessons;
     const userFavoritesLessonsId = userFavoritesLessons.map((e) => e.id);
     return userFavoritesLessonsId.includes(id) ? true : false;
   }
 
-  private addLessonToFavourites(id: number): void {
-    const user = state.getUser();
-    if (!this.isLessonInFavourites(id)) {
+  private addLessonToFavourites(id: number, user: UserData): void {
+    if (!this.isLessonInFavourites(id, user)) {
       user.favourites.lessons.push({ id: Number(`${id}`) });
       state.setUserData(user);
       DataController.updateUserData();
     }
   }
 
-  private removeLessonFromFavourites(id: number): void {
-    const user = state.getUser();
-    if (this.isLessonInFavourites(id)) {
+  private removeLessonFromFavourites(id: number, user: UserData): void {
+    if (this.isLessonInFavourites(id, user)) {
       user.favourites.lessons = user.favourites.lessons.filter((e) => e.id !== id);
       state.setUserData(user);
       DataController.updateUserData();
     }
+  }
+
+  private addLessonToDone(id: number, user: UserData): void {
+    const doneLessons = user.done.lessons;
+    const idAllLessonsDone = doneLessons.map((e) => e.id);
+    if (!idAllLessonsDone.includes(id)) {
+      user.done.lessons.push({ id: Number(`${id}`) });
+      state.setUserData(user);
+      DataController.updateUserData();
+    }
+  }
+
+  private async addComment(lesson: LessonData, commentText: string, userName: string): Promise<void> {
+    const commentsPrevious = lesson.comments;
+    const commentId = commentsPrevious.length + 1;
+    const commentAuthor = userName;
+    const commentContent = commentText;
+    lesson.comments.push({
+      id: commentId,
+      userName: commentAuthor,
+      content: commentContent,
+    });
+    state.setLesson(lesson);
+    DataController.updateLessonComments();
   }
 }

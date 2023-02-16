@@ -1,5 +1,6 @@
 import { state } from '../common/state';
 import { LessonData, TaskData, TestData } from '../common/state-types';
+import { PagesList } from '../components/main/main';
 import { baseUrl, path } from './routes';
 import { CategoryData } from './types';
 
@@ -40,6 +41,28 @@ export class DataController {
       });
 
       if (!response.ok) {
+        throw new Error(`${response.status}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  public static async updateLessonComments(): Promise<void> {
+    try {
+      const lesson = state.getLesson();
+      const response: Response = await fetch(`${baseUrl}${path.lessons}/${lesson.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(lesson),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const lessonWithNewComment = await this.getLesson(lesson.id);
+        state.setLesson(lessonWithNewComment);
+        state.setNewPage(PagesList.lessonPage);
+      } else {
         throw new Error(`${response.status}`);
       }
     } catch (error) {
