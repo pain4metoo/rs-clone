@@ -4,8 +4,6 @@ import Control from '../../../common/control';
 import { Switcher } from './switcher-el/switcher';
 import { setData, SettingsData } from './set-data';
 import { SoundEl } from './sound-el/sound-el';
-import { state } from '../../../common/state';
-import { StateOptions } from '../../../common/state-types';
 
 export class SetPage extends Control {
   constructor(parentNode: HTMLElement) {

@@ -171,7 +171,7 @@ const initialState = {
     },
     settings: {
       theme: false,
-      animation: true,
+      animation: false,
       resetProgress: false,
       sound: true,
       volume: 0.4,

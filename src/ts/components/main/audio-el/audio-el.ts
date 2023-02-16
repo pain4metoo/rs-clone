@@ -1,10 +1,5 @@
-import click from '../../../../assets/sound/click.mp3';
-
 export class AudioEl {
-  constructor() {
-    const audio = new Audio();
-    audio.src = click;
-  }
+  constructor() {}
 
   public play(): void {}
 
