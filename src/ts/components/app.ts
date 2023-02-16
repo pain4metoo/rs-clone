@@ -17,8 +17,10 @@ export class App extends Control {
     new Footer(this.node);
     this.createAnimation();
     state.onUpdate.add((type: StateOptions) => {
-      if (type === StateOptions.changeTheme) {
-        this.createAnimation();
+      switch (type) {
+        case StateOptions.changeTheme:
+          this.createAnimation();
+          break;
       }
     });
   }
