@@ -25,6 +25,7 @@ export interface UserData {
   done: UserDataDone;
   place: Places;
   favourites: UserDataFavorites;
+  settings: Settings;
 }
 
 export interface UserDataDone {
@@ -42,4 +43,20 @@ export interface UserDataFavorites {
 export interface UserResponse {
   accessToken: string;
   user: UserData;
+}
+
+export interface Settings {
+  theme: boolean;
+  animation: boolean;
+  resetProgress: boolean;
+  sound: boolean;
+  volume: number;
+}
+
+export enum SettingsItems {
+  theme = 'theme',
+  animation = 'animation',
+  resetProgress = 'resetProgress',
+  sound = 'sound',
+  volume = 'volume',
 }

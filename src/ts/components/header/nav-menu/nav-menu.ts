@@ -1,6 +1,7 @@
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
 import { PagesList } from '../../main/main';
+import './nav-menu.scss';
 
 export class NavBar extends Control {
   constructor(parentNode: HTMLElement) {
