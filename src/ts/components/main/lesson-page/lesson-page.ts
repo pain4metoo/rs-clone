@@ -13,6 +13,7 @@ export class LessonPage extends Control {
     const lesson = state.getLesson();
     const lessonId = lesson.id;
     const lessonName = lesson.name;
+    const lessonCategory = lesson.category;
     const lessonContent = lesson.content.join(`\n`);
     const user = state.getUser();
 
@@ -20,7 +21,7 @@ export class LessonPage extends Control {
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');
     breadcrumbs.node.setAttribute('aria-label', 'breadcrumb');
     const breadcrumbsList = new Control(breadcrumbs.node, 'ol', 'breadcrumb');
-    const breadcrumbsItemsNames = ['Главная', 'Уроки', `${lessonName}`];
+    const breadcrumbsItemsNames = ['Главная', 'Уроки', `${lessonCategory}: ${lessonName}`];
     breadcrumbsItemsNames.forEach((e, i) => {
       if (i !== breadcrumbsItemsNames.length - 1) {
         const breadcrumbsItem = new Control(breadcrumbsList.node, 'li', 'breadcrumb-item pe-auto fs-5');
@@ -169,6 +170,11 @@ export class LessonPage extends Control {
         data = await DataController.getTest(id);
         state.setTest(data);
         state.setNewPage(PagesList.testPage);
+        break;
+      case PagesList.taskPage:
+        data = await DataController.getTask(id);
+        state.setTask(data);
+        state.setNewPage(PagesList.taskPage);
         break;
       case PagesList.lessonPage:
         data = await DataController.getLesson(id);
