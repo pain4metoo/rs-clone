@@ -78,7 +78,11 @@ export class LessonPage extends Control {
       'Пройти тест'
     );
     buttonTest.node.type = 'button';
-    buttonTest.node.onclick = (): Promise<void> => this.switchPage(PagesList.testPage, lessonId);
+    buttonTest.node.onclick = (): void => {
+      this.switchPage(PagesList.testPage, lessonId);
+      this.addLessonToDone(lessonId, user);
+    };
+
     const buttonTask: Control<HTMLButtonElement> = new Control(
       buttonsTestsTasksContainer.node,
       'button',
@@ -86,7 +90,11 @@ export class LessonPage extends Control {
       'Решить задачи'
     );
     buttonTask.node.type = 'button';
-    buttonTask.node.onclick = (): Promise<void> => this.switchPage(PagesList.taskPage, lessonId);
+    buttonTask.node.onclick = (): void => {
+      this.switchPage(PagesList.taskPage, lessonId);
+      this.addLessonToDone(lessonId, user);
+    };
+
     const buttonsPrevNextContainer = new Control(this.node, 'div', 'd-flex justify-content-sm-around mb-5');
     const buttonPrev: Control<HTMLButtonElement> = new Control(
       buttonsPrevNextContainer.node,
@@ -109,24 +117,30 @@ export class LessonPage extends Control {
       'Перейти к следующему уроку'
     );
     buttonNext.node.type = 'button';
-    buttonNext.node.onclick = (): Promise<void> => this.switchPage(PagesList.lessonPage, lessonId + 1);
-
-    const commentsForm = new Control(this.node, 'div', 'mb-5');
-    const labelComments = new Control(commentsForm.node, 'label', 'form-label mb-3', 'Комментарии');
-    labelComments.node.setAttribute('for', 'commentForm');
-    const textarea: Control<HTMLInputElement> = new Control(commentsForm.node, 'textarea', 'form-control');
-    textarea.node.setAttribute('id', 'commentForm');
-    textarea.node.setAttribute('rows', '3');
-    textarea.node.setAttribute('placeholder', 'Type your comment here');
-    const submitButton = new Control(commentsForm.node, 'button', 'btn btn-success disabled', 'Опубликовать');
-    textarea.node.oninput = (): void => submitButton.node.classList.remove('disabled');
-    submitButton.node.onclick = async (): Promise<void> => {
-      this.addComment(lesson, textarea.node.value, user.name);
-      textarea.node.value = '';
-      submitButton.node.classList.add('disabled');
+    buttonNext.node.onclick = (): void => {
+      this.switchPage(PagesList.lessonPage, lessonId + 1);
+      this.addLessonToDone(lessonId, user);
     };
+
+    if (state.getAuthUser()) {
+      const commentsForm = new Control(this.node, 'div', 'mb-5');
+      const labelComments = new Control(commentsForm.node, 'label', 'form-label mb-3', 'Комментарии');
+      labelComments.node.setAttribute('for', 'commentForm');
+      const textarea: Control<HTMLInputElement> = new Control(commentsForm.node, 'textarea', 'form-control');
+      textarea.node.setAttribute('id', 'commentForm');
+      textarea.node.setAttribute('rows', '3');
+      textarea.node.setAttribute('placeholder', 'Type your comment here');
+      const submitButton = new Control(commentsForm.node, 'button', 'btn btn-success disabled', 'Опубликовать');
+      textarea.node.oninput = (): void => submitButton.node.classList.remove('disabled');
+      submitButton.node.onclick = async (): Promise<void> => {
+        this.addComment(lesson, textarea.node.value, user.name);
+        textarea.node.value = '';
+        submitButton.node.classList.add('disabled');
+      };
+    }
+
     const lessonComments = state.getLesson().comments;
-    if (lessonComments.length !== 0) {
+    if (lessonComments) {
       const commentsPosted = new Control(this.node, 'div', 'container');
       lessonComments.reverse().forEach((comment) => {
         const userComment = new Control(commentsPosted.node, 'div', 'container mb-5');
@@ -193,7 +207,17 @@ export class LessonPage extends Control {
     }
   }
 
-  private addComment(lesson: LessonData, commentText: string, userName: string): void {
+  private addLessonToDone(id: number, user: UserData): void {
+    const doneLessons = user.done.lessons;
+    const idAllLessonsDone = doneLessons.map((e) => e.id);
+    if (!idAllLessonsDone.includes(id)) {
+      user.done.lessons.push({ id: Number(`${id}`) });
+      state.setUserData(user);
+      DataController.updateUserData();
+    }
+  }
+
+  private async addComment(lesson: LessonData, commentText: string, userName: string): Promise<void> {
     const commentsPrevious = lesson.comments;
     const commentId = commentsPrevious.length + 1;
     const commentAuthor = userName;
