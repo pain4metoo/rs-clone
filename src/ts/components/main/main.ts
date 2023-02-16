@@ -13,6 +13,7 @@ import { StatistPage } from './statist-page/statist-page';
 import { TaskPage } from './task-page/task-page';
 import { TestPage } from './test-page/test-page';
 import { UnauthPage } from './unauth-page/unauth-page';
+import "./main-page.scss";
 
 export enum PagesList {
   mainPage = 'Главная',

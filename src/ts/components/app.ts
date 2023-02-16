@@ -11,7 +11,7 @@ export class App extends Control {
   animLight!: AnimationLight;
   animDark!: AnimationDark;
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'container-fluid');
+    super(parentNode, 'div', 'wrapper');
     new Header(this.node);
     new Main(this.node);
     new Footer(this.node);
@@ -32,10 +32,10 @@ export class App extends Control {
     }
     let settings = state.getSettings();
     if (settings.theme) {
-      this.animLight = new AnimationLight(this.node);
+      this.animLight = new AnimationLight(document.body);
       this.node.style.color = 'black';
     } else {
-      this.animDark = new AnimationDark(this.node);
+      this.animDark = new AnimationDark(document.body);
       this.node.style.color = 'white';
     }
   }
