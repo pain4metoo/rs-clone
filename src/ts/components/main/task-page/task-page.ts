@@ -74,7 +74,7 @@ export class TaskPage extends Control {
       const taskRating = 2;
       const maxRating = 3;
       const headingContainer = new Control(taskBlock.node, 'div', 'd-flex align-items-center mb-3');
-      const nameTask = new Control(headingContainer.node, 'span', 'me-3', `Задача ${i + 1}`);
+      const nameTask = new Control(headingContainer.node, 'span', 'me-3 fw-semibold', `Задача ${i + 1}`);
       const starsContainer = new Control(headingContainer.node, 'div', 'd-flex mb-2');
       for (let n = 0; n < maxRating; n += 1) {
         const iconStar = new Control(starsContainer.node, 'i', 'bi bi-star');
@@ -88,6 +88,8 @@ export class TaskPage extends Control {
         </svg>`;
         }
       }
+      const content = new Control(taskBlock.node, 'div', 'container mb-5');
+      content.node.innerHTML = task.content;
     });
   }
 

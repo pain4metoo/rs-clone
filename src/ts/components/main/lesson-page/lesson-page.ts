@@ -4,12 +4,14 @@ import Control from '../../../common/control';
 import { state } from '../../../common/state';
 import { LessonData, TaskData, TestData } from '../../../common/state-types';
 import { PagesList } from '../main';
+import { Places } from '../../../api/types';
 
 import './lesson-page.scss';
 
 export class LessonPage extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5');
+    window.scrollTo(0, 0);
     const lesson = state.getLesson();
     const lessonId = lesson.id;
     const lessonName = lesson.name;
@@ -81,7 +83,9 @@ export class LessonPage extends Control {
     buttonTest.node.type = 'button';
     buttonTest.node.onclick = (): void => {
       this.switchPage(PagesList.testPage, lessonId);
-      this.addLessonToDone(lessonId, user);
+      if (state.getAuthUser()) {
+        this.addLessonToDone(lessonId, user);
+      }
     };
 
     const buttonTask: Control<HTMLButtonElement> = new Control(
@@ -93,7 +97,9 @@ export class LessonPage extends Control {
     buttonTask.node.type = 'button';
     buttonTask.node.onclick = (): void => {
       this.switchPage(PagesList.taskPage, lessonId);
-      this.addLessonToDone(lessonId, user);
+      if (state.getAuthUser()) {
+        this.addLessonToDone(lessonId, user);
+      }
     };
 
     const buttonsPrevNextContainer = new Control(this.node, 'div', 'd-flex justify-content-sm-around mb-5');
@@ -118,9 +124,14 @@ export class LessonPage extends Control {
       'Перейти к следующему уроку'
     );
     buttonNext.node.type = 'button';
+    if (lessonId === state.getCategories(Places.lessons).length) {
+      buttonNext.node.classList.add('disabled');
+    }
     buttonNext.node.onclick = (): void => {
       this.switchPage(PagesList.lessonPage, lessonId + 1);
-      this.addLessonToDone(lessonId, user);
+      if (state.getAuthUser()) {
+        this.addLessonToDone(lessonId, user);
+      }
     };
 
     if (state.getAuthUser()) {
