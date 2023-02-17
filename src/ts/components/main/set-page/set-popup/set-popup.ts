@@ -1,6 +1,7 @@
 import Control from '../../../../common/control';
 import { state } from '../../../../common/state';
 import { StateOptions } from '../../../../common/state-types';
+import './popup.scss';
 
 export class SetPopup extends Control {
   constructor(parentNode: HTMLElement) {
@@ -12,7 +13,7 @@ export class SetPopup extends Control {
     this.node.setAttribute('aria-labelledby', 'staticBackdropLabel');
     this.node.setAttribute('aria-hidden', 'true');
 
-    const modalDialog = new Control(this.node, 'div', 'modal-dialog');
+    const modalDialog = new Control(this.node, 'div', 'modal-dialog modal-position');
     const modalContent = new Control(modalDialog.node, 'div', 'modal-content');
     const modalHeader = new Control(modalContent.node, 'div', 'modal-header');
     const modalTitle = new Control(modalHeader.node, 'h1', 'modal-title', 'Внимание!');

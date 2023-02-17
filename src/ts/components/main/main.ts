@@ -50,7 +50,7 @@ export class Main extends Control {
       this.mainInner.node.remove();
     }
 
-    this.mainInner = new Control(this.node, 'div', 'main_inner container');
+    this.mainInner = new Control(this.node, 'div', 'main_inner card_anim container');
 
     const currentPageName: PagesList = state.getCurrentPage().name;
 

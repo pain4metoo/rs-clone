@@ -9,7 +9,7 @@ import './auth-page.scss';
 
 export class AuthPage extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'form container border border-primary w-auto p-3');
+    super(parentNode, 'div', 'form container w-auto p-3');
 
     const form = new Control(this.node, 'form');
 

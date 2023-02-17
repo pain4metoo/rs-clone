@@ -11,7 +11,7 @@ import { SetPopup } from './set-popup/set-popup';
 export class SetPage extends Control {
   private popup!: SetPopup;
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'set container border');
+    super(parentNode, 'div', 'set container');
     const setTitle = new Control(this.node, 'h2', 'h2 display-2 text-center', 'Настройки');
     const setInner = new Control(this.node, 'div', 'set_inner container d-flex justify-content-between');
     const innerLeft = new Control(setInner.node, 'div', 'set_left');
