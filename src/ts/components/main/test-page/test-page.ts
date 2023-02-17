@@ -75,6 +75,9 @@ export class TestPage extends Control {
     }
 
     this.renderTestContent(this.node, testQuestions);
+    const checkButtonWrapper = new Control(this.node, 'div', 'd-flex justify-content-center')
+    const checkButton: Control<HTMLButtonElement> = new Control(checkButtonWrapper.node, 'button', 'btn btn-primary btn-lg fs-3 mb-5', 'Проверить результат');
+    checkButton.node.onclick = ():void => this.checkTest(testQuestions);
 
     const buttonsTestsTasksContainer = new Control(this.node, 'div', 'd-grid gap-2 col-2 mx-auto mb-5');
     const buttonTask: Control<HTMLButtonElement> = new Control(
@@ -124,13 +127,27 @@ export class TestPage extends Control {
       this.switchPage(PagesList.testPage, testId + 1);
     };
   }
+  
+  private checkTest(questions: Array<TestQuestion>): void {
+    const questionsCount = questions.length;
+    let rightAnswersCount = 0;
+    this.userAnswersForTest.forEach((e) => {
+      const rightAnswer = questions.filter((el) => el.id === e.questionId)[0].rightAnswer.sort((a, b) => a - b);
+      const usersAnswer = e.answersId.sort((a, b) => a - b);
+      if (rightAnswer.join('') === usersAnswer.join('')) {
+        rightAnswersCount += 1
+      }      
+    })
+    console.log(rightAnswersCount);    
+  }
 
   private renderTestContent(node: HTMLElement, questions: Array<TestQuestion>) {
     const questionsWrapper = new Control(node, 'div', 'container mb-5');
     questions.forEach((e) => {
       const question = new Control(questionsWrapper.node, 'div');
       new Control(question.node, 'b', 'mt-5', `Вопрос №${e.id}:`);
-      new Control(question.node, 'p', 'mb-4', e.question);
+      const questionText = new Control(question.node, 'p', 'mb-4');
+      questionText.node.innerHTML = e.question;      
       e.answers.forEach((el) => {
         const answerWrapper = new Control(question.node, 'div', 'form-check');
         const input: Control<HTMLInputElement> = new Control(answerWrapper.node, 'input', 'form-check-input');
@@ -159,7 +176,6 @@ export class TestPage extends Control {
       isAnswerExist = true;
     }
     if (node.checked) {
-      console.log('checked');
       if (!isAnswerExist) {
         if (isQuestionExist) {
           if (node.type === 'checkbox') {
@@ -179,8 +195,7 @@ export class TestPage extends Control {
         const index = currentQuestion[0].answersId.indexOf(answerId);
         currentQuestion[0].answersId.splice(index, 1);
       }
-    }
-    console.log(this.userAnswersForTest);    
+    }   
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
