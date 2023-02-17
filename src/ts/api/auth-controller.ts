@@ -1,5 +1,6 @@
 import { Places, UserData, UserResponse } from './types';
 import { baseUrl, path } from './routes';
+import { state } from '../common/state';
 
 export class AuthController {
   public static async isAuthUser(login: string, password: string): Promise<void | UserData> {
@@ -28,19 +29,24 @@ export class AuthController {
   }
 
   public static async createNewUser(login: string, password: string, name: string): Promise<UserData | void> {
-    // eslint-disable-next-line no-useless-catch
     try {
       const user: Partial<UserData> = {
         email: login,
         password: password,
         name: name,
         place: Places.lessons, //default value for a new user
-        done: { lessons: [{ id: 1 }], tests: [], tasks: [] }, //default value for a new user
+        done: { lessons: [], tests: [], tasks: [] }, //default value for a new user
         favourites: {
-          //default value for a new user
           lessons: [],
           tests: [],
           tasks: [],
+        },
+        settings: {
+          theme: false,
+          animation: false,
+          resetProgress: false,
+          sound: true,
+          volume: 0.4,
         },
       };
 

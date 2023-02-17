@@ -7,7 +7,7 @@ export class HeaderUnauth extends Control {
     super(parentNode, 'ul', 'navbar-nav list-group');
     const listArr: Array<PagesList> = state.getHeaderPages().unAuthPages;
     listArr.forEach((page: PagesList) => {
-      const listItem = new Control(this.node, 'li', 'list text-center');
+      const listItem = new Control(this.node, 'li', 'list-group');
       const linkItem: Control<HTMLLinkElement> = new Control(
         listItem.node,
         'a',

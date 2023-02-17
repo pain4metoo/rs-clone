@@ -1,0 +1,14 @@
+.set {
+  padding: 1rem;
+  &_btn_inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &_btn {
+    font-size: 1.8rem;
+    max-width: 50rem;
+    width: 100%;
+    height: 6rem;
+  }
+}

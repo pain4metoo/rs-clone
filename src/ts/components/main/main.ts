@@ -13,6 +13,7 @@ import { StatistPage } from './statist-page/statist-page';
 import { TaskPage } from './task-page/task-page';
 import { TestPage } from './test-page/test-page';
 import { UnauthPage } from './unauth-page/unauth-page';
+import './main-page.scss';
 
 export enum PagesList {
   mainPage = 'Главная',
@@ -49,7 +50,7 @@ export class Main extends Control {
       this.mainInner.node.remove();
     }
 
-    this.mainInner = new Control(this.node, 'div', 'main_inner');
+    this.mainInner = new Control(this.node, 'div', 'main_inner container');
 
     const currentPageName: PagesList = state.getCurrentPage().name;
 

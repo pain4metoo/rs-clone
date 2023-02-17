@@ -38,7 +38,7 @@ export interface LessonData {
   category: string;
   id: number;
   name: string;
-  content: Array<LessonContent>;
+  content: Array<string>;
   comments: Array<CommentData>;
 }
 
@@ -91,4 +91,10 @@ export interface StateData {
 
 export enum StateOptions {
   changePage = 'change-page',
+  changeTheme = 'change-theme',
+  changeAnimation = 'change-animation',
+  changeProgress = 'change-progress',
+  changeSound = 'change-sound',
+  changeVolume = 'change-volume',
+  onLogUser = 'onlogin-user',
 }
