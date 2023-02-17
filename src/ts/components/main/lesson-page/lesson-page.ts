@@ -20,7 +20,7 @@ export class LessonPage extends Control {
     const user = state.getUser();
     const currentCategory = state.getCategories(Places.lessons).filter((e) => e.name === lessonCategory)[0];
     const firstLessonInCategory = currentCategory.items[0].id;
-    const lastLessonInCategory = currentCategory.items.reverse()[0].id;
+    const lastLessonInCategory = currentCategory.items.slice(-1)[0].id;
 
     const breadcrumbs = new Control(this.node, 'nav', 'breadcrumbs');
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');
