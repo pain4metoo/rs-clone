@@ -5,22 +5,33 @@ import { AnimationDark } from './animation/animation-dark';
 import { AnimationLight } from './animation/animation-light';
 import { Footer } from './footer/footer';
 import { Header } from './header/header';
+import { AudioEl } from './main/audio-el/audio-el';
 import { Main } from './main/main';
 
 export class App extends Control {
   animLight!: AnimationLight;
   animDark!: AnimationDark;
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'container-fluid');
+    super(parentNode, 'div', 'wrapper');
     new Header(this.node);
     new Main(this.node);
     new Footer(this.node);
+
     this.createAnimation();
+    this.createAudioSounds();
     state.onUpdate.add((type: StateOptions) => {
-      if (type === StateOptions.changeTheme) {
-        this.createAnimation();
+      switch (type) {
+        case StateOptions.changeTheme:
+          this.createAnimation();
+        case StateOptions.onLogUser:
+          this.createAnimation();
+          break;
       }
     });
+  }
+
+  private async createAudioSounds(): Promise<void> {
+    new AudioEl();
   }
 
   private async createAnimation(): Promise<void> {
@@ -31,11 +42,12 @@ export class App extends Control {
       this.animLight.destroy();
     }
     let settings = state.getSettings();
+    console.log(settings);
     if (settings.theme) {
-      this.animLight = new AnimationLight(this.node);
+      this.animLight = new AnimationLight(document.body);
       this.node.style.color = 'black';
     } else {
-      this.animDark = new AnimationDark(this.node);
+      this.animDark = new AnimationDark(document.body);
       this.node.style.color = 'white';
     }
   }

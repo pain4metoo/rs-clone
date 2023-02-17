@@ -1,13 +1,27 @@
 import Control from '../../common/control';
+import { state } from '../../common/state';
+import { StateOptions } from '../../common/state-types';
 import './animation-light.scss';
 
 export class AnimationLight extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'light');
+    super(parentNode, 'div', 'intro');
+    this.toggleAnimation();
+    state.onUpdate.add((type: StateOptions): void => {
+      switch (type) {
+        case StateOptions.changeAnimation:
+          this.toggleAnimation();
+          break;
+      }
+    });
+  }
 
-    const rayCount: number = 10;
-    for (let i = 1; i < rayCount; i++) {
-      new Control(this.node, 'div', `x${i}`);
+  private toggleAnimation(): void {
+    let settings = state.getSettings();
+    if (settings.animation) {
+      this.node.style.animation = 'none';
+    } else {
+      this.node.style.animation = 'hue-rotate 3s linear infinite';
     }
   }
 }

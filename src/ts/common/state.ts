@@ -36,6 +36,9 @@ class State {
 
   public setUserData(userData: UserData): void {
     this._data.user = userData;
+    this.onUpdate.emit(StateOptions.changeTheme);
+    this.onUpdate.emit(StateOptions.changeAnimation);
+    this.onUpdate.emit(StateOptions.changeProgress);
   }
 
   public setCategories(categories: Array<CategoryData>): void {
@@ -91,27 +94,31 @@ class State {
   public async setTheme(theme: boolean): Promise<void> {
     this._data.user.settings[SettingsItems.theme] = theme;
     this.onUpdate.emit(StateOptions.changeTheme);
-    await SettingsController.setSettings();
+    this.onUpdate.emit(StateOptions.changeAnimation);
   }
   public async setAnimation(animation: boolean): Promise<void> {
     this._data.user.settings[SettingsItems.animation] = animation;
     this.onUpdate.emit(StateOptions.changeAnimation);
-    await SettingsController.setSettings();
   }
   public async setProgress(progress: boolean): Promise<void> {
     this._data.user.settings[SettingsItems.resetProgress] = progress;
     this.onUpdate.emit(StateOptions.changeProgress);
-    await SettingsController.setSettings();
   }
   public async setSound(sound: boolean): Promise<void> {
     this._data.user.settings[SettingsItems.sound] = sound;
     this.onUpdate.emit(StateOptions.changeSound);
-    await SettingsController.setSettings();
   }
   public async setVolume(volume: number): Promise<void> {
     this._data.user.settings[SettingsItems.volume] = volume;
     this.onUpdate.emit(StateOptions.changeVolume);
+  }
+
+  public async saveSettings(): Promise<void> {
     await SettingsController.setSettings();
+  }
+
+  public setPassword(password: string): void {
+    this._data.user.password = password;
   }
 
   public getCurrentPage(): CurrentPage {
@@ -171,7 +178,7 @@ const initialState = {
     },
     settings: {
       theme: false,
-      animation: true,
+      animation: false,
       resetProgress: false,
       sound: true,
       volume: 0.4,

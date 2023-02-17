@@ -18,8 +18,8 @@ export enum SwitcherOption {
 enum SwitcherValues {
   darkTheme = 'Тёмная',
   lightTheme = 'Светлая',
-  animOn = 'Включить',
-  animOff = 'Выключить',
+  animOn = 'Включена',
+  animOff = 'Выключена',
   resetFalse = 'Прогресс будет сброшен',
   resetTrue = 'Обнулить прогресс',
 }
@@ -36,6 +36,8 @@ export class Switcher extends Control {
     const label: Control<HTMLLabelElement> = new Control(inputInner.node, 'label', 'form-check-label', options.option);
     label.node.setAttribute('for', options.name);
 
+    this.currentSettings(input.node, options, label.node);
+
     state.onUpdate.add((type: StateOptions): void => {
       let currentSettings = state.getSettings();
       switch (type) {
@@ -43,31 +45,72 @@ export class Switcher extends Control {
           if (options.name === SwitcherOption.theme) {
             if (currentSettings.theme) {
               label.node.textContent = SwitcherValues.lightTheme;
+              input.node.checked = true;
             } else {
               label.node.textContent = SwitcherValues.darkTheme;
+              input.node.checked = false;
             }
           }
           break;
         case StateOptions.changeAnimation:
           if (options.name === SwitcherOption.animation) {
             if (currentSettings.animation) {
-              label.node.textContent = SwitcherValues.animOn;
-            } else {
+              input.node.checked = true;
               label.node.textContent = SwitcherValues.animOff;
+            } else {
+              input.node.checked = false;
+              label.node.textContent = SwitcherValues.animOn;
             }
           }
           break;
         case StateOptions.changeProgress:
           if (options.name === SwitcherOption.progress) {
             if (currentSettings.resetProgress) {
+              input.node.checked = true;
               label.node.textContent = SwitcherValues.resetFalse;
             } else {
+              input.node.checked = false;
               label.node.textContent = SwitcherValues.resetTrue;
             }
           }
           break;
       }
     });
+  }
+
+  private currentSettings(input: HTMLInputElement, options: OptionsTypes, label: HTMLLabelElement) {
+    let settings = state.getSettings();
+    switch (options.name) {
+      case SwitcherOption.theme:
+        if (settings.theme) {
+          input.checked = true;
+          label.textContent = SwitcherValues.lightTheme;
+        } else {
+          input.checked = false;
+          label.textContent = SwitcherValues.darkTheme;
+        }
+        break;
+
+      case SwitcherOption.animation:
+        if (settings.animation) {
+          input.checked = true;
+          label.textContent = SwitcherValues.animOff;
+        } else {
+          input.checked = false;
+          label.textContent = SwitcherValues.animOn;
+        }
+        break;
+
+      case SwitcherOption.progress:
+        if (settings.resetProgress) {
+          label.textContent = SwitcherValues.resetFalse;
+          input.checked = true;
+        } else {
+          input.checked = false;
+          label.textContent = SwitcherValues.resetTrue;
+        }
+        break;
+    }
   }
 
   private async changeOption(option: string, inputState: boolean): Promise<void> {

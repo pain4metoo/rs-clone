@@ -1,6 +1,6 @@
 .start {
   width: 100%;
-  height: calc(100vh + 0px);
+  min-height: 100vh;
   position: absolute;
   overflow: hidden;
   background: radial-gradient(ellipse at center bottom, #1b2735 0%, #090a0f 100%);

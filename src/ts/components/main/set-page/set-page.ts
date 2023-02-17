@@ -5,7 +5,7 @@ import { Switcher } from './switcher-el/switcher';
 import { setData, SettingsData } from './set-data';
 import { SoundEl } from './sound-el/sound-el';
 import { state } from '../../../common/state';
-import { StateOptions } from '../../../common/state-types';
+import { ChangePassword } from './changePassword/change-password';
 
 export class SetPage extends Control {
   constructor(parentNode: HTMLElement) {
@@ -24,8 +24,22 @@ export class SetPage extends Control {
       }
     });
 
+    const changePassword = new ChangePassword(innerRight.node);
+
     const btnInner = new Control(this.node, 'div', 'set_btn_inner');
     const btnReset = new Control(btnInner.node, 'button', 'set_btn btn btn-primary', 'сбросить');
+    btnReset.node.onclick = () => this.resetSettings();
     const btnSave = new Control(btnInner.node, 'button', 'set_btn btn btn-primary', 'сохранить');
+    btnSave.node.onclick = () => this.saveSettings();
+  }
+
+  private resetSettings(): void {
+    state.setTheme(false);
+    state.setAnimation(false);
+    state.setProgress(false);
+  }
+
+  private saveSettings(): void {
+    state.saveSettings();
   }
 }
