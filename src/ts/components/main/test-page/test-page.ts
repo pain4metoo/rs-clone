@@ -1,3 +1,4 @@
+import * as bootstrap from 'bootstrap';
 import { DataController } from '../../../api/data-controller';
 import { UserData } from '../../../api/types';
 import Control from '../../../common/control';
@@ -13,6 +14,8 @@ interface UserAnswersForTest {
 
 export class TestPage extends Control {
   userAnswersForTest: Array<UserAnswersForTest>;
+  checkButton: Control<HTMLButtonElement>;
+
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5');
     const test = state.getTest();
@@ -75,9 +78,15 @@ export class TestPage extends Control {
     }
 
     this.renderTestContent(this.node, testQuestions);
-    const checkButtonWrapper = new Control(this.node, 'div', 'd-flex justify-content-center')
-    const checkButton: Control<HTMLButtonElement> = new Control(checkButtonWrapper.node, 'button', 'btn btn-primary btn-lg fs-3 mb-5', 'Проверить результат');
-    checkButton.node.onclick = ():void => this.checkTest(testQuestions);
+    const checkButtonWrapper = new Control(this.node, 'div', 'd-flex justify-content-center');
+    this.checkButton = new Control(
+      checkButtonWrapper.node,
+      'button',
+      'btn btn-success btn-lg fs-3 mb-5',
+      'Проверить результат'
+    );
+    this.checkButton.node.disabled = true;
+    this.checkButton.node.onclick = (): void => this.checkTest(testQuestions);
 
     const buttonsTestsTasksContainer = new Control(this.node, 'div', 'd-grid gap-2 col-2 mx-auto mb-5');
     const buttonTask: Control<HTMLButtonElement> = new Control(
@@ -127,7 +136,7 @@ export class TestPage extends Control {
       this.switchPage(PagesList.testPage, testId + 1);
     };
   }
-  
+
   private checkTest(questions: Array<TestQuestion>): void {
     const questionsCount = questions.length;
     let rightAnswersCount = 0;
@@ -135,10 +144,36 @@ export class TestPage extends Control {
       const rightAnswer = questions.filter((el) => el.id === e.questionId)[0].rightAnswer.sort((a, b) => a - b);
       const usersAnswer = e.answersId.sort((a, b) => a - b);
       if (rightAnswer.join('') === usersAnswer.join('')) {
-        rightAnswersCount += 1
-      }      
-    })
-    console.log(rightAnswersCount);    
+        rightAnswersCount += 1;
+      }
+    });
+    const result = (rightAnswersCount / questionsCount) * 100;
+    this.renderResultModal(result);
+  }
+
+  private renderResultModal(result: number): void {
+    const modal = new Control(this.node, 'div', 'modal fade');
+    modal.node.setAttribute('data-bs-backdrop', 'static');
+    modal.node.setAttribute('data-bs-keyboard', 'false');
+    const modalDialog = new Control(modal.node, 'div', 'modal-dialog');
+    const modalContent = new Control(modalDialog.node, 'div', 'modal-content');
+    const modalHeader = new Control(modalContent.node, 'div', 'modal-header');
+    new Control(modalHeader.node, 'h5', 'modal-title text-body', 'Ваш результат');
+    const modalCloseButton: Control<HTMLButtonElement> = new Control(modalHeader.node, 'button', 'btn-close');
+    modalCloseButton.node.setAttribute('data-bs-dismiss', 'modal');
+    modalCloseButton.node.setAttribute('aria-label', 'Закрыть');
+    modalCloseButton.node.onclick = (): void => modal.destroy();
+    const modalBody = new Control(modalContent.node, 'div', 'modal-body');
+    const modalText = new Control(modalBody.node, 'p', 'text-center display-3', `${result}%`);
+    if (result < 50) {
+      modalText.node.classList.add('text-danger');
+    } else if (result < 75) {
+      modalText.node.classList.add('text-primary');
+    } else {
+      modalText.node.classList.add('text-success');
+    }
+    const myModal = new bootstrap.Modal(modal.node);
+    myModal.show();
   }
 
   private renderTestContent(node: HTMLElement, questions: Array<TestQuestion>) {
@@ -147,7 +182,7 @@ export class TestPage extends Control {
       const question = new Control(questionsWrapper.node, 'div');
       new Control(question.node, 'b', 'mt-5', `Вопрос №${e.id}:`);
       const questionText = new Control(question.node, 'p', 'mb-4');
-      questionText.node.innerHTML = e.question;      
+      questionText.node.innerHTML = e.question;
       e.answers.forEach((el) => {
         const answerWrapper = new Control(question.node, 'div', 'form-check');
         const input: Control<HTMLInputElement> = new Control(answerWrapper.node, 'input', 'form-check-input');
@@ -158,21 +193,21 @@ export class TestPage extends Control {
           input.node.name = `question${e.id}`;
         }
         input.node.id = `question${e.id}-answer${el.id}`;
-        input.node.onchange = (): void => this.updateUserAnswersForTest(input.node, e.id, el.id);
+        input.node.onchange = (): void => this.updateUserAnswersForTest(input.node, e.id, el.id, questions);
         const label: Control<HTMLLabelElement> = new Control(answerWrapper.node, 'label', 'form-check-label', el.text);
         label.node.htmlFor = `question${e.id}-answer${el.id}`;
       });
-    });
+    });    
   }
 
-  private updateUserAnswersForTest(node: HTMLInputElement, questionId: number, answerId: number): void {
+  private updateUserAnswersForTest(node: HTMLInputElement, questionId: number, answerId: number, questions: Array<TestQuestion>): void {
     let isQuestionExist = false;
     let isAnswerExist = false;
     const currentQuestion = this.userAnswersForTest.filter((e) => e.questionId === questionId);
     if (currentQuestion.length > 0) {
       isQuestionExist = true;
     }
-    if (isQuestionExist && currentQuestion[0].answersId .includes(answerId)) {
+    if (isQuestionExist && currentQuestion[0].answersId.includes(answerId)) {
       isAnswerExist = true;
     }
     if (node.checked) {
@@ -182,7 +217,7 @@ export class TestPage extends Control {
             currentQuestion[0].answersId.push(answerId);
           } else {
             currentQuestion[0].answersId = [answerId];
-          }          
+          }
         } else {
           this.userAnswersForTest.push({
             questionId: questionId,
@@ -195,7 +230,10 @@ export class TestPage extends Control {
         const index = currentQuestion[0].answersId.indexOf(answerId);
         currentQuestion[0].answersId.splice(index, 1);
       }
-    }   
+    }
+    if (this.userAnswersForTest.length === questions.length ) {
+      this.checkButton.node.removeAttribute('disabled')
+    }    
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
