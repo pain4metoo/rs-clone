@@ -1,6 +1,8 @@
 import { DataController } from '../../../../api/data-controller';
 import Control from '../../../../common/control';
 import { state } from '../../../../common/state';
+import { StateOptions } from '../../../../common/state-types';
+import { SetPopup } from '../set-popup/set-popup';
 import './change-password.scss';
 
 export class ChangePassword extends Control {
@@ -20,7 +22,6 @@ export class ChangePassword extends Control {
       'Старый пароль'
     );
     oldLabel.node.setAttribute('for', 'floatingInput');
-
     const newInputInner = new Control(this.node, 'div', 'form-floating mb-3');
     const newInput: Control<HTMLInputElement> = new Control(newInputInner.node, 'input', 'form-control');
     newInput.node.setAttribute('type', 'password');
@@ -34,12 +35,35 @@ export class ChangePassword extends Control {
     );
     newLabel.node.setAttribute('for', 'floatingInput1');
 
-    const changeBtn = new Control(this.node, 'button', 'btn btn-primary', 'Сменить пароль');
-    changeBtn.node.onclick = () => this.changePassword(newInput.node.value);
+    const changeBtn: Control<HTMLButtonElement> = new Control(this.node, 'button', 'btn btn-primary', 'Сменить пароль');
+    changeBtn.node.setAttribute('type', 'button');
+    changeBtn.node.setAttribute('data-bs-toggle', 'modal');
+    changeBtn.node.setAttribute('data-bs-target', '#staticBackdrop');
+
+    changeBtn.node.onclick = () => this.changePassword(newInput.node.value, oldInput.node.value);
+
+    state.onUpdate.add((type: StateOptions) => {
+      switch (type) {
+        case StateOptions.changePassword:
+          let isValidPassword = state.getPasswordValidate();
+          if (isValidPassword) {
+            oldInput.node.classList.add('is-valid');
+            newInput.node.classList.add('is-valid');
+            oldInput.node.classList.remove('is-invalid');
+            newInput.node.classList.remove('is-invalid');
+          } else {
+            oldInput.node.classList.add('is-invalid');
+            oldInput.node.classList.remove('is-valid');
+            newInput.node.classList.add('is-invalid');
+            newInput.node.classList.remove('is-valid');
+          }
+          break;
+      }
+    });
   }
 
-  private async changePassword(newPassword: string): Promise<void> {
-    state.setPassword(newPassword);
+  private async changePassword(newPassword: string, oldPassword: string): Promise<void> {
+    state.setNewPassword(newPassword, oldPassword);
     await DataController.updateUserData();
   }
 }

@@ -40,13 +40,15 @@ export class AuthPage extends Control {
     if (user) {
       state.authUser();
       state.setUserData(user);
+      state.setPassword(password);
       this.switchPage(user);
     }
   }
 
   private async switchPage(user: UserData): Promise<void> {
     const page: Places = user.place;
-    const currentPageId = user.done[page][0].id;
+
+    let currentPageId = user.done[page][0]?.id || 1;
 
     let data: LessonData | TestData | TaskData;
     switch (page) {

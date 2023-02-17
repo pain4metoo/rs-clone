@@ -6,8 +6,10 @@ import { setData, SettingsData } from './set-data';
 import { SoundEl } from './sound-el/sound-el';
 import { state } from '../../../common/state';
 import { ChangePassword } from './changePassword/change-password';
+import { SetPopup } from './set-popup/set-popup';
 
 export class SetPage extends Control {
+  private popup!: SetPopup;
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'set container border');
     const setTitle = new Control(this.node, 'h2', 'h2 display-2 text-center', 'Настройки');
@@ -29,14 +31,30 @@ export class SetPage extends Control {
     const btnInner = new Control(this.node, 'div', 'set_btn_inner');
     const btnReset = new Control(btnInner.node, 'button', 'set_btn btn btn-primary', 'сбросить');
     btnReset.node.onclick = () => this.resetSettings();
+    btnReset.node.setAttribute('type', 'button');
+    btnReset.node.setAttribute('data-bs-toggle', 'modal');
+    btnReset.node.setAttribute('data-bs-target', '#staticBackdrop');
     const btnSave = new Control(btnInner.node, 'button', 'set_btn btn btn-primary', 'сохранить');
     btnSave.node.onclick = () => this.saveSettings();
+    btnSave.node.setAttribute('type', 'button');
+    btnSave.node.setAttribute('data-bs-toggle', 'modal');
+    btnSave.node.setAttribute('data-bs-target', '#staticBackdrop');
+
+    this.createPopup();
+  }
+
+  private createPopup(): void {
+    if (this.popup) {
+      this.popup.destroy();
+    }
+    this.popup = new SetPopup(this.node);
   }
 
   private resetSettings(): void {
     state.setTheme(false);
     state.setAnimation(false);
     state.setProgress(false);
+    state.resetSettings();
   }
 
   private saveSettings(): void {

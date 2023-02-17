@@ -97,4 +97,7 @@ export enum StateOptions {
   changeSound = 'change-sound',
   changeVolume = 'change-volume',
   onLogUser = 'onlogin-user',
+  changePassword = 'change-password',
+  resetSettings = 'reset-settings',
+  saveSettings = 'save-settings',
 }
