@@ -6,7 +6,13 @@ import { LessonData, TaskData, TestData, TestQuestion } from '../../../common/st
 import { PagesList } from '../main';
 import './test-page.scss';
 
+interface UserAnswersForTest {
+  questionId: number;
+  answersId: Array<number>;
+}
+
 export class TestPage extends Control {
+  userAnswersForTest: Array<UserAnswersForTest>;
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5');
     const test = state.getTest();
@@ -14,6 +20,7 @@ export class TestPage extends Control {
     const testName = test.name;
     const testQuestions = test.questions;
     const user = state.getUser();
+    this.userAnswersForTest = [];
 
     const breadcrumbs = new Control(this.node, 'nav', 'breadcrumbs');
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');
@@ -68,8 +75,7 @@ export class TestPage extends Control {
     }
 
     this.renderTestContent(this.node, testQuestions);
-    // const content = new Control(this.node, 'div', 'container mb-5');
-    // content.node.innerHTML = lessonContent;
+
     const buttonsTestsTasksContainer = new Control(this.node, 'div', 'd-grid gap-2 col-2 mx-auto mb-5');
     const buttonTask: Control<HTMLButtonElement> = new Control(
       buttonsTestsTasksContainer.node,
@@ -126,19 +132,55 @@ export class TestPage extends Control {
       new Control(question.node, 'b', 'mt-5', `Вопрос №${e.id}:`);
       new Control(question.node, 'p', 'mb-4', e.question);
       e.answers.forEach((el) => {
-        const answerWrapper = new Control(question.node, 'div', 'form-check')
+        const answerWrapper = new Control(question.node, 'div', 'form-check');
         const input: Control<HTMLInputElement> = new Control(answerWrapper.node, 'input', 'form-check-input');
         if (e.rightAnswer.length > 1) {
           input.node.type = 'checkbox';
         } else {
           input.node.type = 'radio';
-          input.node.name = `question${e.id}`
-        }        
+          input.node.name = `question${e.id}`;
+        }
         input.node.id = `question${e.id}-answer${el.id}`;
+        input.node.onchange = (): void => this.updateUserAnswersForTest(input.node, e.id, el.id);
         const label: Control<HTMLLabelElement> = new Control(answerWrapper.node, 'label', 'form-check-label', el.text);
         label.node.htmlFor = `question${e.id}-answer${el.id}`;
-      })
-    })    
+      });
+    });
+  }
+
+  private updateUserAnswersForTest(node: HTMLInputElement, questionId: number, answerId: number): void {
+    let isQuestionExist = false;
+    let isAnswerExist = false;
+    const currentQuestion = this.userAnswersForTest.filter((e) => e.questionId === questionId);
+    if (currentQuestion.length > 0) {
+      isQuestionExist = true;
+    }
+    if (isQuestionExist && currentQuestion[0].answersId .includes(answerId)) {
+      isAnswerExist = true;
+    }
+    if (node.checked) {
+      console.log('checked');
+      if (!isAnswerExist) {
+        if (isQuestionExist) {
+          if (node.type === 'checkbox') {
+            currentQuestion[0].answersId.push(answerId);
+          } else {
+            currentQuestion[0].answersId = [answerId];
+          }          
+        } else {
+          this.userAnswersForTest.push({
+            questionId: questionId,
+            answersId: [answerId],
+          });
+        }
+      }
+    } else {
+      if (isAnswerExist) {
+        const index = currentQuestion[0].answersId.indexOf(answerId);
+        currentQuestion[0].answersId.splice(index, 1);
+      }
+    }
+    console.log(this.userAnswersForTest);    
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
