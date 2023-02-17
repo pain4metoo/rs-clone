@@ -123,6 +123,7 @@ class State {
         tests: [],
         tasks: [],
       };
+      this._data.user.settings.resetProgress = false;
       await DataController.updateUserData();
     }
   }

@@ -54,6 +54,8 @@ export class SetPage extends Control {
     state.setTheme(false);
     state.setAnimation(false);
     state.setProgress(false);
+    state.setSound(true);
+    state.setVolume(0.4);
     state.resetSettings();
   }
 

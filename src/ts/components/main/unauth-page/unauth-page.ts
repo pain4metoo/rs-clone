@@ -25,6 +25,7 @@ export class UnauthPage extends Control {
     const passInput: Control<HTMLInputElement> = new Control(passInner.node, 'input', 'form-control');
     passInput.node.id = 'InputPassword';
     passInput.node.type = 'password';
+    passInput.node.autocomplete = 'off';
 
     const nameInner = new Control(form.node, 'div', 'mb-3');
     const nameLabel: Control<HTMLLabelElement> = new Control(nameInner.node, 'label', 'form-label', 'Имя');

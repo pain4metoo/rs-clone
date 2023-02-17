@@ -28,6 +28,7 @@ export class AuthPage extends Control {
     const passInput: Control<HTMLInputElement> = new Control(passInner.node, 'input', 'form-control');
     passInput.node.id = 'InputPassword';
     passInput.node.type = 'password';
+    passInput.node.autocomplete = 'off';
 
     const onLogBtn: Control<HTMLButtonElement> = new Control(this.node, 'button', 'btn btn-primary btn-lg', 'Войти');
     onLogBtn.node.type = 'button';

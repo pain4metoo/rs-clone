@@ -11,7 +11,7 @@ export class HeaderUnauth extends Control {
       const linkItem: Control<HTMLLinkElement> = new Control(
         listItem.node,
         'a',
-        'list-group-item list-group-item-action'
+        'list-group-item list-group-item-action text-center'
       );
       linkItem.node.onclick = (): void => this.changeMainPages(page);
       linkItem.node.href = '#';
