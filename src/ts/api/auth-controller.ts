@@ -21,7 +21,7 @@ export class AuthController {
       if (!response.ok) {
         throw new Error(`${response.status}`);
       }
-      const data: UserResponse = await response.json();
+      const data: UserResponse = await response.json();      
       return data.user;
     } catch (err) {
       console.log(err);
@@ -34,8 +34,8 @@ export class AuthController {
         email: login,
         password: password,
         name: name,
-        place: Places.lessons,
-        done: { lessons: [{ id: 1 }], tests: [], tasks: [] },
+        place: Places.lessons, //default value for a new user
+        done: { lessons: [], tests: [], tasks: [] }, //default value for a new user
         favourites: {
           lessons: [],
           tests: [],
