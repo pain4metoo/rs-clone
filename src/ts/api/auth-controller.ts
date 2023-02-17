@@ -21,7 +21,7 @@ export class AuthController {
       if (!response.ok) {
         throw new Error(`${response.status}`);
       }
-      const data: UserResponse = await response.json();      
+      const data: UserResponse = await response.json();
       return data.user;
     } catch (err) {
       console.log(err);

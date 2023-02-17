@@ -68,7 +68,7 @@ export class LessonPage extends Control {
       };
     }
 
-    const content = new Control(this.node, 'div', 'container mb-5');      
+    const content = new Control(this.node, 'div', 'container mb-5');
     content.node.innerHTML = lessonContent;
 
     const buttonsTestsTasksContainer = new Control(this.node, 'div', 'd-grid gap-2 col-2 mx-auto mb-5');
