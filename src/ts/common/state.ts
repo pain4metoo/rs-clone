@@ -1,4 +1,5 @@
 import { SettingsController } from '../api/settings-controller';
+import { DataController } from '../api/data-controller';
 import { CategoryData, Places, Settings, SettingsItems, UserData } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
@@ -116,6 +117,14 @@ class State {
   public async saveSettings(): Promise<void> {
     this.onUpdate.emit(StateOptions.saveSettings);
     await SettingsController.setSettings();
+    if (this._data.user.settings.resetProgress) {
+      this._data.user.done = {
+        lessons: [],
+        tests: [],
+        tasks: [],
+      };
+      await DataController.updateUserData();
+    }
   }
 
   public setPassword(currentPassword: string): void {
