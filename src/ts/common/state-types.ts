@@ -38,7 +38,7 @@ export interface LessonData {
   category: string;
   id: number;
   name: string;
-  content: Array<LessonContent>;
+  content: Array<string>;
   comments: Array<CommentData>;
 }
 
