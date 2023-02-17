@@ -48,8 +48,13 @@ export class AuthPage extends Control {
 
   private async switchPage(user: UserData): Promise<void> {
     const page: Places = user.place;
-
-    let currentPageId = user.done[page][0]?.id || 1;
+    let currentPageId: number = 0;
+    if (user.done[page].length === 0) {
+      state.setNewPage(PagesList.mainPage);
+      return;
+    } else {
+      currentPageId = user.done[page].reverse()[0].id;
+    }
 
     let data: LessonData | TestData | TaskData;
     switch (page) {
