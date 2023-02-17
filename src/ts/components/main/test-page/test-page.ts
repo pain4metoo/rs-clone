@@ -2,7 +2,7 @@ import { DataController } from '../../../api/data-controller';
 import { UserData } from '../../../api/types';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
-import { LessonData, TaskData, TestData } from '../../../common/state-types';
+import { LessonData, TaskData, TestData, TestQuestion } from '../../../common/state-types';
 import { PagesList } from '../main';
 import './test-page.scss';
 
@@ -67,6 +67,7 @@ export class TestPage extends Control {
       };
     }
 
+    this.renderTestContent(this.node, testQuestions);
     // const content = new Control(this.node, 'div', 'container mb-5');
     // content.node.innerHTML = lessonContent;
     const buttonsTestsTasksContainer = new Control(this.node, 'div', 'd-grid gap-2 col-2 mx-auto mb-5');
@@ -104,7 +105,7 @@ export class TestPage extends Control {
     } else {
       buttonPrev.node.classList.remove('disabled');
       buttonPrev.node.onclick = (): Promise<void> => this.switchPage(PagesList.testPage, testId - 1);
-    }    
+    }
 
     const buttonNext: Control<HTMLButtonElement> = new Control(
       buttonsPrevNextContainer.node,
@@ -114,74 +115,95 @@ export class TestPage extends Control {
     );
     buttonNext.node.type = 'button';
     buttonNext.node.onclick = (): void => {
-      this.switchPage(PagesList.testPage, testId + 1);      
+      this.switchPage(PagesList.testPage, testId + 1);
     };
-    }
-
-    private async switchPage(page: string, id: number): Promise<void> {
-      let data: LessonData | TestData | TaskData;
-      switch (page) {
-        case PagesList.mainPage:
-          state.setNewPage(PagesList.mainPage);
-          break;
-        case PagesList.testsPage:
-          state.setNewPage(PagesList.testsPage);
-          break;
-        case PagesList.testPage:
-          data = await DataController.getTest(id);
-          state.setTest(data);
-          state.setNewPage(PagesList.testPage);
-          break;
-        case PagesList.taskPage:
-          data = await DataController.getTask(id);
-          state.setTask(data);
-          state.setNewPage(PagesList.taskPage);
-          break;
-        case PagesList.lessonPage:
-          data = await DataController.getLesson(id);
-          state.setLesson(data);
-          state.setNewPage(PagesList.lessonPage);
-          break;
-      }
-    }
-  
-    private isTestDone(id: number, user: UserData): boolean {
-      const doneTests = user.done.tests;
-      const idAllLessonsDone = doneTests.map((e) => e.id);
-      const result = idAllLessonsDone.find((idDone) => id === +idDone);
-      return result ? true : false;
-    }
-  
-    private isTestInFavourites(id: number, user: UserData): boolean {
-      const userFavoritesTests = user.favourites.tests;
-      const userFavoritesTestsId = userFavoritesTests.map((e) => e.id);
-      return userFavoritesTestsId.includes(id) ? true : false;
-    }
-  
-    private addTestToFavourites(id: number, user: UserData): void {
-      if (!this.isTestInFavourites(id, user)) {
-        user.favourites.lessons.push({ id: Number(`${id}`) });
-        state.setUserData(user);
-        DataController.updateUserData();
-      }
-    }
-  
-    private removeTestFromFavourites(id: number, user: UserData): void {
-      if (this.isTestInFavourites(id, user)) {
-        user.favourites.lessons = user.favourites.lessons.filter((e) => e.id !== id);
-        state.setUserData(user);
-        DataController.updateUserData();
-      }
-    }
-  
-    private addTestToDone(id: number, user: UserData): void {
-      const doneLessons = user.done.lessons;
-      const idAllLessonsDone = doneLessons.map((e) => e.id);
-      if (!idAllLessonsDone.includes(id)) {
-        user.done.lessons.push({ id: Number(`${id}`) });
-        state.setUserData(user);
-        DataController.updateUserData();
-      }
-    }
-
   }
+
+  private renderTestContent(node: HTMLElement, questions: Array<TestQuestion>) {
+    const questionsWrapper = new Control(node, 'div', 'container mb-5');
+    questions.forEach((e) => {
+      const question = new Control(questionsWrapper.node, 'div');
+      new Control(question.node, 'b', 'mt-5', `Вопрос №${e.id}:`);
+      new Control(question.node, 'p', 'mb-4', e.question);
+      e.answers.forEach((el) => {
+        const answerWrapper = new Control(question.node, 'div', 'form-check')
+        const input: Control<HTMLInputElement> = new Control(answerWrapper.node, 'input', 'form-check-input');
+        if (e.rightAnswer.length > 1) {
+          input.node.type = 'checkbox';
+        } else {
+          input.node.type = 'radio';
+          input.node.name = `question${e.id}`
+        }        
+        input.node.id = `question${e.id}-answer${el.id}`;
+        const label: Control<HTMLLabelElement> = new Control(answerWrapper.node, 'label', 'form-check-label', el.text);
+        label.node.htmlFor = `question${e.id}-answer${el.id}`;
+      })
+    })    
+  }
+
+  private async switchPage(page: string, id: number): Promise<void> {
+    let data: LessonData | TestData | TaskData;
+    switch (page) {
+      case PagesList.mainPage:
+        state.setNewPage(PagesList.mainPage);
+        break;
+      case PagesList.testsPage:
+        state.setNewPage(PagesList.testsPage);
+        break;
+      case PagesList.testPage:
+        data = await DataController.getTest(id);
+        state.setTest(data);
+        state.setNewPage(PagesList.testPage);
+        break;
+      case PagesList.taskPage:
+        data = await DataController.getTask(id);
+        state.setTask(data);
+        state.setNewPage(PagesList.taskPage);
+        break;
+      case PagesList.lessonPage:
+        data = await DataController.getLesson(id);
+        state.setLesson(data);
+        state.setNewPage(PagesList.lessonPage);
+        break;
+    }
+  }
+
+  private isTestDone(id: number, user: UserData): boolean {
+    const doneTests = user.done.tests;
+    const idAllLessonsDone = doneTests.map((e) => e.id);
+    const result = idAllLessonsDone.find((idDone) => id === +idDone);
+    return result ? true : false;
+  }
+
+  private isTestInFavourites(id: number, user: UserData): boolean {
+    const userFavoritesTests = user.favourites.tests;
+    const userFavoritesTestsId = userFavoritesTests.map((e) => e.id);
+    return userFavoritesTestsId.includes(id) ? true : false;
+  }
+
+  private addTestToFavourites(id: number, user: UserData): void {
+    if (!this.isTestInFavourites(id, user)) {
+      user.favourites.lessons.push({ id: Number(`${id}`) });
+      state.setUserData(user);
+      DataController.updateUserData();
+    }
+  }
+
+  private removeTestFromFavourites(id: number, user: UserData): void {
+    if (this.isTestInFavourites(id, user)) {
+      user.favourites.lessons = user.favourites.lessons.filter((e) => e.id !== id);
+      state.setUserData(user);
+      DataController.updateUserData();
+    }
+  }
+
+  private addTestToDone(id: number, user: UserData): void {
+    const doneLessons = user.done.lessons;
+    const idAllLessonsDone = doneLessons.map((e) => e.id);
+    if (!idAllLessonsDone.includes(id)) {
+      user.done.lessons.push({ id: Number(`${id}`) });
+      state.setUserData(user);
+      DataController.updateUserData();
+    }
+  }
+}
