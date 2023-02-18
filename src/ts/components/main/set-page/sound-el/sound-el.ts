@@ -22,6 +22,7 @@ export class SoundEl extends Control {
     input.node.type = 'range';
     input.node.id = 'sound-range';
     input.node.onchange = (): void => this.changeVolume(input.node.value);
+    this.currentSettings(input.node, soundImage.node);
     state.onUpdate.add((type: StateOptions): void => {
       let currentSet = state.getSettings();
       switch (type) {
@@ -69,6 +70,16 @@ export class SoundEl extends Control {
           state.setVolume(+this.oldVolume / 100);
         }
         break;
+    }
+  }
+
+  private currentSettings(input: HTMLInputElement, soundImg: HTMLImageElement) {
+    let settings = state.getSettings();
+    input.value = (settings.volume * 100).toString();
+    if (settings.volume === 0) {
+      soundImg.src = soundOff;
+    } else {
+      soundImg.src = soundOn;
     }
   }
 }

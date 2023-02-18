@@ -47,6 +47,7 @@ export class AuthController {
           resetProgress: false,
           sound: true,
           volume: 0.4,
+          isValid: false,
         },
       };
 
