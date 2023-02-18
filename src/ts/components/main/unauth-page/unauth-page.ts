@@ -6,7 +6,7 @@ import './unauth-page.scss';
 
 export class UnauthPage extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'form container border border-primary w-auto p-3');
+    super(parentNode, 'div', 'form container w-auto p-3');
 
     const form = new Control(this.node, 'form');
 
@@ -25,6 +25,7 @@ export class UnauthPage extends Control {
     const passInput: Control<HTMLInputElement> = new Control(passInner.node, 'input', 'form-control');
     passInput.node.id = 'InputPassword';
     passInput.node.type = 'password';
+    passInput.node.autocomplete = 'off';
 
     const nameInner = new Control(form.node, 'div', 'mb-3');
     const nameLabel: Control<HTMLLabelElement> = new Control(nameInner.node, 'label', 'form-label', 'Имя');
@@ -50,6 +51,7 @@ export class UnauthPage extends Control {
       state.authUser();
       state.setUserData(user);
       state.setNewPage(PagesList.mainPage);
+      state.setPassword(password);
     }
   }
 }

@@ -51,6 +51,7 @@ export interface Settings {
   resetProgress: boolean;
   sound: boolean;
   volume: number;
+  isValid: boolean;
 }
 
 export enum SettingsItems {

@@ -10,8 +10,7 @@ import './lesson-page.scss';
 
 export class LessonPage extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'container py-5');
-    window.scrollTo(0, 0);
+    super(parentNode, 'div', 'container py-5 lesson');
     const lesson = state.getLesson();
     const lessonId = lesson.id;
     const lessonName = lesson.name;

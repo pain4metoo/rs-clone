@@ -1,4 +1,5 @@
 import { SettingsController } from '../api/settings-controller';
+import { DataController } from '../api/data-controller';
 import { CategoryData, Places, Settings, SettingsItems, UserData } from '../api/types';
 import { PagesList } from '../components/main/main';
 import Signal from './signal';
@@ -114,11 +115,39 @@ class State {
   }
 
   public async saveSettings(): Promise<void> {
+    this.onUpdate.emit(StateOptions.saveSettings);
     await SettingsController.setSettings();
+    if (this._data.user.settings.resetProgress) {
+      this._data.user.done = {
+        lessons: [],
+        tests: [],
+        tasks: [],
+      };
+      this._data.user.settings.resetProgress = false;
+      await DataController.updateUserData();
+    }
   }
 
-  public setPassword(password: string): void {
-    this._data.user.password = password;
+  public setPassword(currentPassword: string): void {
+    this._data.user.password = currentPassword;
+  }
+
+  public setNewPassword(newPassword: string, oldPassword: string): void {
+    if (oldPassword === this._data.user.password && newPassword.length > 3) {
+      this._data.user.password = newPassword;
+      this._data.user.settings.isValid = true;
+    } else {
+      this._data.user.settings.isValid = false;
+    }
+    this.onUpdate.emit(StateOptions.changePassword);
+  }
+
+  public resetSettings(): void {
+    this.onUpdate.emit(StateOptions.resetSettings);
+  }
+
+  public getPasswordValidate(): boolean {
+    return this._data.user.settings.isValid;
   }
 
   public getCurrentPage(): CurrentPage {
@@ -182,6 +211,7 @@ const initialState = {
       resetProgress: false,
       sound: true,
       volume: 0.4,
+      isValid: false,
     },
   },
   currentPage: { name: PagesList.mainPage },

@@ -2,4 +2,20 @@
   display: flex;
   flex: 1 0 auto;
   height: 100%;
+  &_inner {
+    -webkit-animation: mymove 5s infinite;
+    animation: mymove 5s infinite;
+  }
+}
+
+@-webkit-keyframes mymove {
+  50% {
+    box-shadow: 10px 20px 30px blue;
+  }
+}
+
+@keyframes mymove {
+  50% {
+    box-shadow: 10px 20px 30px blue;
+  }
 }

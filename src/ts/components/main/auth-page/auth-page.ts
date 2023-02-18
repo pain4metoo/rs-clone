@@ -9,7 +9,7 @@ import './auth-page.scss';
 
 export class AuthPage extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'form container border border-primary w-auto p-3');
+    super(parentNode, 'div', 'form container w-auto p-3');
 
     const form = new Control(this.node, 'form');
 
@@ -28,6 +28,7 @@ export class AuthPage extends Control {
     const passInput: Control<HTMLInputElement> = new Control(passInner.node, 'input', 'form-control');
     passInput.node.id = 'InputPassword';
     passInput.node.type = 'password';
+    passInput.node.autocomplete = 'off';
 
     const onLogBtn: Control<HTMLButtonElement> = new Control(this.node, 'button', 'btn btn-primary btn-lg', 'Войти');
     onLogBtn.node.type = 'button';
@@ -40,13 +41,20 @@ export class AuthPage extends Control {
     if (user) {
       state.authUser();
       state.setUserData(user);
+      state.setPassword(password);
       this.switchPage(user);
     }
   }
 
   private async switchPage(user: UserData): Promise<void> {
     const page: Places = user.place;
-    const currentPageId = user.done[page].slice(-1)[0].id;
+    let currentPageId: number = 0;
+    if (user.done[page].length === 0) {
+      state.setNewPage(PagesList.mainPage);
+      return;
+    } else {
+      currentPageId = user.done[page].reverse()[0].id;
+    }
 
     let data: LessonData | TestData | TaskData;
     switch (page) {
