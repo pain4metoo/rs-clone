@@ -17,7 +17,7 @@ export class AnimationLight extends Control {
   }
 
   private toggleAnimation(): void {
-    let settings = state.getSettings();
+    const settings = state.getSettings();
     if (settings.animation) {
       this.node.style.animation = 'none';
     } else {

@@ -35,7 +35,7 @@ export class SetPopup extends Control {
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
         case StateOptions.changePassword:
-          let isValidPassword = state.getPasswordValidate();
+          const isValidPassword = state.getPasswordValidate();
           if (isValidPassword) {
             modalMain.node.textContent = 'Вы изменили пароль!';
           } else {

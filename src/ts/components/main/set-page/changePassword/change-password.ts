@@ -47,7 +47,7 @@ export class ChangePassword extends Control {
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
         case StateOptions.changePassword:
-          let isValidPassword = state.getPasswordValidate();
+          const isValidPassword = state.getPasswordValidate();
           if (isValidPassword) {
             oldInput.node.classList.add('is-valid');
             newInput.node.classList.add('is-valid');

@@ -50,8 +50,8 @@ export interface TestAnswer {
 export interface TestQuestion {
   id: number;
   question: string;
-  answersVariants: Array<TestAnswer>;
-  answersRight: Array<number>;
+  answers: Array<TestAnswer>;
+  rightAnswer: Array<number>;
 }
 
 export interface TestData {
