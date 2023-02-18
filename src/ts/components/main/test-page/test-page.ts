@@ -76,6 +76,7 @@ export class TestPage extends Control {
         }
       };
     }
+    new Control(this.node, 'p', 'fst-italic ps-2 mb-4', 'Для прохождения теста нужно ответить правильно минимум на 70% вопросов');
 
     this.renderTestContent(this.node, testQuestions);
     const checkButtonWrapper = new Control(this.node, 'div', 'd-flex justify-content-center');
@@ -86,7 +87,7 @@ export class TestPage extends Control {
       'Проверить результат'
     );
     this.checkButton.node.disabled = true;
-    this.checkButton.node.onclick = (): void => this.checkTest(testQuestions);
+    this.checkButton.node.onclick = (): void => this.checkTest(testQuestions, testId);
 
     const buttonsTestsTasksContainer = new Control(this.node, 'div', 'd-grid gap-2 col-2 mx-auto mb-5');
     const buttonTask: Control<HTMLButtonElement> = new Control(
@@ -137,7 +138,7 @@ export class TestPage extends Control {
     };
   }
 
-  private checkTest(questions: Array<TestQuestion>): void {
+  private checkTest(questions: Array<TestQuestion>, id: number): void {
     const questionsCount = questions.length;
     let rightAnswersCount = 0;
     this.userAnswersForTest.forEach((e) => {
@@ -148,10 +149,10 @@ export class TestPage extends Control {
       }
     });
     const result = (rightAnswersCount / questionsCount) * 100;
-    this.renderResultModal(result);
+    this.renderResultModal(id, result);
   }
 
-  private renderResultModal(result: number): void {
+  private renderResultModal(id: number, result: number): void {
     const modal = new Control(this.node, 'div', 'modal fade');
     modal.node.setAttribute('data-bs-backdrop', 'static');
     modal.node.setAttribute('data-bs-keyboard', 'false');
@@ -167,10 +168,11 @@ export class TestPage extends Control {
     const modalText = new Control(modalBody.node, 'p', 'text-center display-3', `${result}%`);
     if (result < 50) {
       modalText.node.classList.add('text-danger');
-    } else if (result < 75) {
+    } else if (result < 70) {
       modalText.node.classList.add('text-primary');
     } else {
       modalText.node.classList.add('text-success');
+      this.addTestToDone(id, result)
     }
     const myModal = new bootstrap.Modal(modal.node);
     myModal.show();
@@ -292,13 +294,19 @@ export class TestPage extends Control {
     }
   }
 
-  private addTestToDone(id: number, user: UserData): void {
-    const doneLessons = user.done.lessons;
-    const idAllLessonsDone = doneLessons.map((e) => e.id);
-    if (!idAllLessonsDone.includes(id)) {
-      user.done.lessons.push({ id: Number(`${id}`) });
+  private addTestToDone(id: number, result: number): void {
+    const user = state.getUser();
+    const doneTests = user.done.tests;
+    const idAllTestsDone = doneTests.map((e) => e.id);
+    if (!idAllTestsDone.includes(id)) {
+      user.done.tests.push({ id, result });
       state.setUserData(user);
       DataController.updateUserData();
+    } else {
+      const current = user.done.tests.filter((e) => e.id === id)[0];
+      current.result = result;
     }
+
+    console.log(user.done.tests);    
   }
 }
