@@ -48,7 +48,7 @@ export class AuthPage extends Control {
 
   private async switchPage(user: UserData): Promise<void> {
     const page: Places = user.place;
-    let currentPageId: number = 0;
+    let currentPageId = 0;
     if (user.done[page].length === 0) {
       state.setNewPage(PagesList.mainPage);
       return;

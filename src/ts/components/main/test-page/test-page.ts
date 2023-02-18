@@ -18,6 +18,7 @@ export class TestPage extends Control {
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5');
+    window.scrollTo(0, 0)
     const test = state.getTest();
     const testId = test.id;
     const testName = test.name;
@@ -76,7 +77,12 @@ export class TestPage extends Control {
         }
       };
     }
-    new Control(this.node, 'p', 'fst-italic ps-2 mb-4', 'Для прохождения теста нужно ответить правильно минимум на 70% вопросов');
+    new Control(
+      this.node,
+      'p',
+      'fst-italic ps-2 mb-4',
+      'Для прохождения теста нужно ответить правильно минимум на 70% вопросов'
+    );
 
     this.renderTestContent(this.node, testQuestions);
     const checkButtonWrapper = new Control(this.node, 'div', 'd-flex justify-content-center');
@@ -172,7 +178,7 @@ export class TestPage extends Control {
       modalText.node.classList.add('text-primary');
     } else {
       modalText.node.classList.add('text-success');
-      this.addTestToDone(id, result)
+      this.addTestToDone(id, result);
     }
     const myModal = new bootstrap.Modal(modal.node);
     myModal.show();
@@ -199,10 +205,15 @@ export class TestPage extends Control {
         const label: Control<HTMLLabelElement> = new Control(answerWrapper.node, 'label', 'form-check-label', el.text);
         label.node.htmlFor = `question${e.id}-answer${el.id}`;
       });
-    });    
+    });
   }
 
-  private updateUserAnswersForTest(node: HTMLInputElement, questionId: number, answerId: number, questions: Array<TestQuestion>): void {
+  private updateUserAnswersForTest(
+    node: HTMLInputElement,
+    questionId: number,
+    answerId: number,
+    questions: Array<TestQuestion>
+  ): void {
     let isQuestionExist = false;
     let isAnswerExist = false;
     const currentQuestion = this.userAnswersForTest.filter((e) => e.questionId === questionId);
@@ -233,9 +244,9 @@ export class TestPage extends Control {
         currentQuestion[0].answersId.splice(index, 1);
       }
     }
-    if (this.userAnswersForTest.length === questions.length ) {
-      this.checkButton.node.removeAttribute('disabled')
-    }    
+    if (this.userAnswersForTest.length === questions.length) {
+      this.checkButton.node.removeAttribute('disabled');
+    }
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
@@ -307,6 +318,6 @@ export class TestPage extends Control {
       current.result = result;
     }
 
-    console.log(user.done.tests);    
+    console.log(user.done.tests);
   }
 }

@@ -41,7 +41,7 @@ export class App extends Control {
     if (this.animLight) {
       this.animLight.destroy();
     }
-    let settings = state.getSettings();
+    const settings = state.getSettings();
     if (settings.theme) {
       this.animLight = new AnimationLight(document.body);
       this.node.style.color = 'black';
