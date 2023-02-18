@@ -18,6 +18,9 @@ export class LessonPage extends Control {
     const lessonCategory = lesson.category;
     const lessonContent = lesson.content.join(`\n`);
     const user = state.getUser();
+    const currentCategory = state.getCategories(Places.lessons).filter((e) => e.name === lessonCategory)[0];
+    const firstLessonInCategory = currentCategory.items[0].id;
+    const lastLessonInCategory = currentCategory.items.slice(-1)[0].id;
 
     const breadcrumbs = new Control(this.node, 'nav', 'breadcrumbs');
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');
@@ -72,8 +75,7 @@ export class LessonPage extends Control {
     }
 
     const content = new Control(this.node, 'div', 'container mb-5');
-    content.node.innerHTML = lessonContent;
-
+    content.node.innerHTML = `${lessonContent}`;
     const buttonsTestsTasksContainer = new Control(this.node, 'div', 'd-grid gap-2 col-2 mx-auto mb-5');
     const buttonTest: Control<HTMLButtonElement> = new Control(
       buttonsTestsTasksContainer.node,
@@ -111,7 +113,7 @@ export class LessonPage extends Control {
       'Перейти к предыдущему уроку'
     );
     buttonPrev.node.type = 'button';
-    if (lessonId === 1) {
+    if (lessonId === firstLessonInCategory) {
       buttonPrev.node.classList.add('disabled');
     } else {
       buttonPrev.node.classList.remove('disabled');
@@ -125,7 +127,7 @@ export class LessonPage extends Control {
       'Перейти к следующему уроку'
     );
     buttonNext.node.type = 'button';
-    if (lessonId === state.getCategories(Places.lessons).length) {
+    if (lessonId === lastLessonInCategory) {
       buttonNext.node.classList.add('disabled');
     }
     buttonNext.node.onclick = (): void => {
