@@ -48,7 +48,7 @@ export class DataController {
     }
   }
 
-  public static async updateLessonComments(): Promise<LessonData | void> {
+  public static async updateLessonComments(): Promise<void> {
     try {
       const lesson = state.getLesson();
       const response: Response = await fetch(`${baseUrl}${path.lessons}/${lesson.id}`, {
