@@ -7,7 +7,7 @@ import { state } from '../../../../common/state';
 import { StateOptions } from '../../../../common/state-types';
 
 export class SoundEl extends Control {
-  oldVolume: string = '40';
+  oldVolume = '40';
   constructor(parentNode: HTMLElement, options: OptionsTypes) {
     super(parentNode, 'div', 'sound');
     const sountTitle = new Control(this.node, 'p', 'text-center display-6', options.name);
@@ -24,7 +24,7 @@ export class SoundEl extends Control {
     input.node.onchange = (): void => this.changeVolume(input.node.value);
     this.currentSettings(input.node, soundImage.node);
     state.onUpdate.add((type: StateOptions): void => {
-      let currentSet = state.getSettings();
+      const currentSet = state.getSettings();
       switch (type) {
         case StateOptions.changeSound:
           if (currentSet.sound) {
@@ -59,7 +59,7 @@ export class SoundEl extends Control {
   }
 
   private changeOption(option: string): void {
-    let currentSet = state.getSettings();
+    const currentSet = state.getSettings();
     switch (option) {
       case SwitcherOption.sound:
         if (currentSet.sound) {
@@ -74,7 +74,7 @@ export class SoundEl extends Control {
   }
 
   private currentSettings(input: HTMLInputElement, soundImg: HTMLImageElement) {
-    let settings = state.getSettings();
+    const settings = state.getSettings();
     input.value = (settings.volume * 100).toString();
     if (settings.volume === 0) {
       soundImg.src = soundOff;

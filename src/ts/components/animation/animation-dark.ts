@@ -21,7 +21,7 @@ export class AnimationDark extends Control {
   }
 
   private toggleAnimation(node: HTMLElement): void {
-    let settings = state.getSettings();
+    const settings = state.getSettings();
     if (settings.animation) {
       node.style.animation = 'none';
     } else {

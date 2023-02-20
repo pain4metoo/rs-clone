@@ -9,7 +9,7 @@ import { UserData } from '../../../api/types';
 export class TaskPage extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5');
-
+    window.scrollTo(0, 0)
     const task = state.getTask();
     const taskName = task.name;
     const taskId = task.id;

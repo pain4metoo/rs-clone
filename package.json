@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/pain4metoo/rs-clone#readme",
   "devDependencies": {
+    "@types/bootstrap": "^5.2.6",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "autoprefixer": "^10.4.13",
