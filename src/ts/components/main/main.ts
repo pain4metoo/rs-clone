@@ -43,6 +43,19 @@ export class Main extends Control {
         this.createNewPage();
       }
     });
+
+    state.onUpdate.add((type: StateOptions) => {
+      switch (type) {
+        case StateOptions.changeAnimation:
+          let isAnim = state.getAnim();
+          if (isAnim) {
+            this.mainInner.node.classList.remove('card_anim');
+          } else {
+            this.mainInner.node.classList.add('card_anim');
+          }
+          break;
+      }
+    });
   }
 
   private createNewPage(): void {
@@ -50,7 +63,12 @@ export class Main extends Control {
       this.mainInner.node.remove();
     }
 
-    this.mainInner = new Control(this.node, 'div', 'main_inner card_anim container');
+    this.mainInner = new Control(this.node, 'div', 'main_inner container');
+    if (!state.getAnim()) {
+      this.mainInner.node.classList.add('card_anim');
+    } else {
+      this.mainInner.node.classList.remove('card_anim');
+    }
 
     const currentPageName: PagesList = state.getCurrentPage().name;
 

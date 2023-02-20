@@ -146,6 +146,20 @@ class State {
     this.onUpdate.emit(StateOptions.resetSettings);
   }
 
+  public async setUserName(name: string): Promise<void> {
+    this._data.user.name = name;
+    await DataController.updateUserData();
+    state.onUpdate.emit(StateOptions.changeName);
+  }
+
+  public getAnim(): boolean {
+    return this._data.user.settings.animation;
+  }
+
+  public getCurrentName(): string {
+    return this._data.user.name;
+  }
+
   public getPasswordValidate(): boolean {
     return this._data.user.settings.isValid;
   }
