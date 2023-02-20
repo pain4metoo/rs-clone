@@ -10,7 +10,8 @@ import './lesson-page.scss';
 
 export class LessonPage extends Control {
   constructor(parentNode: HTMLElement) {
-    super(parentNode, 'div', 'container py-5 lesson');
+    super(parentNode, 'div', 'container py-5');
+    window.scrollTo(0, 0);
     const lesson = state.getLesson();
     const lessonId = lesson.id;
     const lessonName = lesson.name;
@@ -236,7 +237,7 @@ export class LessonPage extends Control {
     }
   }
 
-  private async addComment(lesson: LessonData, commentText: string, userName: string): Promise<void> {
+  private async addComment(lesson: LessonData, commentText: string, userName: string): Promise<LessonData | void> {
     const commentsPrevious = lesson.comments;
     const commentId = commentsPrevious.length + 1;
     const commentAuthor = userName;
@@ -247,6 +248,7 @@ export class LessonPage extends Control {
       content: commentContent,
     });
     state.setLesson(lesson);
-    DataController.updateLessonComments();
+    const lessonWithNewComments = await DataController.updateLessonComments();
+    return lessonWithNewComments;
   }
 }

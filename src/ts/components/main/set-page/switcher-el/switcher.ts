@@ -39,7 +39,7 @@ export class Switcher extends Control {
     this.currentSettings(input.node, options, label.node);
 
     state.onUpdate.add((type: StateOptions): void => {
-      let currentSettings = state.getSettings();
+      const currentSettings = state.getSettings();
       switch (type) {
         case StateOptions.changeTheme:
           if (options.name === SwitcherOption.theme) {
