@@ -18,7 +18,7 @@ export class TestPage extends Control {
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5');
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     const test = state.getTest();
     const testId = test.id;
     const testName = test.name;

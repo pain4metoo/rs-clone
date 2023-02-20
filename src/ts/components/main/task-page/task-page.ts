@@ -9,7 +9,7 @@ import { UserData } from '../../../api/types';
 export class TaskPage extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5');
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     const task = state.getTask();
     const taskName = task.name;
     const taskId = task.id;
@@ -90,6 +90,40 @@ export class TaskPage extends Control {
       }
       const content = new Control(taskBlock.node, 'div', 'container mb-5');
       content.node.innerHTML = task.content;
+      const buttonContainerSolution = new Control(taskBlock.node, 'div', 'container mb-5');
+      const buttonSolution = new Control(
+        buttonContainerSolution.node,
+        'button',
+        'btn btn-info me-4',
+        'Показать/скрыть решение'
+      );
+      buttonSolution.node.setAttribute('type', 'button');
+      buttonSolution.node.setAttribute('data-bs-toggle', 'collapse');
+      buttonSolution.node.setAttribute('data-bs-target', `#collapseTaskSolution${i}`);
+      buttonSolution.node.setAttribute('aria-expanded', 'false');
+      buttonSolution.node.setAttribute('aria-controls', 'collapseExample');
+      if (state.getAuthUser()) {
+        const buttonMarkedSolved = new Control(
+          buttonContainerSolution.node,
+          'button',
+          'btn btn-warning',
+          'Отметить решенной'
+        );
+        if (this.isTaskDone(i + 1, user)) {
+          buttonMarkedSolved.node.textContent = 'Решена';
+          buttonMarkedSolved.node.classList.add('disabled');
+        } else {
+          buttonMarkedSolved.node.onclick = (): void => {
+            this.addTaskToDone(i + 1, user);
+            buttonMarkedSolved.node.textContent = 'Решена';
+            buttonMarkedSolved.node.classList.add('disabled');
+          };
+        }
+      }
+      const solutionContainer = new Control(taskBlock.node, 'div', 'collapse');
+      solutionContainer.node.setAttribute('id', `collapseTaskSolution${i}`);
+      const solutionContent = new Control(solutionContainer.node, 'div', 'card card-body');
+      solutionContent.node.innerHTML = task.solution;
     });
   }
 
@@ -123,8 +157,9 @@ export class TaskPage extends Control {
 
   private isTaskDone(id: number, user: UserData): boolean {
     const doneTasks = user.done.tasks;
-    const idAllTasksDone = doneTasks.map((e) => e.id);
-    const result = idAllTasksDone.find((idDone) => id === +idDone);
+    const idAllTasksDone = doneTasks.map((e) => Number(e.id));
+    const result = idAllTasksDone.includes(id);
+    console.log(result);
     return result ? true : false;
   }
 
@@ -145,6 +180,14 @@ export class TaskPage extends Control {
   private removeTaskFromFavourites(id: number, user: UserData): void {
     if (this.isTaskInFavourites(id, user)) {
       user.favourites.tasks = user.favourites.tasks.filter((e) => e.id !== id);
+      state.setUserData(user);
+      DataController.updateUserData();
+    }
+  }
+
+  private addTaskToDone(id: number, user: UserData): void {
+    if (!this.isTaskDone(id, user)) {
+      user.done.tasks.push({ id: Number(`${id}`) });
       state.setUserData(user);
       DataController.updateUserData();
     }
