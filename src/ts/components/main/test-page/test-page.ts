@@ -156,6 +156,14 @@ export class TestPage extends Control {
     buttonNext.node.onclick = (): void => {
       this.switchPage(PagesList.testPage, testId + 1);
     };
+
+    const buttonUp = new Control(
+      this.node,
+      'button',
+      'btn btn-outline-info position-fixed bottom-0 end-0 mx-3 my-3',
+      '↑'
+    );
+    buttonUp.node.onclick = (): void => window.scrollTo(0, 0);
   }
 
   private checkTest(questions: Array<TestQuestion>, id: number): void {

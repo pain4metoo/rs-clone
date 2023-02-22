@@ -177,6 +177,13 @@ export class LessonPage extends Control {
         new Control(userComment.node, 'div', 'comment-content', comment.content);
       });
     }
+    const buttonUp = new Control(
+      this.node,
+      'button',
+      'btn btn-outline-info position-fixed bottom-0 end-0 mx-3 my-3',
+      '↑'
+    );
+    buttonUp.node.onclick = (): void => window.scrollTo(0, 0);
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
