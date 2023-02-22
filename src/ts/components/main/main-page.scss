@@ -2,10 +2,11 @@
   display: flex;
   flex: 1 0 auto;
   height: 100%;
-  &_inner {
-    -webkit-animation: mymove 5s infinite;
-    animation: mymove 5s infinite;
-  }
+}
+
+.card_anim {
+  -webkit-animation: mymove 5s infinite;
+  animation: mymove 5s infinite;
 }
 
 @-webkit-keyframes mymove {

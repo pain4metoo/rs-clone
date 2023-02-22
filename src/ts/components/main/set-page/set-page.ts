@@ -7,6 +7,7 @@ import { SoundEl } from './sound-el/sound-el';
 import { state } from '../../../common/state';
 import { ChangePassword } from './changePassword/change-password';
 import { SetPopup } from './set-popup/set-popup';
+import { ChangeName } from './change-name/change-name';
 
 export class SetPage extends Control {
   private popup!: SetPopup;
@@ -27,6 +28,7 @@ export class SetPage extends Control {
     });
 
     const changePassword = new ChangePassword(innerRight.node);
+    const changeName = new ChangeName(innerRight.node);
 
     const btnInner = new Control(this.node, 'div', 'set_btn_inner');
     const btnReset = new Control(btnInner.node, 'button', 'set_btn btn btn-primary', 'сбросить');

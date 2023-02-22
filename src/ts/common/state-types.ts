@@ -101,4 +101,5 @@ export enum StateOptions {
   changePassword = 'change-password',
   resetSettings = 'reset-settings',
   saveSettings = 'save-settings',
+  changeName = 'change-name',
 }
