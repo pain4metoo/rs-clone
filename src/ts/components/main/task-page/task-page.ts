@@ -44,6 +44,7 @@ export class TaskPage extends Control {
     if (state.getAuthUser()) {
       if (this.areAllTasksCategoryDone(taskId, user, taskList)) {
         const iconDone = new Control(headingContainer.node, 'i', 'bi bi-check-square-fill');
+        iconDone.node.setAttribute('title', 'Done');
         iconDone.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
         <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
       </svg>`;
@@ -58,18 +59,22 @@ export class TaskPage extends Control {
       if (this.isTaskInFavourites(taskId, user)) {
         iconMark.node.classList.add('bi-bookmark-fill');
         iconMark.node.innerHTML = fillBookMarkImg;
+        iconMark.node.setAttribute('title', 'Remove from favourites');
       } else {
         iconMark.node.classList.add('bi-bookmark');
         iconMark.node.innerHTML = emptyBookMarkImg;
+        iconMark.node.setAttribute('title', 'Add to favourites');
       }
       iconMark.node.onclick = (): void => {
         iconMark.node.classList.toggle('bi-bookmark');
         iconMark.node.classList.toggle('bi-bookmark-fill');
         if (iconMark.node.classList.contains('bi-bookmark-fill')) {
           iconMark.node.innerHTML = fillBookMarkImg;
+          iconMark.node.setAttribute('title', 'Remove from favourites');
           this.addTaskToFavourites(taskId, user);
         } else {
           iconMark.node.innerHTML = emptyBookMarkImg;
+          iconMark.node.setAttribute('title', 'Add to favourites');
           this.removeTaskFromFavourites(taskId, user);
         }
       };
