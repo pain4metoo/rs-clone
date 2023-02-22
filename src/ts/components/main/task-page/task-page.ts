@@ -159,7 +159,7 @@ export class TaskPage extends Control {
       buttonsTestRepeatContainer.node,
       'button',
       'btn btn-primary',
-      'Повторить теорию'
+      'Пройти тест'
     );
     buttonTest.node.type = 'button';
     buttonTest.node.onclick = (): void => {
@@ -171,26 +171,31 @@ export class TaskPage extends Control {
       buttonsPrevNextContainer.node,
       'button',
       'btn btn-secondary',
-      'Перейти к предыдущему тесту'
+      'Перейти к предыдущим задачам'
     );
     buttonPrev.node.type = 'button';
-    if (taskId === 1) {
+    console.log(taskId);
+    if (taskId === firstTaskId) {
       buttonPrev.node.classList.add('disabled');
     } else {
       buttonPrev.node.classList.remove('disabled');
-      buttonPrev.node.onclick = (): Promise<void> => this.switchPage(PagesList.testPage, taskId - 1);
+      buttonPrev.node.onclick = (): Promise<void> => this.switchPage(PagesList.taskPage, taskId - 1);
     }
 
     const buttonNext: Control<HTMLButtonElement> = new Control(
       buttonsPrevNextContainer.node,
       'button',
       'btn btn-secondary',
-      'Перейти к следующему тесту'
+      'Перейти к следующим задачам'
     );
     buttonNext.node.type = 'button';
-    buttonNext.node.onclick = (): void => {
-      this.switchPage(PagesList.testPage, taskId + 1);
-    };
+    if (taskId === lastTaskId) {
+      buttonNext.node.classList.add('disabled');
+    } else {
+      buttonNext.node.onclick = (): void => {
+        this.switchPage(PagesList.taskPage, taskId + 1);
+      };
+    }
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
@@ -217,6 +222,11 @@ export class TaskPage extends Control {
         data = await DataController.getLesson(id);
         state.setLesson(data);
         state.setNewPage(PagesList.lessonPage);
+        break;
+      case PagesList.taskPage:
+        data = await DataController.getTask(id);
+        state.setTask(data);
+        state.setNewPage(PagesList.taskPage);
         break;
     }
   }
