@@ -1,6 +1,6 @@
 import * as bootstrap from 'bootstrap';
 import { DataController } from '../../../api/data-controller';
-import { UserData } from '../../../api/types';
+import { Places, UserData } from '../../../api/types';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
 import { LessonData, TaskData, TestData, TestQuestion } from '../../../common/state-types';
@@ -13,8 +13,8 @@ interface UserAnswersForTest {
 }
 
 export class TestPage extends Control {
-  userAnswersForTest: Array<UserAnswersForTest>;
-  checkButton: Control<HTMLButtonElement>;
+  private userAnswersForTest: Array<UserAnswersForTest>;
+  private checkButton: Control<HTMLButtonElement>;
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5');
@@ -25,6 +25,12 @@ export class TestPage extends Control {
     const testQuestions = test.questions;
     const user = state.getUser();
     this.userAnswersForTest = [];
+    const firstTestId = 1;
+    const lastTestId = state
+      .getCategories(Places.tests)
+      .map((e) => e.items)
+      .reverse()[0]
+      .slice(-1)[0].id;
 
     const breadcrumbs = new Control(this.node, 'nav', 'breadcrumbs');
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');
@@ -125,7 +131,7 @@ export class TestPage extends Control {
       'Перейти к предыдущему тесту'
     );
     buttonPrev.node.type = 'button';
-    if (testId === 1) {
+    if (testId === firstTestId) {
       buttonPrev.node.classList.add('disabled');
     } else {
       buttonPrev.node.classList.remove('disabled');
@@ -139,6 +145,9 @@ export class TestPage extends Control {
       'Перейти к следующему тесту'
     );
     buttonNext.node.type = 'button';
+    if (testId === lastTestId) {
+      buttonNext.node.classList.add('disabled');
+    }
     buttonNext.node.onclick = (): void => {
       this.switchPage(PagesList.testPage, testId + 1);
     };
@@ -184,7 +193,7 @@ export class TestPage extends Control {
     myModal.show();
   }
 
-  private renderTestContent(node: HTMLElement, questions: Array<TestQuestion>) {
+  private renderTestContent(node: HTMLElement, questions: Array<TestQuestion>): void {
     const questionsWrapper = new Control(node, 'div', 'container mb-5');
     questions.forEach((e) => {
       const question = new Control(questionsWrapper.node, 'div');

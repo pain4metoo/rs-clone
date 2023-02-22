@@ -174,7 +174,6 @@ export class TaskPage extends Control {
       'Перейти к предыдущим задачам'
     );
     buttonPrev.node.type = 'button';
-    console.log(taskId);
     if (taskId === firstTaskId) {
       buttonPrev.node.classList.add('disabled');
     } else {
@@ -191,11 +190,10 @@ export class TaskPage extends Control {
     buttonNext.node.type = 'button';
     if (taskId === lastTaskId) {
       buttonNext.node.classList.add('disabled');
-    } else {
-      buttonNext.node.onclick = (): void => {
-        this.switchPage(PagesList.taskPage, taskId + 1);
-      };
     }
+    buttonNext.node.onclick = (): void => {
+      this.switchPage(PagesList.taskPage, taskId + 1);
+    };
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
