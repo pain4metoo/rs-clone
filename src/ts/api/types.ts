@@ -31,7 +31,7 @@ export interface UserData {
 export interface UserDataDone {
   lessons: Array<{ id: number }>;
   tests: Array<{ id: number; result: number }>;
-  tasks: Array<{ id: number }>;
+  tasks: Array<{ id: number; list: Array<number> }>;
 }
 
 export interface UserDataFavorites {

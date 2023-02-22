@@ -1,6 +1,6 @@
 import * as bootstrap from 'bootstrap';
 import { DataController } from '../../../api/data-controller';
-import { UserData } from '../../../api/types';
+import { Places, UserData } from '../../../api/types';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
 import { LessonData, TaskData, TestData, TestQuestion } from '../../../common/state-types';
@@ -13,18 +13,24 @@ interface UserAnswersForTest {
 }
 
 export class TestPage extends Control {
-  userAnswersForTest: Array<UserAnswersForTest>;
-  checkButton: Control<HTMLButtonElement>;
+  private userAnswersForTest: Array<UserAnswersForTest>;
+  private checkButton: Control<HTMLButtonElement>;
 
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5');
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     const test = state.getTest();
     const testId = test.id;
     const testName = test.name;
     const testQuestions = test.questions;
     const user = state.getUser();
     this.userAnswersForTest = [];
+    const firstTestId = 1;
+    const lastTestId = state
+      .getCategories(Places.tests)
+      .map((e) => e.items)
+      .reverse()[0]
+      .slice(-1)[0].id;
 
     const breadcrumbs = new Control(this.node, 'nav', 'breadcrumbs');
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');
@@ -47,6 +53,7 @@ export class TestPage extends Control {
     if (state.getAuthUser()) {
       if (this.isTestDone(testId, user)) {
         const iconDone = new Control(headingContainer.node, 'i', 'bi bi-check-square-fill');
+        iconDone.node.setAttribute('title', 'Done');
         iconDone.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
         <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
       </svg>`;
@@ -60,9 +67,11 @@ export class TestPage extends Control {
   </svg>`;
       if (this.isTestInFavourites(testId, user)) {
         iconMark.node.classList.add('bi-bookmark-fill');
+        iconMark.node.setAttribute('title', 'Remove from favourites');
         iconMark.node.innerHTML = fillBookMarkImg;
       } else {
         iconMark.node.classList.add('bi-bookmark');
+        iconMark.node.setAttribute('title', 'Add to favourites');
         iconMark.node.innerHTML = emptyBookMarkImg;
       }
       iconMark.node.onclick = (): void => {
@@ -70,9 +79,11 @@ export class TestPage extends Control {
         iconMark.node.classList.toggle('bi-bookmark-fill');
         if (iconMark.node.classList.contains('bi-bookmark-fill')) {
           iconMark.node.innerHTML = fillBookMarkImg;
+          iconMark.node.setAttribute('title', 'Remove from favourites');
           this.addTestToFavourites(testId, user);
         } else {
           iconMark.node.innerHTML = emptyBookMarkImg;
+          iconMark.node.setAttribute('title', 'Add to favourites');
           this.removeTestFromFavourites(testId, user);
         }
       };
@@ -125,7 +136,7 @@ export class TestPage extends Control {
       'Перейти к предыдущему тесту'
     );
     buttonPrev.node.type = 'button';
-    if (testId === 1) {
+    if (testId === firstTestId) {
       buttonPrev.node.classList.add('disabled');
     } else {
       buttonPrev.node.classList.remove('disabled');
@@ -139,6 +150,9 @@ export class TestPage extends Control {
       'Перейти к следующему тесту'
     );
     buttonNext.node.type = 'button';
+    if (testId === lastTestId) {
+      buttonNext.node.classList.add('disabled');
+    }
     buttonNext.node.onclick = (): void => {
       this.switchPage(PagesList.testPage, testId + 1);
     };
@@ -184,7 +198,7 @@ export class TestPage extends Control {
     myModal.show();
   }
 
-  private renderTestContent(node: HTMLElement, questions: Array<TestQuestion>) {
+  private renderTestContent(node: HTMLElement, questions: Array<TestQuestion>): void {
     const questionsWrapper = new Control(node, 'div', 'container mb-5');
     questions.forEach((e) => {
       const question = new Control(questionsWrapper.node, 'div');
@@ -311,6 +325,7 @@ export class TestPage extends Control {
     const idAllTestsDone = doneTests.map((e) => e.id);
     if (!idAllTestsDone.includes(id)) {
       user.done.tests.push({ id, result });
+      user.place = Places.tests;
       state.setUserData(user);
       DataController.updateUserData();
     } else {

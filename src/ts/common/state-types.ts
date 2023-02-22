@@ -64,6 +64,7 @@ export interface TestData {
 export interface TaskList {
   content: string;
   solution: string;
+  complexity: number;
 }
 
 export interface TaskData {

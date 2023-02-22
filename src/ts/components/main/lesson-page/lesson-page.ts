@@ -11,16 +11,19 @@ import './lesson-page.scss';
 export class LessonPage extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5 lesson');
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     const lesson = state.getLesson();
     const lessonId = lesson.id;
     const lessonName = lesson.name;
     const lessonCategory = lesson.category;
     const lessonContent = lesson.content.join(`\n`);
     const user = state.getUser();
-    const currentCategory = state.getCategories(Places.lessons).filter((e) => e.name === lessonCategory)[0];
-    const firstLessonInCategory = currentCategory.items[0].id;
-    const lastLessonInCategory = currentCategory.items.slice(-1)[0].id;
+    const firstLessonId = 1;
+    const lastLessonId = state
+      .getCategories(Places.lessons)
+      .map((e) => e.items)
+      .reverse()[0]
+      .slice(-1)[0].id;
 
     const breadcrumbs = new Control(this.node, 'nav', 'breadcrumbs');
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');
@@ -43,6 +46,7 @@ export class LessonPage extends Control {
     if (state.getAuthUser()) {
       if (this.isLessonDone(lessonId, user)) {
         const iconDone = new Control(headingContainer.node, 'i', 'bi bi-check-square-fill');
+        iconDone.node.setAttribute('title', 'Done');
         iconDone.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
         <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
       </svg>`;
@@ -56,9 +60,11 @@ export class LessonPage extends Control {
   </svg>`;
       if (this.isLessonInFavourites(lessonId, user)) {
         iconMark.node.classList.add('bi-bookmark-fill');
+        iconMark.node.setAttribute('title', 'Remove from favourites');
         iconMark.node.innerHTML = fillBookMarkImg;
       } else {
         iconMark.node.classList.add('bi-bookmark');
+        iconMark.node.setAttribute('title', 'Add to favourites');
         iconMark.node.innerHTML = emptyBookMarkImg;
       }
       iconMark.node.onclick = (): void => {
@@ -66,9 +72,11 @@ export class LessonPage extends Control {
         iconMark.node.classList.toggle('bi-bookmark-fill');
         if (iconMark.node.classList.contains('bi-bookmark-fill')) {
           iconMark.node.innerHTML = fillBookMarkImg;
+          iconMark.node.setAttribute('title', 'Remove from favourites');
           this.addLessonToFavourites(lessonId, user);
         } else {
           iconMark.node.innerHTML = emptyBookMarkImg;
+          iconMark.node.setAttribute('title', 'Add to favourites');
           this.removeLessonFromFavourites(lessonId, user);
         }
       };
@@ -113,7 +121,7 @@ export class LessonPage extends Control {
       'Перейти к предыдущему уроку'
     );
     buttonPrev.node.type = 'button';
-    if (lessonId === firstLessonInCategory) {
+    if (lessonId === firstLessonId) {
       buttonPrev.node.classList.add('disabled');
     } else {
       buttonPrev.node.classList.remove('disabled');
@@ -127,7 +135,7 @@ export class LessonPage extends Control {
       'Перейти к следующему уроку'
     );
     buttonNext.node.type = 'button';
-    if (lessonId === lastLessonInCategory) {
+    if (lessonId === lastLessonId) {
       buttonNext.node.classList.add('disabled');
     }
     buttonNext.node.onclick = (): void => {
@@ -248,6 +256,6 @@ export class LessonPage extends Control {
       content: commentContent,
     });
     state.setLesson(lesson);
-    DataController.updateLessonComments();
+    await DataController.updateLessonComments();
   }
 }

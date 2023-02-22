@@ -1,21 +1,27 @@
 import './task-page.scss';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
-import { LessonData, TaskData, TestData } from '../../../common/state-types';
+import { LessonData, TaskData, TaskList, TestData } from '../../../common/state-types';
 import { PagesList } from '../main';
 import { DataController } from '../../../api/data-controller';
-import { UserData } from '../../../api/types';
+import { Places, UserData } from '../../../api/types';
 
 export class TaskPage extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container py-5');
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     const task = state.getTask();
     const taskName = task.name;
     const taskId = task.id;
     const taskList = task.list;
     const taskCategory = task.category;
     const user = state.getUser();
+    const firstTaskId = 1;
+    const lastTaskId = state
+      .getCategories(Places.tasks)
+      .map((e) => e.items)
+      .reverse()[0]
+      .slice(-1)[0].id;
 
     const breadcrumbs = new Control(this.node, 'nav', 'breadcrumbs');
     breadcrumbs.node.setAttribute('style', '--bs-breadcrumb-divider: ">";');
@@ -36,8 +42,9 @@ export class TaskPage extends Control {
     const headingContainer = new Control(this.node, 'div', 'container d-flex flex-row');
     new Control(headingContainer.node, 'h1', 'fw-bold mb-4', taskName);
     if (state.getAuthUser()) {
-      if (this.isTaskDone(taskId, user)) {
+      if (this.areAllTasksCategoryDone(taskId, user, taskList)) {
         const iconDone = new Control(headingContainer.node, 'i', 'bi bi-check-square-fill');
+        iconDone.node.setAttribute('title', 'Done');
         iconDone.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
         <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
       </svg>`;
@@ -52,18 +59,22 @@ export class TaskPage extends Control {
       if (this.isTaskInFavourites(taskId, user)) {
         iconMark.node.classList.add('bi-bookmark-fill');
         iconMark.node.innerHTML = fillBookMarkImg;
+        iconMark.node.setAttribute('title', 'Remove from favourites');
       } else {
         iconMark.node.classList.add('bi-bookmark');
         iconMark.node.innerHTML = emptyBookMarkImg;
+        iconMark.node.setAttribute('title', 'Add to favourites');
       }
       iconMark.node.onclick = (): void => {
         iconMark.node.classList.toggle('bi-bookmark');
         iconMark.node.classList.toggle('bi-bookmark-fill');
         if (iconMark.node.classList.contains('bi-bookmark-fill')) {
           iconMark.node.innerHTML = fillBookMarkImg;
+          iconMark.node.setAttribute('title', 'Remove from favourites');
           this.addTaskToFavourites(taskId, user);
         } else {
           iconMark.node.innerHTML = emptyBookMarkImg;
+          iconMark.node.setAttribute('title', 'Add to favourites');
           this.removeTaskFromFavourites(taskId, user);
         }
       };
@@ -71,7 +82,7 @@ export class TaskPage extends Control {
     const taskContentContainer = new Control(this.node, 'div', 'container mb-5');
     const taskBlock = new Control(taskContentContainer.node, 'div', 'container');
     taskList.forEach((task, i) => {
-      const taskRating = 2;
+      const taskRating = task.complexity;
       const maxRating = 3;
       const headingContainer = new Control(taskBlock.node, 'div', 'd-flex align-items-center mb-3');
       const nameTask = new Control(headingContainer.node, 'span', 'me-3 fw-semibold', `Задача ${i + 1}`);
@@ -90,7 +101,104 @@ export class TaskPage extends Control {
       }
       const content = new Control(taskBlock.node, 'div', 'container mb-5');
       content.node.innerHTML = task.content;
+      const buttonContainerSolution = new Control(taskBlock.node, 'div', 'container mb-5');
+      const buttonSolution = new Control(
+        buttonContainerSolution.node,
+        'button',
+        'btn btn-info me-4',
+        'Показать/скрыть решение'
+      );
+      buttonSolution.node.setAttribute('type', 'button');
+      buttonSolution.node.setAttribute('data-bs-toggle', 'collapse');
+      buttonSolution.node.setAttribute('data-bs-target', `#collapseTaskSolution${i}`);
+      buttonSolution.node.setAttribute('aria-expanded', 'false');
+      buttonSolution.node.setAttribute('aria-controls', 'collapseExample');
+      if (state.getAuthUser()) {
+        const buttonMarkedSolved = new Control(
+          buttonContainerSolution.node,
+          'button',
+          'btn btn-warning',
+          'Отметить решенной'
+        );
+        if (this.isCurrentTaskDone(i + 1, user, taskId)) {
+          buttonMarkedSolved.node.textContent = 'Решена';
+          buttonMarkedSolved.node.classList.add('disabled');
+        } else {
+          buttonMarkedSolved.node.onclick = (): void => {
+            this.addCurrentTaskToDone(i + 1, user, taskId);
+            buttonMarkedSolved.node.textContent = 'Решена';
+            buttonMarkedSolved.node.classList.add('disabled');
+          };
+        }
+      }
+      const solutionContainer = new Control(taskBlock.node, 'div', 'collapse');
+      solutionContainer.node.setAttribute('id', `collapseTaskSolution${i}`);
+      const solutionContent = new Control(solutionContainer.node, 'div', 'card card-body');
+      solutionContent.node.innerHTML = task.solution;
     });
+    const goToNextLessonButtonWrapper = new Control(this.node, 'div', 'd-flex justify-content-center');
+    const goToNextLessonButton = new Control(
+      goToNextLessonButtonWrapper.node,
+      'button',
+      'btn btn-success fs-3 mb-5',
+      'Перейти к следующей теме'
+    );
+    if (taskId === lastTaskId) {
+      goToNextLessonButton.node.classList.add('disabled');
+    }
+    goToNextLessonButton.node.onclick = (): void => {
+      this.switchPage(PagesList.lessonPage, taskId + 1);
+    };
+    const buttonsTestRepeatContainer = new Control(this.node, 'div', 'd-grid gap-2 col-2 mx-auto mb-5');
+    const buttonRepeat: Control<HTMLButtonElement> = new Control(
+      buttonsTestRepeatContainer.node,
+      'button',
+      'btn btn-primary',
+      'Повторить теорию'
+    );
+    buttonRepeat.node.type = 'button';
+    buttonRepeat.node.onclick = (): void => {
+      this.switchPage(PagesList.lessonPage, taskId);
+    };
+    const buttonTest: Control<HTMLButtonElement> = new Control(
+      buttonsTestRepeatContainer.node,
+      'button',
+      'btn btn-primary',
+      'Пройти тест'
+    );
+    buttonTest.node.type = 'button';
+    buttonTest.node.onclick = (): void => {
+      this.switchPage(PagesList.testPage, taskId);
+    };
+
+    const buttonsPrevNextContainer = new Control(this.node, 'div', 'd-flex justify-content-sm-around mb-5');
+    const buttonPrev: Control<HTMLButtonElement> = new Control(
+      buttonsPrevNextContainer.node,
+      'button',
+      'btn btn-secondary',
+      'Перейти к предыдущим задачам'
+    );
+    buttonPrev.node.type = 'button';
+    if (taskId === firstTaskId) {
+      buttonPrev.node.classList.add('disabled');
+    } else {
+      buttonPrev.node.classList.remove('disabled');
+      buttonPrev.node.onclick = (): Promise<void> => this.switchPage(PagesList.taskPage, taskId - 1);
+    }
+
+    const buttonNext: Control<HTMLButtonElement> = new Control(
+      buttonsPrevNextContainer.node,
+      'button',
+      'btn btn-secondary',
+      'Перейти к следующим задачам'
+    );
+    buttonNext.node.type = 'button';
+    if (taskId === lastTaskId) {
+      buttonNext.node.classList.add('disabled');
+    }
+    buttonNext.node.onclick = (): void => {
+      this.switchPage(PagesList.taskPage, taskId + 1);
+    };
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
@@ -118,14 +226,29 @@ export class TaskPage extends Control {
         state.setLesson(data);
         state.setNewPage(PagesList.lessonPage);
         break;
+      case PagesList.taskPage:
+        data = await DataController.getTask(id);
+        state.setTask(data);
+        state.setNewPage(PagesList.taskPage);
+        break;
     }
   }
 
-  private isTaskDone(id: number, user: UserData): boolean {
+  private isThisCategoryIdInDone(id: number, user: UserData): boolean {
     const doneTasks = user.done.tasks;
-    const idAllTasksDone = doneTasks.map((e) => e.id);
-    const result = idAllTasksDone.find((idDone) => id === +idDone);
+    const idAllTasksDone = doneTasks.map((e) => Number(e.id));
+    const result = idAllTasksDone.includes(id);
     return result ? true : false;
+  }
+
+  private isCurrentTaskDone(id: number, user: UserData, idTaskCategory: number): boolean {
+    if (this.isThisCategoryIdInDone(idTaskCategory, user)) {
+      const doneTasks = user.done.tasks;
+      const idAllTasksInCategory = doneTasks.map((e) => e.list)[idTaskCategory - 1];
+      const result = idAllTasksInCategory.includes(id);
+      return result ? true : false;
+    }
+    return false;
   }
 
   private isTaskInFavourites(id: number, user: UserData): boolean {
@@ -147,6 +270,41 @@ export class TaskPage extends Control {
       user.favourites.tasks = user.favourites.tasks.filter((e) => e.id !== id);
       state.setUserData(user);
       DataController.updateUserData();
+    }
+  }
+
+  private addCurrentTaskToDone(id: number, user: UserData, idTaskCategory: number): void {
+    const allDoneTasks = user.done.tasks;
+    if (this.isThisCategoryIdInDone(idTaskCategory, user)) {
+      if (!this.isCurrentTaskDone(id, user, idTaskCategory)) {
+        const doneTasksInCategory = allDoneTasks.filter((e) => e.id === idTaskCategory)[0].list;
+        doneTasksInCategory.push(id);
+        user.done.tasks = user.done.tasks.filter((e) => e.id !== idTaskCategory);
+        user.done.tasks.push({
+          id: idTaskCategory,
+          list: doneTasksInCategory,
+        });
+      } else {
+        return;
+      }
+    } else {
+      user.done.tasks.push({
+        id: idTaskCategory,
+        list: [id],
+      });
+    }
+    user.place = Places.tasks;
+    state.setUserData(user);
+    DataController.updateUserData();
+  }
+
+  private areAllTasksCategoryDone(idTaskCategory: number, user: UserData, taskList: Array<TaskList>): boolean {
+    if (this.isThisCategoryIdInDone(idTaskCategory, user)) {
+      const lengthTasksDoneInCategoryList = user.done.tasks.filter((e) => e.id === idTaskCategory)[0].list.length;
+      const lengthAllTasksInCategoryList = taskList.length;
+      return lengthTasksDoneInCategoryList === lengthAllTasksInCategoryList ? true : false;
+    } else {
+      return false;
     }
   }
 }
