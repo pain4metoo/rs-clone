@@ -47,7 +47,7 @@ export class Main extends Control {
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
         case StateOptions.changeAnimation:
-          let isAnim = state.getAnim();
+          const isAnim = state.getAnim();
           if (isAnim) {
             this.mainInner.node.classList.remove('card_anim');
           } else {

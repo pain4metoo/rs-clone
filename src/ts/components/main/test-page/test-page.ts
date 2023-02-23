@@ -310,7 +310,7 @@ export class TestPage extends Control {
 
   private addTestToFavourites(id: number, user: UserData): void {
     if (!this.isTestInFavourites(id, user)) {
-      user.favourites.lessons.push({ id: Number(`${id}`) });
+      user.favourites.tests.push({ id: Number(`${id}`) });
       state.setUserData(user);
       DataController.updateUserData();
     }
@@ -318,7 +318,7 @@ export class TestPage extends Control {
 
   private removeTestFromFavourites(id: number, user: UserData): void {
     if (this.isTestInFavourites(id, user)) {
-      user.favourites.lessons = user.favourites.lessons.filter((e) => e.id !== id);
+      user.favourites.tests = user.favourites.tests.filter((e) => e.id !== id);
       state.setUserData(user);
       DataController.updateUserData();
     }

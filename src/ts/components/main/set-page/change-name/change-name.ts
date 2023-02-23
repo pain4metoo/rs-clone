@@ -33,7 +33,7 @@ export class ChangeName extends Control {
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
         case StateOptions.changeName:
-          let newName = state.getCurrentName();
+          const newName = state.getCurrentName();
           nameLabel.node.textContent = `Текущее имя: ${newName}`;
           nameInput.node.value = '';
           changeBtn.node.disabled = true;

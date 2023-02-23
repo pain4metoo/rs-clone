@@ -53,13 +53,13 @@ export class SetPopup extends Control {
           break;
 
         case StateOptions.changeName:
-          let name = state.getCurrentName();
-          if(name.length < 2 && name.length > 30) {
+          const name = state.getCurrentName();
+          if (name.length < 2 && name.length > 30) {
             modalMain.node.textContent = 'Неверное имя!';
           } else {
             modalMain.node.textContent = 'Вы успешно изменили имя!';
           }
-        
+
           break;
       }
     });

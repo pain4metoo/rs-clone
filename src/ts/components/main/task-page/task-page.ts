@@ -85,7 +85,7 @@ export class TaskPage extends Control {
       const taskRating = task.complexity;
       const maxRating = 3;
       const headingContainer = new Control(taskBlock.node, 'div', 'd-flex align-items-center mb-3');
-      const nameTask = new Control(headingContainer.node, 'span', 'me-3 fw-semibold', `Задача ${i + 1}`);
+      new Control(headingContainer.node, 'span', 'me-3 fw-semibold', `Задача ${i + 1}`);
       const starsContainer = new Control(headingContainer.node, 'div', 'd-flex mb-2');
       for (let n = 0; n < maxRating; n += 1) {
         const iconStar = new Control(starsContainer.node, 'i', 'bi bi-star');
@@ -137,8 +137,6 @@ export class TaskPage extends Control {
       solutionContainer.node.setAttribute('id', `collapseTaskSolution${i}`);
       const solutionContent = new Control(solutionContainer.node, 'div', 'card card-body text-dark');
       solutionContent.node.innerHTML = task.solution.join('\n');
-      console.log(task.solution);
-      
     });
     const goToNextLessonButtonWrapper = new Control(this.node, 'div', 'd-flex justify-content-center');
     const goToNextLessonButton = new Control(

@@ -14,7 +14,7 @@ import {
   TaskData,
   TestData,
 } from './state-types';
-import click from '../../assets/sound/click.mp3'
+import click from '../../assets/sound/click.mp3';
 
 class State {
   private _data: StateData;
@@ -29,8 +29,7 @@ class State {
     }
     this._data.currentPage = { name: page, id };
     this.onUpdate.emit(StateOptions.changePage);
-    console.log('set new page');
-    this.playSound()
+    this.playSound();
   }
 
   public authUser(): void {
@@ -215,8 +214,8 @@ class State {
       const audio = new Audio(click);
       audio.volume = settings.volume;
       audio.play();
-      audio.remove();    
-    } 
+      audio.remove();
+    }
   }
 }
 
