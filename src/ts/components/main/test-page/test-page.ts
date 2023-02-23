@@ -167,6 +167,7 @@ export class TestPage extends Control {
   }
 
   private checkTest(questions: Array<TestQuestion>, id: number): void {
+    state.playSound();
     const questionsCount = questions.length;
     let rightAnswersCount = 0;
     this.userAnswersForTest.forEach((e) => {
@@ -191,7 +192,10 @@ export class TestPage extends Control {
     const modalCloseButton: Control<HTMLButtonElement> = new Control(modalHeader.node, 'button', 'btn-close');
     modalCloseButton.node.setAttribute('data-bs-dismiss', 'modal');
     modalCloseButton.node.setAttribute('aria-label', 'Закрыть');
-    modalCloseButton.node.onclick = (): void => modal.destroy();
+    modalCloseButton.node.onclick = (): void => {
+      state.playSound();
+      modal.destroy();
+    };
     const modalBody = new Control(modalContent.node, 'div', 'modal-body');
     const modalText = new Control(modalBody.node, 'p', 'text-center display-3', `${result}%`);
     if (result < 50) {
@@ -236,6 +240,7 @@ export class TestPage extends Control {
     answerId: number,
     questions: Array<TestQuestion>
   ): void {
+    state.playSound();
     let isQuestionExist = false;
     let isAnswerExist = false;
     const currentQuestion = this.userAnswersForTest.filter((e) => e.questionId === questionId);
@@ -313,7 +318,7 @@ export class TestPage extends Control {
 
   private addTestToFavourites(id: number, user: UserData): void {
     if (!this.isTestInFavourites(id, user)) {
-      user.favourites.lessons.push({ id: Number(`${id}`) });
+      user.favourites.tests.push({ id: Number(`${id}`) });
       state.setUserData(user);
       DataController.updateUserData();
     }
@@ -321,7 +326,7 @@ export class TestPage extends Control {
 
   private removeTestFromFavourites(id: number, user: UserData): void {
     if (this.isTestInFavourites(id, user)) {
-      user.favourites.lessons = user.favourites.lessons.filter((e) => e.id !== id);
+      user.favourites.tests = user.favourites.tests.filter((e) => e.id !== id);
       state.setUserData(user);
       DataController.updateUserData();
     }

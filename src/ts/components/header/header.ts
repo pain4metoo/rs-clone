@@ -36,7 +36,7 @@ export class Header extends Control {
 
     const collapse = new Control(container.node, 'div', 'collapse navbar-collapse justify-content-between');
     collapse.node.id = 'navbarNav';
-    const navBar: NavBar = new NavBar(collapse.node);
+    new NavBar(collapse.node);
 
     this.createAuthUnauthHeader(collapse);
 

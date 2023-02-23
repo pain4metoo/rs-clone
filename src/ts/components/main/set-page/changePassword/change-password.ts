@@ -2,14 +2,13 @@ import { DataController } from '../../../../api/data-controller';
 import Control from '../../../../common/control';
 import { state } from '../../../../common/state';
 import { StateOptions } from '../../../../common/state-types';
-import { SetPopup } from '../set-popup/set-popup';
 import './change-password.scss';
 
 export class ChangePassword extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'form');
 
-    const title = new Control(this.node, 'h5', 'display-5', 'Смена пароля');
+    new Control(this.node, 'h5', 'display-5', 'Смена пароля');
     const oldInputInner = new Control(this.node, 'div', 'form-floating mb-3');
     const oldInput: Control<HTMLInputElement> = new Control(oldInputInner.node, 'input', 'form-control');
     oldInput.node.type = 'password';
@@ -41,14 +40,14 @@ export class ChangePassword extends Control {
     changeBtn.node.setAttribute('type', 'button');
     changeBtn.node.setAttribute('data-bs-toggle', 'modal');
     changeBtn.node.setAttribute('data-bs-target', '#staticBackdrop');
+    changeBtn.node.addEventListener('click', () => state.playSound());
 
-    changeBtn.node.onclick = () => this.changePassword(newInput.node.value, oldInput.node.value);
+    changeBtn.node.onclick = (): Promise<void> => this.changePassword(newInput.node.value, oldInput.node.value);
 
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
         case StateOptions.changePassword:
-          const isValidPassword = state.getPasswordValidate();
-          if (isValidPassword) {
+          if (state.getPasswordValidate()) {
             oldInput.node.classList.add('is-valid');
             newInput.node.classList.add('is-valid');
             oldInput.node.classList.remove('is-invalid');

@@ -8,7 +8,7 @@ export class MainAuthPage extends Control {
 
     const currentName = state.getUser().name || '';
 
-    const welcomeText = new Control(this.node, 'p', 'text-center display-4', `Привет ${currentName}!`);
+    new Control(this.node, 'p', 'text-center display-4', `Привет ${currentName}!`);
     new HeaderAuth(this.node);
   }
 }

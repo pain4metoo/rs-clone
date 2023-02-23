@@ -7,10 +7,10 @@ import { state } from '../../../../common/state';
 import { StateOptions } from '../../../../common/state-types';
 
 export class SoundEl extends Control {
-  oldVolume = '40';
+  private oldVolume = '40';
   constructor(parentNode: HTMLElement, options: OptionsTypes) {
     super(parentNode, 'div', 'sound');
-    const sountTitle = new Control(this.node, 'p', 'text-center display-6', options.name);
+    new Control(this.node, 'p', 'text-center display-6', options.name);
     const inputInner = new Control(this.node, 'div', 'd-flex align-items-center');
     const soundImage: Control<HTMLImageElement> = new Control(inputInner.node, 'img', 'sound_img');
     soundImage.node.src = soundOn;
@@ -73,7 +73,7 @@ export class SoundEl extends Control {
     }
   }
 
-  private currentSettings(input: HTMLInputElement, soundImg: HTMLImageElement) {
+  private currentSettings(input: HTMLInputElement, soundImg: HTMLImageElement): void {
     const settings = state.getSettings();
     input.value = (settings.volume * 100).toString();
     if (settings.volume === 0) {

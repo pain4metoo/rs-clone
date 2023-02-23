@@ -95,7 +95,7 @@ module.exports = {
         use: cssLoaders('sass-loader'),
       },
       {
-        test: /\.(png|jpg|gif|wav)$/,
+        test: /\.(png|jpg|gif|wav|mp3)$/,
         type: 'asset/resource',
       },
       {

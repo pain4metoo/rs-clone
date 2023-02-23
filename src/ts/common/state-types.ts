@@ -63,7 +63,7 @@ export interface TestData {
 
 export interface TaskList {
   content: string;
-  solution: string;
+  solution: Array<string>;
   complexity: number;
 }
 
