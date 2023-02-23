@@ -14,6 +14,7 @@ import {
   TaskData,
   TestData,
 } from './state-types';
+import click from '../../assets/sound/click.mp3';
 
 class State {
   private _data: StateData;
@@ -28,6 +29,7 @@ class State {
     }
     this._data.currentPage = { name: page, id };
     this.onUpdate.emit(StateOptions.changePage);
+    this.playSound();
   }
 
   public authUser(): void {
@@ -93,15 +95,18 @@ class State {
   }
 
   public async setTheme(theme: boolean): Promise<void> {
+    this.playSound();
     this._data.user.settings[SettingsItems.theme] = theme;
     this.onUpdate.emit(StateOptions.changeTheme);
     this.onUpdate.emit(StateOptions.changeAnimation);
   }
   public async setAnimation(animation: boolean): Promise<void> {
+    this.playSound();
     this._data.user.settings[SettingsItems.animation] = animation;
     this.onUpdate.emit(StateOptions.changeAnimation);
   }
   public async setProgress(progress: boolean): Promise<void> {
+    this.playSound();
     this._data.user.settings[SettingsItems.resetProgress] = progress;
     this.onUpdate.emit(StateOptions.changeProgress);
   }
@@ -111,10 +116,12 @@ class State {
   }
   public async setVolume(volume: number): Promise<void> {
     this._data.user.settings[SettingsItems.volume] = volume;
+    this.playSound();
     this.onUpdate.emit(StateOptions.changeVolume);
   }
 
   public async saveSettings(): Promise<void> {
+    this.playSound();
     this.onUpdate.emit(StateOptions.saveSettings);
     await SettingsController.setSettings();
     if (this._data.user.settings.resetProgress) {
@@ -143,6 +150,7 @@ class State {
   }
 
   public resetSettings(): void {
+    this.playSound();
     this.onUpdate.emit(StateOptions.resetSettings);
   }
 
@@ -198,6 +206,16 @@ class State {
 
   public getSettings(): Settings {
     return this._data.user.settings;
+  }
+
+  public playSound(): void {
+    const settings = this.getSettings();
+    if (settings.sound) {
+      const audio = new Audio(click);
+      audio.volume = settings.volume;
+      audio.play();
+      audio.remove();
+    }
   }
 }
 

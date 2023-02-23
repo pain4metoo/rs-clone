@@ -27,12 +27,12 @@ export class Switcher extends Control {
   constructor(parentNode: HTMLElement, options: OptionsTypes) {
     super(parentNode, 'div', 'form-check form-switch d-flex flex-column');
 
-    const inputName = new Control(this.node, 'p', 'display-6 text-start', options.name);
+    new Control(this.node, 'p', 'display-6 text-start', options.name);
     const inputInner = new Control(this.node, 'div', 'd-flex');
     const input: Control<HTMLInputElement> = new Control(inputInner.node, 'input', 'form-check-input');
     input.node.type = 'checkbox';
     input.node.setAttribute('id', options.name);
-    input.node.onclick = () => this.changeOption(options.name, input.node.checked);
+    input.node.onclick = (): Promise<void> => this.changeOption(options.name, input.node.checked);
     const label: Control<HTMLLabelElement> = new Control(inputInner.node, 'label', 'form-check-label', options.option);
     label.node.setAttribute('for', options.name);
 
@@ -78,7 +78,7 @@ export class Switcher extends Control {
     });
   }
 
-  private currentSettings(input: HTMLInputElement, options: OptionsTypes, label: HTMLLabelElement) {
+  private currentSettings(input: HTMLInputElement, options: OptionsTypes, label: HTMLLabelElement): void {
     const settings = state.getSettings();
     console.log(settings);
     switch (options.name) {

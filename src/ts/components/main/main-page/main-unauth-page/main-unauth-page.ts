@@ -18,6 +18,6 @@ export class MainUnauthPage extends Control {
       Кроме того, приложение может содержать разделы для общения с другими участниками курса, а также для получения дополнительной информации и ресурсов по теме.`
     );
 
-    const unauthHeader = new HeaderUnauth(this.node);
+    new HeaderUnauth(this.node);
   }
 }

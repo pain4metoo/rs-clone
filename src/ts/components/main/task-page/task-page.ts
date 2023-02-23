@@ -85,7 +85,7 @@ export class TaskPage extends Control {
       const taskRating = task.complexity;
       const maxRating = 3;
       const headingContainer = new Control(taskBlock.node, 'div', 'd-flex align-items-center mb-3');
-      const nameTask = new Control(headingContainer.node, 'span', 'me-3 fw-semibold', `Задача ${i + 1}`);
+      new Control(headingContainer.node, 'span', 'me-3 fw-semibold', `Задача ${i + 1}`);
       const starsContainer = new Control(headingContainer.node, 'div', 'd-flex mb-2');
       for (let n = 0; n < maxRating; n += 1) {
         const iconStar = new Control(starsContainer.node, 'i', 'bi bi-star');
@@ -113,6 +113,7 @@ export class TaskPage extends Control {
       buttonSolution.node.setAttribute('data-bs-target', `#collapseTaskSolution${i}`);
       buttonSolution.node.setAttribute('aria-expanded', 'false');
       buttonSolution.node.setAttribute('aria-controls', 'collapseExample');
+      buttonSolution.node.addEventListener('click', () => state.playSound());
       if (state.getAuthUser()) {
         const buttonMarkedSolved = new Control(
           buttonContainerSolution.node,
@@ -125,6 +126,7 @@ export class TaskPage extends Control {
           buttonMarkedSolved.node.classList.add('disabled');
         } else {
           buttonMarkedSolved.node.onclick = (): void => {
+            state.playSound();
             this.addCurrentTaskToDone(i + 1, user, taskId);
             buttonMarkedSolved.node.textContent = 'Решена';
             buttonMarkedSolved.node.classList.add('disabled');
@@ -133,8 +135,8 @@ export class TaskPage extends Control {
       }
       const solutionContainer = new Control(taskBlock.node, 'div', 'collapse');
       solutionContainer.node.setAttribute('id', `collapseTaskSolution${i}`);
-      const solutionContent = new Control(solutionContainer.node, 'div', 'card card-body');
-      solutionContent.node.innerHTML = task.solution;
+      const solutionContent = new Control(solutionContainer.node, 'div', 'card card-body text-dark');
+      solutionContent.node.innerHTML = task.solution.join('\n');
     });
     const goToNextLessonButtonWrapper = new Control(this.node, 'div', 'd-flex justify-content-center');
     const goToNextLessonButton = new Control(

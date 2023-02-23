@@ -6,7 +6,6 @@ import { AuthPage } from './auth-page/auth-page';
 import { CategoriesPage } from './categories-page/categories-page';
 import { FavorPage } from './favor-page/favor-page';
 import { LessonPage } from './lesson-page/lesson-page';
-import { MainAuthPage } from './main-page/main-auth-page/main-auth-page';
 import { MainPage } from './main-page/main-page';
 import { SetPage } from './set-page/set-page';
 import { StatistPage } from './statist-page/statist-page';
@@ -47,8 +46,7 @@ export class Main extends Control {
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
         case StateOptions.changeAnimation:
-          let isAnim = state.getAnim();
-          if (isAnim) {
+          if (state.getAnim()) {
             this.mainInner.node.classList.remove('card_anim');
           } else {
             this.mainInner.node.classList.add('card_anim');
