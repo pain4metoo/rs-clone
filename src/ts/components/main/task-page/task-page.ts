@@ -113,6 +113,7 @@ export class TaskPage extends Control {
       buttonSolution.node.setAttribute('data-bs-target', `#collapseTaskSolution${i}`);
       buttonSolution.node.setAttribute('aria-expanded', 'false');
       buttonSolution.node.setAttribute('aria-controls', 'collapseExample');
+      buttonSolution.node.addEventListener('click', () => state.playSound());
       if (state.getAuthUser()) {
         const buttonMarkedSolved = new Control(
           buttonContainerSolution.node,
@@ -125,6 +126,7 @@ export class TaskPage extends Control {
           buttonMarkedSolved.node.classList.add('disabled');
         } else {
           buttonMarkedSolved.node.onclick = (): void => {
+            state.playSound();
             this.addCurrentTaskToDone(i + 1, user, taskId);
             buttonMarkedSolved.node.textContent = 'Решена';
             buttonMarkedSolved.node.classList.add('disabled');

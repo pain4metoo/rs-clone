@@ -23,6 +23,7 @@ export class SetPopup extends Control {
     btnClose.node.setAttribute('type', 'button');
     btnClose.node.setAttribute('data-bs-dismiss', 'modal');
     btnClose.node.setAttribute('aria-label', 'Close');
+    btnClose.node.addEventListener('click', () => state.playSound());
 
     const modalMain = new Control(modalContent.node, 'div', 'modal-body');
     modalMain.node.style.color = 'black';

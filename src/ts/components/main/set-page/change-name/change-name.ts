@@ -24,6 +24,7 @@ export class ChangeName extends Control {
     changeBtn.node.setAttribute('type', 'button');
     changeBtn.node.setAttribute('data-bs-toggle', 'modal');
     changeBtn.node.setAttribute('data-bs-target', '#staticBackdrop');
+    changeBtn.node.addEventListener('click', () => state.playSound());
     changeBtn.node.disabled = true;
 
     changeBtn.node.onclick = () => this.changeName(nameInput.node.value);

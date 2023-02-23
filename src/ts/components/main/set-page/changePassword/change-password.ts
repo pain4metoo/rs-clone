@@ -41,6 +41,7 @@ export class ChangePassword extends Control {
     changeBtn.node.setAttribute('type', 'button');
     changeBtn.node.setAttribute('data-bs-toggle', 'modal');
     changeBtn.node.setAttribute('data-bs-target', '#staticBackdrop');
+    changeBtn.node.addEventListener('click', () => state.playSound());
 
     changeBtn.node.onclick = () => this.changePassword(newInput.node.value, oldInput.node.value);
 

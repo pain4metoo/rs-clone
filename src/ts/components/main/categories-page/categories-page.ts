@@ -37,6 +37,7 @@ export class CategoriesPage extends Control {
       accordionButton.node.setAttribute('data-bs-target', `#collapse-${index}`);
       accordionButton.node.setAttribute('aria-expanded', 'true');
       accordionButton.node.setAttribute('aria-controls', `collapse-${index}`);
+      accordionButton.node.addEventListener('click', () => state.playSound());
 
       if (isAuth) {
         const progressValue = this.getProgressValue(category.items, type);
