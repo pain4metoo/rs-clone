@@ -61,7 +61,7 @@ export class DataController {
       if (response.ok) {
         const lessonWithNewComment = await this.getLesson(lesson.id);
         state.setLesson(lessonWithNewComment);
-        state.setNewPage(PagesList.lessonPage);
+        //state.setNewPage(PagesList.lessonPage);
       } else {
         throw new Error(`${response.status}`);
       }

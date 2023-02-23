@@ -159,24 +159,14 @@ export class LessonPage extends Control {
         this.addComment(lesson, textarea.node.value, user.name);
         textarea.node.value = '';
         submitButton.node.classList.add('disabled');
+        this.renderCommentBlock(user, commentsPosted);
       };
     }
 
-    const lessonComments = state.getLesson().comments;
-    if (lessonComments) {
-      const commentsPosted = new Control(this.node, 'div', 'container');
-      lessonComments.reverse().forEach((comment) => {
-        const userComment = new Control(commentsPosted.node, 'div', 'container mb-5');
-        const userNameContainer = new Control(userComment.node, 'div', 'd-flex align-items-end mb-3');
-        const userIcon = new Control(userNameContainer.node, 'i', 'bi bi-person-square me-2');
-        userIcon.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
-        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
-        </svg>`;
-        new Control(userNameContainer.node, 'span', 'name fw-semibold', comment.userName);
-        new Control(userComment.node, 'div', 'comment-content', comment.content);
-      });
-    }
+    const commentsPosted = new Control(this.node, 'div', 'container');
+
+    this.renderCommentBlock(user, commentsPosted);
+
     const buttonUp = new Control(
       this.node,
       'button',
@@ -184,6 +174,13 @@ export class LessonPage extends Control {
       '↑'
     );
     buttonUp.node.onclick = (): void => window.scrollTo(0, 0);
+    const buttonDown = new Control(
+      this.node,
+      'button',
+      'btn btn-outline-info position-fixed top-0 end-0 mx-3 my-3',
+      '↓'
+    );
+    buttonDown.node.onclick = (): void => window.scrollTo(0, document.body.scrollHeight);
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
@@ -253,16 +250,41 @@ export class LessonPage extends Control {
   }
 
   private async addComment(lesson: LessonData, commentText: string, userName: string): Promise<void> {
+    if (!lesson.comments) {
+      lesson.comments = [];
+    }
     const commentsPrevious = lesson.comments;
     const commentId = commentsPrevious.length + 1;
     const commentAuthor = userName;
     const commentContent = commentText;
-    lesson.comments.push({
+    lesson.comments.unshift({
       id: commentId,
       userName: commentAuthor,
       content: commentContent,
     });
     state.setLesson(lesson);
     await DataController.updateLessonComments();
+  }
+  private renderCommentBlock(user: UserData, commentsPosted: Control<HTMLElement>): void {
+    if (commentsPosted.node.children.length !== 0) {
+      while (commentsPosted.node.lastChild) {
+        commentsPosted.node.removeChild(commentsPosted.node.lastChild);
+      }
+      commentsPosted.node.removeChild;
+    }
+    const lessonComments = state.getLesson().comments;
+    if (lessonComments) {
+      lessonComments.forEach((comment) => {
+        const userComment = new Control(commentsPosted.node, 'div', 'container mb-5');
+        const userNameContainer = new Control(userComment.node, 'div', 'd-flex align-items-end mb-3');
+        const userIcon = new Control(userNameContainer.node, 'i', 'bi bi-person-square me-2');
+        userIcon.node.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-square" viewBox="0 0 16 16">
+        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
+        </svg>`;
+        new Control(userNameContainer.node, 'span', 'name fw-semibold', comment.userName);
+        new Control(userComment.node, 'div', 'comment-content', comment.content);
+      });
+    }
   }
 }
