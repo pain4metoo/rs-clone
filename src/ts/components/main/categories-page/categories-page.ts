@@ -2,14 +2,7 @@ import { DataController } from '../../../api/data-controller';
 import { Places } from '../../../api/types';
 import Control from '../../../common/control';
 import { state } from '../../../common/state';
-import {
-  ArticleMetaData,
-  CategoriesType,
-  CategoryContent,
-  LessonData,
-  TaskData,
-  TestData,
-} from '../../../common/state-types';
+import { ArticleMetaData, CategoriesType, LessonData, TaskData, TestData } from '../../../common/state-types';
 import { PagesList } from '../main';
 
 export class CategoriesPage extends Control {

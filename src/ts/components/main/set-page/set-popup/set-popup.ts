@@ -36,8 +36,7 @@ export class SetPopup extends Control {
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
         case StateOptions.changePassword:
-          const isValidPassword = state.getPasswordValidate();
-          if (isValidPassword) {
+          if (state.getPasswordValidate()) {
             modalMain.node.textContent = 'Вы изменили пароль!';
           } else {
             modalMain.node.textContent = 'Неверный старый пароль или новый пароль меньше 4 символов!';
@@ -53,8 +52,7 @@ export class SetPopup extends Control {
           break;
 
         case StateOptions.changeName:
-          const name = state.getCurrentName();
-          if (name.length < 2 && name.length > 30) {
+          if (state.getCurrentName().length < 2 && state.getCurrentName().length > 30) {
             modalMain.node.textContent = 'Неверное имя!';
           } else {
             modalMain.node.textContent = 'Вы успешно изменили имя!';

@@ -8,8 +8,8 @@ import { Header } from './header/header';
 import { Main } from './main/main';
 
 export class App extends Control {
-  animLight!: AnimationLight;
-  animDark!: AnimationDark;
+  private animLight!: AnimationLight;
+  private animDark!: AnimationDark;
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'wrapper');
     new Header(this.node);
@@ -21,6 +21,7 @@ export class App extends Control {
       switch (type) {
         case StateOptions.changeTheme:
           this.createAnimation();
+          break;
         case StateOptions.onLogUser:
           this.createAnimation();
           break;

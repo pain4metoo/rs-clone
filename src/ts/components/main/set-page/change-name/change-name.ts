@@ -6,7 +6,7 @@ export class ChangeName extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'form form-name');
 
-    const title = new Control(this.node, 'h5', 'display-5', 'Смена имени');
+    new Control(this.node, 'h5', 'display-5', 'Смена имени');
     const nameInputInner = new Control(this.node, 'div', 'form-floating mb-3');
     const nameInput: Control<HTMLInputElement> = new Control(nameInputInner.node, 'input', 'form-control');
     nameInput.node.type = 'text';
@@ -27,14 +27,13 @@ export class ChangeName extends Control {
     changeBtn.node.addEventListener('click', () => state.playSound());
     changeBtn.node.disabled = true;
 
-    changeBtn.node.onclick = () => this.changeName(nameInput.node.value);
-    nameInput.node.oninput = () => this.isDisableBtn(changeBtn.node, nameInput.node.value);
+    changeBtn.node.onclick = (): Promise<void> => this.changeName(nameInput.node.value);
+    nameInput.node.oninput = (): void => this.isDisableBtn(changeBtn.node, nameInput.node.value);
 
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
         case StateOptions.changeName:
-          const newName = state.getCurrentName();
-          nameLabel.node.textContent = `Текущее имя: ${newName}`;
+          nameLabel.node.textContent = `Текущее имя: ${state.getCurrentName()}`;
           nameInput.node.value = '';
           changeBtn.node.disabled = true;
           break;

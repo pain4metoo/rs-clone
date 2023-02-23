@@ -1,6 +1,5 @@
 import { Places, UserData, UserResponse } from './types';
 import { baseUrl, path } from './routes';
-import { state } from '../common/state';
 
 export class AuthController {
   public static async isAuthUser(login: string, password: string): Promise<void | UserData> {

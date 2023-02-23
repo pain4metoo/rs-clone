@@ -28,7 +28,7 @@ export class FavorPage extends Control {
       if (data) {
         const itemName: Control<HTMLLinkElement> = new Control(itemWrapper.node, 'a', '', data.name);
         itemName.node.href = '#';
-        itemName.node.onclick = () => this.switchPage(type, data);
+        itemName.node.onclick = (): void => this.switchPage(type, data);
       }
 
       const iconMark = new Control(itemWrapper.node, 'i');
