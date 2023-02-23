@@ -5,7 +5,6 @@ import { AnimationDark } from './animation/animation-dark';
 import { AnimationLight } from './animation/animation-light';
 import { Footer } from './footer/footer';
 import { Header } from './header/header';
-import { AudioEl } from './main/audio-el/audio-el';
 import { Main } from './main/main';
 
 export class App extends Control {
@@ -18,7 +17,6 @@ export class App extends Control {
     new Footer(this.node);
 
     this.createAnimation();
-    this.createAudioSounds();
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
         case StateOptions.changeTheme:
@@ -28,10 +26,6 @@ export class App extends Control {
           break;
       }
     });
-  }
-
-  private async createAudioSounds(): Promise<void> {
-    new AudioEl();
   }
 
   private async createAnimation(): Promise<void> {
