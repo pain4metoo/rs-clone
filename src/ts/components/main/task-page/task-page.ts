@@ -133,8 +133,10 @@ export class TaskPage extends Control {
       }
       const solutionContainer = new Control(taskBlock.node, 'div', 'collapse');
       solutionContainer.node.setAttribute('id', `collapseTaskSolution${i}`);
-      const solutionContent = new Control(solutionContainer.node, 'div', 'card card-body');
-      solutionContent.node.innerHTML = task.solution;
+      const solutionContent = new Control(solutionContainer.node, 'div', 'card card-body text-dark');
+      solutionContent.node.innerHTML = task.solution.join('\n');
+      console.log(task.solution);
+      
     });
     const goToNextLessonButtonWrapper = new Control(this.node, 'div', 'd-flex justify-content-center');
     const goToNextLessonButton = new Control(
