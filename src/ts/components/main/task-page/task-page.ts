@@ -201,6 +201,13 @@ export class TaskPage extends Control {
     buttonNext.node.onclick = (): void => {
       this.switchPage(PagesList.taskPage, taskId + 1);
     };
+    const buttonUp = new Control(
+      this.node,
+      'button',
+      'btn btn-outline-info position-fixed bottom-0 end-0 mx-3 my-3',
+      '↑'
+    );
+    buttonUp.node.onclick = (): void => window.scrollTo(0, 0);
   }
 
   private async switchPage(page: string, id: number): Promise<void> {
