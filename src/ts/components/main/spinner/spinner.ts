@@ -6,6 +6,6 @@ export class Spinner extends Control {
     super(parentNode, 'div', 'spinner-border text-danger spinner');
     this.node.setAttribute('role', 'status');
 
-    const load = new Control(this.node, 'span', 'visually-hidden', 'Loading...');
+    new Control(this.node, 'span', 'visually-hidden', 'Loading...');
   }
 }

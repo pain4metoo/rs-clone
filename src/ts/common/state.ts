@@ -182,7 +182,7 @@ class State {
   public getLoaderStatus(): boolean {
     return this._data.avatarsMenu.loader;
   }
-  
+
   public getRegValid(): boolean {
     return this._data.validReg;
   }

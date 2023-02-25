@@ -6,20 +6,20 @@ import { AvatarPagination } from './avatars-pagination/avatars-pagination';
 import './main-avatars.scss';
 
 export class MainAvatars extends Control {
-  currentAvatars: Array<HTMLImageElement> = [];
+  private currentAvatars: Array<HTMLImageElement> = [];
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'avatars');
     const closeBtn: Control<HTMLButtonElement> = new Control(this.node, 'button', 'btn-close avatars_btn_close');
     closeBtn.node.type = 'button';
     closeBtn.node.setAttribute('aria-label', 'Close');
-    closeBtn.node.onclick = () => this.closeAvatarsMenu();
+    closeBtn.node.onclick = (): void => this.closeAvatarsMenu();
 
     const avatarsInner = new Control(this.node, 'div', 'avatars_inner');
 
     const avatarsLeft = new Control(avatarsInner.node, 'div', 'avatars_left');
     const avatarsItems = new Control(avatarsLeft.node, 'div', 'avatars_items');
     this.getAvatars(avatarsItems.node);
-    const avatarsPag = new AvatarPagination(avatarsLeft.node);
+    new AvatarPagination(avatarsLeft.node);
 
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
@@ -45,7 +45,7 @@ export class MainAvatars extends Control {
     avatarsArray.forEach((url: string) => {
       const img: Control<HTMLImageElement> = new Control(avatarsNode, 'img', 'avatars_img');
       this.currentAvatars.push(img.node);
-      img.node.onclick = () => state.setNewAvatar(url);
+      img.node.onclick = (): Promise<void> => state.setNewAvatar(url);
       img.node.src = url;
     });
     state.setLoader(false);

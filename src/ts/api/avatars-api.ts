@@ -1,5 +1,5 @@
-export const getImages = async (page: number) => {
-  let avatars: Array<string> = [];
+export const getImages = async (page: number): Promise<Array<string>> => {
+  const avatars: Array<string> = [];
   const itemCount = 9;
   let intervalStart = page * itemCount;
   let intervalEnd = page * itemCount + itemCount;
@@ -10,7 +10,7 @@ export const getImages = async (page: number) => {
   }
 
   for (let i = intervalStart; i < intervalEnd; i++) {
-    let image = `https://raw.githubusercontent.com/pain4metoo/words-data/master/avatars/${i}.jpg`;
+    const image = `https://raw.githubusercontent.com/pain4metoo/words-data/master/avatars/${i}.jpg`;
     await fetch(image).then((response) => avatars.push(response.url));
   }
 

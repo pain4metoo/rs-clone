@@ -8,8 +8,8 @@ import { StateOptions } from '../../../../common/state-types';
 import { Spinner } from '../../spinner/spinner';
 
 export class MainAuthPage extends Control {
-  avatarsPopup!: MainAvatars;
-  spinner!: Spinner;
+  private avatarsPopup!: MainAvatars;
+  private spinner!: Spinner;
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'container');
 
@@ -29,10 +29,10 @@ export class MainAuthPage extends Control {
     const avaChange = new Control(profileImgContainer.node, 'div', 'profile_ava_change', 'Изменить аватар');
 
     const profileRight = new Control(profile.node, 'div', 'profile_right container');
-    const profileName = new Control(profileRight.node, 'p', 'text-center display-4', `Привет ${currentName}!`);
+    new Control(profileRight.node, 'p', 'text-center display-4', `Привет ${currentName}!`);
     new HeaderAuth(profileRight.node);
 
-    avaChange.node.onclick = () => this.selectNewAvatar(profile.node);
+    avaChange.node.onclick = (): void => this.selectNewAvatar(profile.node);
 
     state.onUpdate.add((type: StateOptions) => {
       switch (type) {
@@ -51,7 +51,7 @@ export class MainAuthPage extends Control {
       this.spinner.destroy();
     }
 
-    let isLoad = state.getLoaderStatus();
+    const isLoad = state.getLoaderStatus();
 
     if (isLoad) {
       this.spinner = new Spinner(profileNode);

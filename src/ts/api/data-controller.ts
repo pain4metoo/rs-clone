@@ -1,8 +1,7 @@
 import { state } from '../common/state';
 import { LessonData, TaskData, TestData } from '../common/state-types';
-import { PagesList } from '../components/main/main';
 import { baseUrl, path } from './routes';
-import { CategoryData, UserData } from './types';
+import { CategoryData } from './types';
 
 export class DataController {
   public static async getCategories(): Promise<Array<CategoryData>> {
@@ -27,12 +26,6 @@ export class DataController {
     const response: Response = await fetch(`${baseUrl}${path.tasks}/${id}`);
     const task: TaskData = await response.json();
     return task;
-  }
-
-  public static async getUsers(): Promise<any> {
-    const response: Response = await fetch(`${baseUrl}${path.users}`);
-    const users: TaskData = await response.json();
-    return users;
   }
 
   public static async updateUserData(): Promise<void> {

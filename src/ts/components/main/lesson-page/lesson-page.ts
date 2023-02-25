@@ -280,8 +280,8 @@ export class LessonPage extends Control {
         const userNameContainer = new Control(userComment.node, 'div', 'd-flex align-items-end mb-3');
         const userIcon: Control<HTMLImageElement> = new Control(userNameContainer.node, 'img', 'avatar');
         userIcon.node.src = avatar;
-        const userName = new Control(userNameContainer.node, 'span', 'name fw-semibold', comment.userName);
-        const userCommentText = new Control(userComment.node, 'div', 'comment-content', comment.content);
+        new Control(userNameContainer.node, 'span', 'name fw-semibold', comment.userName);
+        new Control(userComment.node, 'div', 'comment-content', comment.content);
       });
     }
   }
