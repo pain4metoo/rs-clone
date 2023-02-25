@@ -160,6 +160,24 @@ class State {
     state.onUpdate.emit(StateOptions.changeName);
   }
 
+  public setLoginValid(status: boolean): void {
+    this._data.validLogin = status;
+    state.onUpdate.emit(StateOptions.validLogin);
+  }
+
+  public getLoginValid(): boolean {
+    return this._data.validLogin;
+  }
+
+  public setRegValid(status: boolean): void {
+    this._data.validReg = status;
+    state.onUpdate.emit(StateOptions.validReg);
+  }
+
+  public getRegValid(): boolean {
+    return this._data.validReg;
+  }
+
   public getAnim(): boolean {
     return this._data.user.settings.animation;
   }
@@ -246,6 +264,8 @@ const initialState = {
       isValid: false,
     },
   },
+  validLogin: false,
+  validReg: false,
   currentPage: { name: PagesList.mainPage },
   header: {
     mainPages: [PagesList.mainPage, PagesList.lessonsPage, PagesList.testsPage, PagesList.tasksPage],
