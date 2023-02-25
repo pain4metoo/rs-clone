@@ -9,6 +9,10 @@ export class MainAvatars extends Control {
   currentAvatars: Array<HTMLImageElement> = [];
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'div', 'avatars');
+    const closeBtn: Control<HTMLButtonElement> = new Control(this.node, 'button', 'btn-close avatars_btn_close');
+    closeBtn.node.type = 'button';
+    closeBtn.node.setAttribute('aria-label', 'Close');
+    closeBtn.node.onclick = () => this.closeAvatarsMenu();
 
     const avatarsInner = new Control(this.node, 'div', 'avatars_inner');
 
@@ -26,7 +30,12 @@ export class MainAvatars extends Control {
     });
   }
 
+  private closeAvatarsMenu(): void {
+    this.destroy();
+  }
+
   private async getAvatars(avatarsNode: HTMLElement): Promise<void> {
+    state.setLoader(true);
     if (this.currentAvatars.length > 0) {
       this.currentAvatars.forEach((el: HTMLImageElement) => {
         el.remove();
@@ -39,5 +48,6 @@ export class MainAvatars extends Control {
       img.node.onclick = () => state.setNewAvatar(url);
       img.node.src = url;
     });
+    state.setLoader(false);
   }
 }

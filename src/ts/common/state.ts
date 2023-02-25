@@ -174,12 +174,20 @@ class State {
     state.onUpdate.emit(StateOptions.validReg);
   }
 
+  public setLoader(status: boolean): void {
+    this._data.avatarsMenu.loader = status;
+    state.onUpdate.emit(StateOptions.statusLoader);
+  }
+
+  public getLoaderStatus(): boolean {
+    return this._data.avatarsMenu.loader;
+  }
+  
   public getRegValid(): boolean {
     return this._data.validReg;
   }
 
   public setCurrentAvatarsPage(page: number): void {
-    console.log(page);
     this._data.avatarsMenu.currentPage = page;
     state.onUpdate.emit(StateOptions.avatarsPage);
   }
@@ -292,6 +300,7 @@ const initialState = {
   avatarsMenu: {
     currentPage: 1,
     maxPage: 56,
+    loader: false,
   },
   validLogin: false,
   validReg: false,

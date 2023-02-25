@@ -93,6 +93,7 @@ export interface StateData {
   avatarsMenu: {
     currentPage: number;
     maxPage: number;
+    loader: boolean;
   };
 }
 
@@ -112,4 +113,5 @@ export enum StateOptions {
   validReg = 'valid-reg',
   avatarsPage = 'avatars-page',
   changeAvatar = 'change-avatar',
+  statusLoader = 'statis-loader',
 }
