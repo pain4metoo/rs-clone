@@ -192,6 +192,16 @@ class State {
     return this._data.avatarsMenu.maxPage;
   }
 
+  public async setNewAvatar(url: string): Promise<void> {
+    this._data.user.avatar = url;
+    await DataController.updateUserData();
+    state.onUpdate.emit(StateOptions.changeAvatar);
+  }
+
+  public getUrlAvatar(): string {
+    return this._data.user.avatar;
+  }
+
   public getAnim(): boolean {
     return this._data.user.settings.animation;
   }

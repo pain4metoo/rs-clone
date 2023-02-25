@@ -4,6 +4,7 @@ import { state } from '../../../../common/state';
 import { HeaderAuth } from '../../../header/header-auth/header-auth';
 import avatar from '../../../../../assets/svg/avatar.svg';
 import { MainAvatars } from './main-avatars/main-avatars';
+import { StateOptions } from '../../../../common/state-types';
 
 export class MainAuthPage extends Control {
   avatarsPopup!: MainAvatars;
@@ -17,6 +18,11 @@ export class MainAuthPage extends Control {
     const profileAva: Control<HTMLImageElement> = new Control(profileImgContainer.node, 'img', 'profile_img img-fluid');
     profileAva.node.alt = 'avatar';
     profileAva.node.src = avatar;
+    if (state.getUrlAvatar()) {
+      profileAva.node.src = state.getUrlAvatar();
+    } else {
+      profileAva.node.src = avatar;
+    }
     const avaChange = new Control(profileImgContainer.node, 'div', 'profile_ava_change', 'Изменить аватар');
 
     const profileRight = new Control(profile.node, 'div', 'profile_right container');
@@ -24,6 +30,14 @@ export class MainAuthPage extends Control {
     new HeaderAuth(profileRight.node);
 
     avaChange.node.onclick = () => this.selectNewAvatar(profile.node);
+
+    state.onUpdate.add((type: StateOptions) => {
+      switch (type) {
+        case StateOptions.changeAvatar:
+          profileAva.node.src = state.getUrlAvatar();
+          break;
+      }
+    });
   }
 
   private selectNewAvatar(profileNode: HTMLElement): void {

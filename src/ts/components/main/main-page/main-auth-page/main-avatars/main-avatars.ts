@@ -36,6 +36,7 @@ export class MainAvatars extends Control {
     avatarsArray.forEach((url: string) => {
       const img: Control<HTMLImageElement> = new Control(avatarsNode, 'img', 'avatars_img');
       this.currentAvatars.push(img.node);
+      img.node.onclick = () => state.setNewAvatar(url);
       img.node.src = url;
     });
   }

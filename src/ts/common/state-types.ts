@@ -111,4 +111,5 @@ export enum StateOptions {
   validLogin = 'valid-login',
   validReg = 'valid-reg',
   avatarsPage = 'avatars-page',
+  changeAvatar = 'change-avatar',
 }
