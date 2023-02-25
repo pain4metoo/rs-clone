@@ -40,6 +40,7 @@ export class AuthController {
           tests: [],
           tasks: [],
         },
+        avatar: '',
         settings: {
           theme: false,
           animation: false,

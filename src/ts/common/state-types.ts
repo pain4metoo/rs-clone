@@ -90,6 +90,10 @@ export interface StateData {
   task: TaskData;
   validLogin: boolean;
   validReg: boolean;
+  avatarsMenu: {
+    currentPage: number;
+    maxPage: number;
+  };
 }
 
 export enum StateOptions {
@@ -106,4 +110,5 @@ export enum StateOptions {
   changeName = 'change-name',
   validLogin = 'valid-login',
   validReg = 'valid-reg',
+  avatarsPage = 'avatars-page',
 }

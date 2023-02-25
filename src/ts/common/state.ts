@@ -178,6 +178,20 @@ class State {
     return this._data.validReg;
   }
 
+  public setCurrentAvatarsPage(page: number): void {
+    console.log(page);
+    this._data.avatarsMenu.currentPage = page;
+    state.onUpdate.emit(StateOptions.avatarsPage);
+  }
+
+  public getCurrentAvatarsPage(): number {
+    return this._data.avatarsMenu.currentPage;
+  }
+
+  public getMaxAvatarsPages(): number {
+    return this._data.avatarsMenu.maxPage;
+  }
+
   public getAnim(): boolean {
     return this._data.user.settings.animation;
   }
@@ -249,6 +263,7 @@ const initialState = {
       tests: [],
       tasks: [],
     },
+    avatar: '',
     place: Places.lessons,
     favourites: {
       lessons: [],
@@ -263,6 +278,10 @@ const initialState = {
       volume: 0.4,
       isValid: false,
     },
+  },
+  avatarsMenu: {
+    currentPage: 1,
+    maxPage: 56,
   },
   validLogin: false,
   validReg: false,
