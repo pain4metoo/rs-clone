@@ -80,7 +80,6 @@ export class Switcher extends Control {
 
   private currentSettings(input: HTMLInputElement, options: OptionsTypes, label: HTMLLabelElement): void {
     const settings = state.getSettings();
-    console.log(settings);
     switch (options.name) {
       case SwitcherOption.theme:
         if (settings.theme) {
