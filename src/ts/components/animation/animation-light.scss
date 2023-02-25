@@ -1,0 +1,30 @@
+.intro {
+  background: linear-gradient(233deg, #e56420, #c22525, #3d9c31, #37bbde);
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  background-blend-mode: hard-light;
+  animation: hue-rotate 3s linear infinite;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: -1;
+  opacity: 0.2;
+}
+
+@keyframes hue-rotate {
+  from {
+    -webkit-filter: hue-rotate(0);
+    -moz-filter: hue-rotate(0);
+    -ms-filter: hue-rotate(0);
+    filter: hue-rotate(0);
+  }
+  to {
+    -webkit-filter: hue-rotate(360deg);
+    -moz-filter: hue-rotate(360deg);
+    -ms-filter: hue-rotate(360deg);
+    filter: hue-rotate(360deg);
+  }
+}

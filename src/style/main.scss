@@ -1,0 +1,27 @@
+@import '~bootstrap/scss/bootstrap';
+@import '../../node_modules/normalize.css/normalize.css';
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 11.5px;
+  scroll-behavior: smooth;
+}
+
+body {
+  //font-family: 'Titillium', sans-serif;
+  font-size: 1.8rem;
+  line-height: 2.7rem;
+  position: relative;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
