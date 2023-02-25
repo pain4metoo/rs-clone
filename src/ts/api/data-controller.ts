@@ -1,6 +1,5 @@
 import { state } from '../common/state';
 import { LessonData, TaskData, TestData } from '../common/state-types';
-import { PagesList } from '../components/main/main';
 import { baseUrl, path } from './routes';
 import { CategoryData } from './types';
 

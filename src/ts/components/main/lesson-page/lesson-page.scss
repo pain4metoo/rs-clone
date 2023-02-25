@@ -3,3 +3,12 @@
   flex-direction: column;
   justify-content: inherit;
 }
+
+.avatar {
+  cursor: pointer;
+  height: 3rem;
+  object-fit: cover;
+  transition: all 0.5s;
+  width: 3rem;
+  margin-right: 2rem;
+}

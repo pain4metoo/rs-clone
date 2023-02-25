@@ -160,6 +160,56 @@ class State {
     state.onUpdate.emit(StateOptions.changeName);
   }
 
+  public setLoginValid(status: boolean): void {
+    this._data.validLogin = status;
+    state.onUpdate.emit(StateOptions.validLogin);
+  }
+
+  public getLoginValid(): boolean {
+    return this._data.validLogin;
+  }
+
+  public setRegValid(status: boolean): void {
+    this._data.validReg = status;
+    state.onUpdate.emit(StateOptions.validReg);
+  }
+
+  public setLoader(status: boolean): void {
+    this._data.avatarsMenu.loader = status;
+    state.onUpdate.emit(StateOptions.statusLoader);
+  }
+
+  public getLoaderStatus(): boolean {
+    return this._data.avatarsMenu.loader;
+  }
+
+  public getRegValid(): boolean {
+    return this._data.validReg;
+  }
+
+  public setCurrentAvatarsPage(page: number): void {
+    this._data.avatarsMenu.currentPage = page;
+    state.onUpdate.emit(StateOptions.avatarsPage);
+  }
+
+  public getCurrentAvatarsPage(): number {
+    return this._data.avatarsMenu.currentPage;
+  }
+
+  public getMaxAvatarsPages(): number {
+    return this._data.avatarsMenu.maxPage;
+  }
+
+  public async setNewAvatar(url: string): Promise<void> {
+    this._data.user.avatar = url;
+    await DataController.updateUserData();
+    state.onUpdate.emit(StateOptions.changeAvatar);
+  }
+
+  public getUrlAvatar(): string {
+    return this._data.user.avatar;
+  }
+
   public getAnim(): boolean {
     return this._data.user.settings.animation;
   }
@@ -231,6 +281,7 @@ const initialState = {
       tests: [],
       tasks: [],
     },
+    avatar: '',
     place: Places.lessons,
     favourites: {
       lessons: [],
@@ -246,6 +297,13 @@ const initialState = {
       isValid: false,
     },
   },
+  avatarsMenu: {
+    currentPage: 1,
+    maxPage: 56,
+    loader: false,
+  },
+  validLogin: false,
+  validReg: false,
   currentPage: { name: PagesList.mainPage },
   header: {
     mainPages: [PagesList.mainPage, PagesList.lessonsPage, PagesList.testsPage, PagesList.tasksPage],

@@ -26,6 +26,7 @@ export interface UserData {
   place: Places;
   favourites: UserDataFavorites;
   settings: Settings;
+  avatar: string;
 }
 
 export interface UserDataDone {

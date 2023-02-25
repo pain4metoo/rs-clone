@@ -88,6 +88,13 @@ export interface StateData {
   lesson: LessonData;
   test: TestData;
   task: TaskData;
+  validLogin: boolean;
+  validReg: boolean;
+  avatarsMenu: {
+    currentPage: number;
+    maxPage: number;
+    loader: boolean;
+  };
 }
 
 export enum StateOptions {
@@ -102,4 +109,9 @@ export enum StateOptions {
   resetSettings = 'reset-settings',
   saveSettings = 'save-settings',
   changeName = 'change-name',
+  validLogin = 'valid-login',
+  validReg = 'valid-reg',
+  avatarsPage = 'avatars-page',
+  changeAvatar = 'change-avatar',
+  statusLoader = 'statis-loader',
 }
